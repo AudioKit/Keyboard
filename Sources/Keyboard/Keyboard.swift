@@ -1,5 +1,12 @@
 import SwiftUI
 
+public struct Key: View {
+
+    public var body: some View {
+        Rectangle()
+    }
+}
+
 public struct Keyboard: View {
 
     public var body: some View {
