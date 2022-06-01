@@ -15,12 +15,21 @@ public struct Key: View {
 public struct Keyboard: View {
 
     let notes = (0...127).map({ Pitch($0).note(in: .C) })
+    @State var keyRects: [Note: CGRect] = [:]
+
+    func key(note: Note, rect: CGRect) -> Key {
+        print("setting keyRect for \(note) to \(rect)")
+        keyRects[note] = rect
+        return Key(note: note)
+    }
 
     public var body: some View {
         ScrollView([.horizontal], showsIndicators: true) {
             HStack {
                 ForEach(notes, id: \.self) { note in
-                    Key(note: note)
+                    GeometryReader { proxy in
+                        key(note: note, rect: proxy.frame(in: .local))
+                    }
                 }
             }
         }
