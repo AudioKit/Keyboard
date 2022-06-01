@@ -27,17 +27,15 @@ class KeyboardModel: ObservableObject {
 
 public struct Keyboard: View {
 
-    let notes = (0...127).map({ Pitch($0).note(in: .C) })
+    let notes = (60...84).map({ Pitch($0).note(in: .C) })
     @StateObject var model = KeyboardModel()
 
     public init() { }
 
     public var body: some View {
-        ScrollView([.horizontal], showsIndicators: true) {
-            HStack {
-                ForEach(notes, id: \.self) { note in
-                    Key(note: note, model: model)
-                }
+        HStack {
+            ForEach(notes, id: \.self) { note in
+                Key(note: note, model: model)
             }
         }
     }
