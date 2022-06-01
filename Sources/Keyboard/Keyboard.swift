@@ -6,18 +6,18 @@ public struct Key: View {
     var note: Note
     @ObservedObject var model: KeyboardModel
 
-    func rect(rect: CGRect) -> Rectangle {
+    func rect(rect: CGRect) -> some View {
         print("setting keyRect for \(note) to \(rect)")
         model.keyRects[note] = rect
         return Rectangle()
+            .foregroundColor(note.accidental == .natural ? .white : .black)
     }
 
     public var body: some View {
         GeometryReader { proxy in
             rect(rect: proxy.frame(in: .global))
         }
-            .frame(width: 44, height: 200)
-            .foregroundColor(note.accidental == .natural ? .white : .black)
+            .frame(width: 50, height: 200)
     }
 }
 
