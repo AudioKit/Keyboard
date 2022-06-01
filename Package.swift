@@ -11,7 +11,7 @@ let package = Package(
             name: "Keyboard",
             targets: ["Keyboard"]),
     ],
-    dependencies: [],
+    dependencies: [.package(url: "https://github.com/Audulus/Tonic.git", branch: "main")],
     targets: [
         .target(
             name: "Keyboard",
