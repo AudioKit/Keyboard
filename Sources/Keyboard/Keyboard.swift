@@ -4,32 +4,37 @@ import Tonic
 public struct Key: View {
 
     var note: Note
+    @ObservedObject var model: KeyboardModel
+
+    func rect(rect: CGRect) -> Rectangle {
+        print("setting keyRect for \(note) to \(rect)")
+        model.keyRects[note] = rect
+        return Rectangle()
+    }
 
     public var body: some View {
-        Rectangle()
+        GeometryReader { proxy in
+            rect(rect: proxy.frame(in: .global))
+        }
             .frame(width: 44, height: 200)
             .foregroundColor(note.accidental == .natural ? .white : .black)
     }
 }
 
+class KeyboardModel: ObservableObject {
+    var keyRects: [Note: CGRect] = [:]
+}
+
 public struct Keyboard: View {
 
     let notes = (0...127).map({ Pitch($0).note(in: .C) })
-    @State var keyRects: [Note: CGRect] = [:]
-
-    func key(note: Note, rect: CGRect) -> Key {
-        print("setting keyRect for \(note) to \(rect)")
-        keyRects[note] = rect
-        return Key(note: note)
-    }
+    @StateObject var model = KeyboardModel()
 
     public var body: some View {
         ScrollView([.horizontal], showsIndicators: true) {
             HStack {
                 ForEach(notes, id: \.self) { note in
-                    GeometryReader { proxy in
-                        key(note: note, rect: proxy.frame(in: .local))
-                    }
+                    Key(note: note, model: model)
                 }
             }
         }
