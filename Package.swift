@@ -15,7 +15,7 @@ let package = Package(
     targets: [
         .target(
             name: "Keyboard",
-            dependencies: []),
+            dependencies: ["Tonic"]),
         .testTarget(
             name: "KeyboardTests",
             dependencies: ["Keyboard"]),
