@@ -1,6 +1,14 @@
-public struct Keyboard {
-    public private(set) var text = "Hello, World!"
+import SwiftUI
 
-    public init() {
+public struct Keyboard: View {
+
+    public var body: some View {
+        Text("Test")
+    }
+}
+
+struct Keyboard_Previews: PreviewProvider {
+    static var previews: some View {
+        Keyboard()
     }
 }
