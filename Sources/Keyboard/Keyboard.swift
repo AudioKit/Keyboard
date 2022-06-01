@@ -30,6 +30,8 @@ public struct Keyboard: View {
     let notes = (0...127).map({ Pitch($0).note(in: .C) })
     @StateObject var model = KeyboardModel()
 
+    public init() { }
+
     public var body: some View {
         ScrollView([.horizontal], showsIndicators: true) {
             HStack {
