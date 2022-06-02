@@ -1,6 +1,14 @@
 import SwiftUI
 import Tonic
 
+extension CGPoint: Hashable {
+    public func hash(into hasher: inout Hasher) {
+        hasher.combine(x)
+        hasher.combine(y)
+    }
+
+}
+
 public struct KeyboardKey: View {
 
     var midiNote: Int
@@ -9,7 +17,7 @@ public struct KeyboardKey: View {
     }
     var keyColor: Color {
         let baseColor: Color = Pitch(intValue: midiNote).note(in: .C).accidental == .natural ? .white : .black
-        if model.activatedNotes.contains(midiNote) {
+        if model.activatedNotes.values.contains(midiNote) {
             return .red
         }
         return baseColor
@@ -20,7 +28,6 @@ public struct KeyboardKey: View {
     @ObservedObject var model: KeyboardModel
 
     func findNote(location: CGPoint) -> Note? {
-        print(location)
         for rect in model.keyRects {
             if rect.value.contains(location) {
                 return rect.key
@@ -42,8 +49,14 @@ public struct KeyboardKey: View {
             }
         }
         .gesture(DragGesture(minimumDistance: 0, coordinateSpace: .global).onChanged({ gesture in
-            print(findNote(location: gesture.location))
-        }))
+            if let note = findNote(location: gesture.location)?.noteNumber {
+                model.activatedNotes[gesture.startLocation] = Int(note)
+            }
+        })
+            .onEnded({ gesture in
+                model.activatedNotes.removeValue(forKey: gesture.startLocation)
+            })
+        )
     }
 
     public var body: some View {
@@ -58,14 +71,12 @@ class KeyboardModel: ObservableObject {
     var midiNotes = (60...84)
     var shouldDisplayNotes: Bool = false
     var key: Key = .C
-    var activatedNotes: [Int] = []
+    @Published var activatedNotes: [CGPoint:Int] = [:]
 
     init(key: Key = .C,
-         shouldDisplayNotes: Bool = false,
-         activatedNotes: [Int] = []) {
+         shouldDisplayNotes: Bool = false) {
         self.key = key
         self.shouldDisplayNotes = shouldDisplayNotes
-        self.activatedNotes = activatedNotes
     }
 
     // Computed key rectangles
