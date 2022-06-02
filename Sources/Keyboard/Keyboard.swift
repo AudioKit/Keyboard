@@ -19,6 +19,16 @@ public struct KeyboardKey: View {
     }
     @ObservedObject var model: KeyboardModel
 
+    func findNote(location: CGPoint) -> Note? {
+        print(location)
+        for rect in model.keyRects {
+            if rect.value.contains(location) {
+                return rect.key
+            }
+        }
+        return nil
+    }
+
     func rect(rect: CGRect) -> some View {
         print("setting keyRect for \(note) to \(rect)")
         model.keyRects[note] = rect
@@ -31,6 +41,9 @@ public struct KeyboardKey: View {
                     .padding()
             }
         }
+        .gesture(DragGesture(minimumDistance: 0, coordinateSpace: .global).onChanged({ gesture in
+            print(findNote(location: gesture.location))
+        }))
     }
 
     public var body: some View {
@@ -63,8 +76,7 @@ class KeyboardModel: ObservableObject {
 public struct Keyboard: View {
 
     @StateObject var model = KeyboardModel(key: .F,
-                                           shouldDisplayNotes: true,
-                                           activatedNotes: [68, 72])
+                                           shouldDisplayNotes: true)
 
     public init() { }
 
