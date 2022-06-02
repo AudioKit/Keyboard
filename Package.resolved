@@ -1,14 +1,16 @@
 {
-  "pins" : [
-    {
-      "identity" : "tonic",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/Audulus/Tonic.git",
-      "state" : {
-        "branch" : "main",
-        "revision" : "dcca21ae9156f9c9bb026e2e59d6f6567cd42c16"
+  "object": {
+    "pins": [
+      {
+        "package": "Tonic",
+        "repositoryURL": "https://github.com/Audulus/Tonic.git",
+        "state": {
+          "branch": "main",
+          "revision": "dcca21ae9156f9c9bb026e2e59d6f6567cd42c16",
+          "version": null
+        }
       }
-    }
-  ],
-  "version" : 2
+    ]
+  },
+  "version": 1
 }
