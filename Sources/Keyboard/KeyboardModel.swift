@@ -1,7 +1,7 @@
 import SwiftUI
 import Tonic
 
-public class KeyboardModel: ObservableObject {
+class KeyboardModel: ObservableObject {
 
     @Published var touchedPitches: [CGPoint: Pitch] = [:]
     @Published var highlightedPitches: [Pitch] = []
