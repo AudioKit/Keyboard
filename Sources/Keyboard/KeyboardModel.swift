@@ -2,17 +2,17 @@ import SwiftUI
 import Tonic
 
 public class KeyboardModel: ObservableObject {
-    var noteRange: ClosedRange<Int8>
-    var shouldDisplayNoteNames: Bool
-    var key: Key
+    @Published var noteRange: ClosedRange<Int8>
+    @Published var shouldDisplayNoteNames: Bool
+    @Published var key: Key
     
-    var noteColors: (NoteClass)->Color = { _ in .red }
+    @Published var noteColors: (NoteClass)->Color = { _ in .red }
 
-    @Published var touchedNotes: [CGPoint:Note] = [:]
-    @Published var highlightedNotes: [Note] = []
+    @Published var touchedPitches: [CGPoint: Pitch] = [:]
+    @Published var highlightedPitches: [Pitch] = []
 
     public init(
-        noteRange: ClosedRange<Int8> = (60...84),
+        noteRange: ClosedRange<Int8> = (60...72),
         key: Key = .C,
         shouldDisplayNoteNames: Bool = true,
         noteColors: ((NoteClass)->Color)? = nil
@@ -26,6 +26,6 @@ public class KeyboardModel: ObservableObject {
     }
 
     // Computed key rectangles
-    var keyRects: [Note: CGRect] = [:]
+    var keyRects: [Pitch: CGRect] = [:]
 
 }

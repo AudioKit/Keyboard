@@ -8,21 +8,24 @@ public struct KeyboardKey: View {
 
     var keyColor: Color {
         let baseColor: Color = Pitch(midiNote).note(in: .C).accidental == .natural ? .white : .black
-        if (model.highlightedNotes + model.touchedNotes.values).map({ $0.noteNumber }).contains(midiNote) {
+        if (model.highlightedPitches + model.touchedPitches.values).map({ Int8($0.intValue) }).contains(midiNote) {
             return model.noteColors(NoteClass(intValue: Int(midiNote) % 12))
         }
         return baseColor
     }
 
+    var pitch: Pitch {
+        Pitch(midiNote)
+    }
     var note: Note {
-        Pitch(midiNote).note(in: model.key)
+        pitch.note(in: model.key)
     }
 
     var textColor: Color {
         return Pitch(midiNote).note(in: .C).accidental == .natural ? .black : .white
     }
 
-    func findNote(location: CGPoint) -> Note? {
+    func findPitch(location: CGPoint) -> Pitch? {
         for rect in model.keyRects {
             if rect.value.contains(location) {
                 return rect.key
@@ -32,7 +35,7 @@ public struct KeyboardKey: View {
     }
 
     func rect(rect: CGRect) -> some View {
-        model.keyRects[note] = rect
+        model.keyRects[pitch] = rect
         return ZStack(alignment: .bottom) {
             Rectangle()
             .foregroundColor(keyColor)
@@ -45,12 +48,12 @@ public struct KeyboardKey: View {
         }
         .gesture(DragGesture(minimumDistance: 0, coordinateSpace: .global)
             .onChanged({ gesture in
-                if let note = findNote(location: gesture.location) {
-                    model.touchedNotes[gesture.startLocation] = note
+                if let pitch = findPitch(location: gesture.location) {
+                    model.touchedPitches[gesture.startLocation] = pitch
                 }
             })
             .onEnded({ gesture in
-                model.touchedNotes.removeValue(forKey: gesture.startLocation)
+                model.touchedPitches.removeValue(forKey: gesture.startLocation)
             })
         )
     }

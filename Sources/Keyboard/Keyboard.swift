@@ -3,10 +3,12 @@ import Tonic
 
 public struct Keyboard: View {
 
-    @StateObject var model = KeyboardModel(key: .F,
-                                           shouldDisplayNoteNames: true)
-
-    public init() { }
+    @StateObject var model: KeyboardModel = KeyboardModel()
+    var newModel: KeyboardModel = KeyboardModel()
+    
+    public init(model: KeyboardModel = KeyboardModel()) {
+        self.newModel = model
+    }
 
     public var body: some View {
         HStack {
@@ -15,6 +17,12 @@ public struct Keyboard: View {
             }
         }
         .frame(minWidth: 600, minHeight: 100)
+        .onAppear {
+            model.noteRange = newModel.noteRange
+            model.key = newModel.key
+            model.shouldDisplayNoteNames = newModel.shouldDisplayNoteNames
+            model.noteColors = newModel.noteColors
+        }
 
     }
 }
