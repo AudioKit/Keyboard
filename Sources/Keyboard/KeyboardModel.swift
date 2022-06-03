@@ -2,21 +2,22 @@ import SwiftUI
 import Tonic
 
 public class KeyboardModel: ObservableObject {
-    var midiNotes: ClosedRange<Int8> = (60...72)
-    var shouldDisplayNoteNames: Bool = false
-    var key: Key = .C
+    var noteRange: ClosedRange<Int8>
+    var shouldDisplayNoteNames: Bool
+    var key: Key
     
-    var noteColors: (NoteClass)->Color = { noteClass in
-        return [.red, .orange, .yellow, .mint, .green, .teal, .cyan, .blue, .indigo, .purple, .pink, .init(red: 1.0, green: 0.33, blue: 0.33)][noteClass.intValue]
-    }
+    var noteColors: (NoteClass)->Color = { _ in .red }
 
     @Published var touchedNotes: [CGPoint:Note] = [:]
     @Published var highlightedNotes: [Note] = []
 
-    init(key: Key = .C,
-         shouldDisplayNoteNames: Bool = false,
-         noteColors: ((NoteClass)->Color)? = nil
+    public init(
+        noteRange: ClosedRange<Int8> = (60...84),
+        key: Key = .C,
+        shouldDisplayNoteNames: Bool = true,
+        noteColors: ((NoteClass)->Color)? = nil
     ) {
+        self.noteRange = noteRange
         self.key = key
         self.shouldDisplayNoteNames = shouldDisplayNoteNames
         if let colors = noteColors {

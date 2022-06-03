@@ -10,7 +10,7 @@ public struct Keyboard: View {
 
     public var body: some View {
         HStack {
-            ForEach(model.midiNotes, id: \.self) { note in
+            ForEach(model.noteRange, id: \.self) { note in
                 KeyboardKey(midiNote: note, model: model)
             }
         }
