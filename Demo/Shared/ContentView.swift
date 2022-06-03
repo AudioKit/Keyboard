@@ -14,7 +14,8 @@ struct ContentView: View {
 
     var body: some View {
         VStack {
-            Keyboard(noteOn: noteOn, noteOff: noteOff)
+            Keyboard(settings: KeyboardSettings(externalPitchSet: PitchSet([Pitch(64)])),
+                     noteOn: noteOn, noteOff: noteOff)
             Keyboard(settings: KeyboardSettings(pitchRange: Pitch(48)...Pitch(65), key: .F))
             Keyboard(settings: KeyboardSettings(shouldDisplayNoteNames: false,
                                           noteColors: { noteClass in

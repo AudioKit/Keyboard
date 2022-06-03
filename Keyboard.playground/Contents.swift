@@ -6,6 +6,7 @@ import PlaygroundSupport
 struct ContentView: View {
     var body: some View {
         Keyboard()
+        Keyboard(settings: KeyboardSettings(externalPitchSet: PitchSet()))
         Keyboard(settings: KeyboardSettings(pitchRange: Pitch(48)...Pitch(65)))
         Keyboard(settings: KeyboardSettings(key: .F))
         Keyboard(settings: KeyboardSettings(shouldDisplayNoteNames: false))

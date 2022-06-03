@@ -11,7 +11,7 @@ public struct KeyboardKey: View {
 
     var keyColor: Color {
         let baseColor: Color = pitch.note(in: .C).accidental == .natural ? .white : .black
-        if (model.highlightedPitches + model.touchedPitches.values).contains(pitch) {
+        if (settings.externalPitchSet.array + model.touchedPitches.values).contains(pitch) {
             return settings.noteColors(pitch.note(in: settings.key).noteClass)
         }
         return baseColor
