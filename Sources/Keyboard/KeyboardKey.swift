@@ -5,11 +5,12 @@ public struct KeyboardKey: View {
 
     var midiNote: Int8
     @ObservedObject var model: KeyboardModel
+    var settings: KeyboardSettings
 
     var keyColor: Color {
         let baseColor: Color = Pitch(midiNote).note(in: .C).accidental == .natural ? .white : .black
         if (model.highlightedPitches + model.touchedPitches.values).map({ Int8($0.intValue) }).contains(midiNote) {
-            return model.noteColors(NoteClass(intValue: Int(midiNote) % 12))
+            return settings.noteColors(NoteClass(intValue: Int(midiNote) % 12))
         }
         return baseColor
     }
@@ -18,7 +19,7 @@ public struct KeyboardKey: View {
         Pitch(midiNote)
     }
     var note: Note {
-        pitch.note(in: model.key)
+        pitch.note(in: settings.key)
     }
 
     var textColor: Color {
@@ -39,7 +40,7 @@ public struct KeyboardKey: View {
         return ZStack(alignment: .bottom) {
             Rectangle()
             .foregroundColor(keyColor)
-            if model.shouldDisplayNoteNames {
+            if settings.shouldDisplayNoteNames {
                 Text("\(note.description)")
                     .font(Font(.init(.system, size: rect.width / 3)))
                     .foregroundColor(textColor)
