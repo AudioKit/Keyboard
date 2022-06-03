@@ -3,27 +3,24 @@ import Tonic
 
 public struct KeyboardKey: View {
 
-    var midiNote: Int8
+    var pitch: Pitch
     @ObservedObject var model: KeyboardModel
     var settings: KeyboardSettings
 
     var keyColor: Color {
-        let baseColor: Color = Pitch(midiNote).note(in: .C).accidental == .natural ? .white : .black
-        if (model.highlightedPitches + model.touchedPitches.values).map({ Int8($0.intValue) }).contains(midiNote) {
-            return settings.noteColors(NoteClass(intValue: Int(midiNote) % 12))
+        let baseColor: Color = pitch.note(in: .C).accidental == .natural ? .white : .black
+        if (model.highlightedPitches + model.touchedPitches.values).contains(pitch) {
+            return settings.noteColors(pitch.note(in: settings.key).noteClass)
         }
         return baseColor
     }
 
-    var pitch: Pitch {
-        Pitch(midiNote)
-    }
     var note: Note {
         pitch.note(in: settings.key)
     }
 
     var textColor: Color {
-        return Pitch(midiNote).note(in: .C).accidental == .natural ? .black : .white
+        return pitch.note(in: .C).accidental == .natural ? .black : .white
     }
 
     func findPitch(location: CGPoint) -> Pitch? {
