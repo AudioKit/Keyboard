@@ -45,14 +45,14 @@ public struct KeyboardKey: View {
             }
         }
         .gesture(DragGesture(minimumDistance: 0, coordinateSpace: .global)
-            .onChanged({ gesture in
+            .onChanged { gesture in
                 if let pitch = findPitch(location: gesture.location) {
                     model.touchedPitches[gesture.startLocation] = pitch
                 }
-            })
-            .onEnded({ gesture in
+            }
+            .onEnded { gesture in
                 model.touchedPitches.removeValue(forKey: gesture.startLocation)
-            })
+            }
         )
     }
 
