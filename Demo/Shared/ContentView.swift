@@ -5,7 +5,7 @@ struct ContentView: View {
     var body: some View {
         VStack {
             Keyboard()
-            Keyboard(settings: KeyboardSettings(noteRange: 48...65, key: .F))
+            Keyboard(settings: KeyboardSettings(pitchRange: 48...65, key: .F))
             Keyboard(settings: KeyboardSettings(shouldDisplayNoteNames: false,
                                           noteColors: { noteClass in
                 [.red, .orange, .yellow, .mint, .green,
