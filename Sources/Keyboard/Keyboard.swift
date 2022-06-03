@@ -4,16 +4,26 @@ import Tonic
 public struct Keyboard: View {
 
     @StateObject var model: KeyboardModel = KeyboardModel()
-    var settings = KeyboardSettings()
+    var settings: KeyboardSettings
+    var noteOn: (Pitch) -> Void
+    var noteOff: (Pitch) -> Void
     
-    public init(settings: KeyboardSettings = KeyboardSettings()) {
+    public init(settings: KeyboardSettings = KeyboardSettings(),
+                noteOn: @escaping (Pitch) -> Void = { _ in },
+                noteOff: @escaping (Pitch) -> Void = { _ in }) {
         self.settings = settings
+        self.noteOn = noteOn
+        self.noteOff = noteOff
     }
 
     public var body: some View {
         HStack {
             ForEach(settings.pitchRange, id: \.self) { pitch in
-                KeyboardKey(pitch: pitch, model: model, settings: settings)
+                KeyboardKey(pitch: pitch,
+                            model: model,
+                            settings: settings,
+                            noteOn: noteOn,
+                            noteOff: noteOff)
             }
         }
         .frame(minWidth: 600, minHeight: 100)

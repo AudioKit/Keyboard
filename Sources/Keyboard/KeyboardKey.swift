@@ -6,6 +6,8 @@ public struct KeyboardKey: View {
     var pitch: Pitch
     @ObservedObject var model: KeyboardModel
     var settings: KeyboardSettings
+    var noteOn: (Pitch) -> Void
+    var noteOff: (Pitch) -> Void
 
     var keyColor: Color {
         let baseColor: Color = pitch.note(in: .C).accidental == .natural ? .white : .black
@@ -32,6 +34,22 @@ public struct KeyboardKey: View {
         return nil
     }
 
+    func sendEvents(old: [CGPoint: Pitch]) {
+        let oldSet = PitchSet(old.values)
+        let newSet = PitchSet(model.touchedPitches.values)
+
+        let newPitches = newSet.subtracting(oldSet)
+        let removedPitches = oldSet.subtracting(newSet)
+
+        for pitch in removedPitches.array {
+            noteOff(pitch)
+        }
+
+        for pitch in newPitches.array {
+            noteOn(pitch)
+        }
+    }
+
     func rect(rect: CGRect) -> some View {
         model.keyRects[pitch] = rect
         return ZStack(alignment: .bottom) {
@@ -47,11 +65,15 @@ public struct KeyboardKey: View {
         .gesture(DragGesture(minimumDistance: 0, coordinateSpace: .global)
             .onChanged { gesture in
                 if let pitch = findPitch(location: gesture.location) {
+                    let old = model.touchedPitches
                     model.touchedPitches[gesture.startLocation] = pitch
+                    sendEvents(old: old)
                 }
             }
             .onEnded { gesture in
+                let old = model.touchedPitches
                 model.touchedPitches.removeValue(forKey: gesture.startLocation)
+                sendEvents(old: old)
             }
         )
     }
