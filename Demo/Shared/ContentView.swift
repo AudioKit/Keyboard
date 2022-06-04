@@ -21,7 +21,7 @@ struct ContentView: View {
                      noteOn: noteOn, noteOff: noteOff)
             Keyboard(settings: KeyboardSettings(pitchRange: Pitch(48)...Pitch(65),
                                                 key: .F,
-                                                noteOnColors: KeyboardColors.gray))
+                                                noteOnColors: KeyboardColors.newtonian))
             Keyboard(settings: KeyboardSettings(
                 latching: true,
                 shouldDisplayNoteNames: false,
