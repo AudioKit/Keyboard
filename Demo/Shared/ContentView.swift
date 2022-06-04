@@ -14,15 +14,18 @@ struct ContentView: View {
 
     var body: some View {
         VStack {
-            Keyboard(settings: KeyboardSettings(externalPitchSet: PitchSet([Pitch(64)])),
+            Keyboard(settings:
+                        KeyboardSettings(externalPitchSet: PitchSet([Pitch(64)]),
+                                         noteOffColors: { nc in nc.accidental == .natural ? .black : .gray },
+                                         noteOnColors: { nc in nc.accidental == .natural ? .red : .orange}),
                      noteOn: noteOn, noteOff: noteOff)
             Keyboard(settings: KeyboardSettings(pitchRange: Pitch(48)...Pitch(65),
                                                 key: .F,
-                                                noteColors: KeyboardColors.gray))
+                                                noteOnColors: KeyboardColors.gray))
             Keyboard(settings: KeyboardSettings(
                 latching: true,
                 shouldDisplayNoteNames: false,
-                noteColors: KeyboardColors.rainbow))
+                noteOnColors: KeyboardColors.rainbow))
         }
     }
 }

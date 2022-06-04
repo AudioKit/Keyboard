@@ -10,9 +10,9 @@ public struct KeyboardKey: View {
     var noteOff: (Pitch) -> Void
 
     var keyColor: Color {
-        let baseColor: Color = pitch.note(in: .C).accidental == .natural ? .white : .black
+        let baseColor: Color = settings.noteOffColors(pitch.note(in: .C).noteClass)
         if (settings.externalPitchSet.array + model.touchedPitches.values).contains(pitch) {
-            return settings.noteColors(pitch.note(in: settings.key).noteClass)
+            return settings.noteOnColors(pitch.note(in: settings.key).noteClass)
         }
         return baseColor
     }
