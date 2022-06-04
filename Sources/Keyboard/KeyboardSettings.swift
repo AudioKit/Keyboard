@@ -24,3 +24,15 @@ public struct KeyboardSettings {
     var shouldDisplayNoteNames: Bool
     var noteColors : ((NoteClass)->Color)
 }
+
+
+public struct KeyboardColors {
+    public static var rainbow: (NoteClass) -> Color = { noteClass in
+        [.red, .orange, .yellow, .mint, .green,
+         .teal, .cyan, .blue, .indigo, .purple, .pink,
+         .init(red: 1.0, green: 0.33, blue: 0.33)][Int(noteClass.canonicalNote.noteNumber) % 12]
+    }
+
+    public static var gray: (NoteClass) -> Color = { _ in .gray }
+    public static var red: (NoteClass) -> Color = { _ in .red }
+}

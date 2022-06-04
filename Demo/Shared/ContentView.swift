@@ -16,15 +16,13 @@ struct ContentView: View {
         VStack {
             Keyboard(settings: KeyboardSettings(externalPitchSet: PitchSet([Pitch(64)])),
                      noteOn: noteOn, noteOff: noteOff)
-            Keyboard(settings: KeyboardSettings(pitchRange: Pitch(48)...Pitch(65), key: .F))
+            Keyboard(settings: KeyboardSettings(pitchRange: Pitch(48)...Pitch(65),
+                                                key: .F,
+                                                noteColors: KeyboardColors.gray))
             Keyboard(settings: KeyboardSettings(
                 latching: true,
                 shouldDisplayNoteNames: false,
-                noteColors: { noteClass in
-                [.red, .orange, .yellow, .mint, .green,
-                 .teal, .cyan, .blue, .indigo, .purple, .pink,
-                 .init(red: 1.0, green: 0.33, blue: 0.33)][noteClass.intValue % 12]
-            }))
+                noteColors: KeyboardColors.rainbow))
         }
     }
 }
