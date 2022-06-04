@@ -41,15 +41,18 @@ public struct Keyboard: View {
                                 noteOff: noteOff)
                 }
             }
-            HStack {
-                ForEach(whiteKeys, id: \.self) { pitch in
-                    KeyboardKey(pitch: Pitch(intValue: pitch.intValue + 1),
-                                model: model,
-                                settings: settings,
-                                noteOn: noteOn,
-                                noteOff: noteOff)
-                    .opacity(blackKeyExists(for: Pitch(intValue: pitch.intValue + 1)) ? 1 : 0.001)
+            VStack {
+                HStack {
+                    ForEach(whiteKeys, id: \.self) { pitch in
+                        KeyboardKey(pitch: Pitch(intValue: pitch.intValue + 1),
+                                    model: model,
+                                    settings: settings,
+                                    noteOn: noteOn,
+                                    noteOff: noteOff)
+                        .opacity(blackKeyExists(for: Pitch(intValue: pitch.intValue + 1)) ? 1 : 0)
+                    }
                 }
+                Rectangle().opacity(0.0001)
             }
         }
         .frame(minWidth: 600, minHeight: 100)

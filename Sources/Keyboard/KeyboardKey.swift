@@ -26,9 +26,18 @@ public struct KeyboardKey: View {
     }
 
     func findPitch(location: CGPoint) -> Pitch? {
+        var matches: [Pitch] = []
         for rect in model.keyRects {
             if rect.value.contains(location) {
-                return rect.key
+                matches.append(rect.key)
+            }
+        }
+        if matches.count == 1 { return matches.first! }
+        if matches.count > 1 {
+            for match in matches {
+                if match.note(in: .C).accidental != .natural {
+                    return match
+                }
             }
         }
         return nil
@@ -53,7 +62,7 @@ public struct KeyboardKey: View {
     func rect(rect: CGRect) -> some View {
         var modRect = rect
         if pitch.note(in: .C).accidental != .natural {
-            modRect = rect.offsetBy(dx: rect.width / 2, dy: -rect.height / 2)
+            modRect = rect.offsetBy(dx: rect.width / 2, dy: 0)
         }
         model.keyRects[pitch] = modRect
         return ZStack(alignment: .bottom) {
@@ -66,8 +75,7 @@ public struct KeyboardKey: View {
                     .padding(EdgeInsets(top: 0, leading: 0, bottom: rect.size.height / 20, trailing: 0))
             }
         }
-        .offset(x: pitch.note(in: .C).accidental == .natural ? 0 : rect.width / 2,
-                y: pitch.note(in: .C).accidental == .natural ? 0 : -rect.height / 2)
+        .offset(x: pitch.note(in: .C).accidental == .natural ? 0 : rect.width / 2)
 
         .gesture(DragGesture(minimumDistance: 0, coordinateSpace: .global)
             .onChanged { gesture in
