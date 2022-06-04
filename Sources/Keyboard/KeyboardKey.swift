@@ -68,30 +68,36 @@ public struct KeyboardKey: View {
         }
         .offset(x: pitch.note(in: .C).accidental == .natural ? 0 : rect.width / 2,
                 y: pitch.note(in: .C).accidental == .natural ? 0 : -rect.height / 2)
+        .onTapGesture {
+            guard settings.latching else { return }
+            if model.touchedPitches.values.contains(pitch) {
+                let old = model.touchedPitches
+                for item in model.touchedPitches {
+                    if item.value == pitch {
+                        model.touchedPitches.removeValue(forKey: item.key)
+                    }
+                }
+                sendEvents(old: old)
+            } else {
+                let old = model.touchedPitches
+                model.touchedPitches[CGPoint(x: rect.midX + CGFloat(pitch.intValue)/100.0, y: rect.midY)] = pitch
+                sendEvents(old: old)
+            }
+        }
         .gesture(DragGesture(minimumDistance: 0, coordinateSpace: .global)
             .onChanged { gesture in
+                guard !settings.latching else { return }
                 if let pitch = findPitch(location: gesture.location) {
-                    if settings.latching && gesture.startLocation == gesture.location && model.touchedPitches.values.contains(pitch){
-                        let old = model.touchedPitches
-                        for item in model.touchedPitches {
-                            if item.value == pitch {
-                                model.touchedPitches.removeValue(forKey: item.key)
-                            }
-                        }
-                        sendEvents(old: old)
-                        return
-                    }
                     let old = model.touchedPitches
                     model.touchedPitches[gesture.startLocation] = pitch
                     sendEvents(old: old)
                 }
             }
             .onEnded { gesture in
-                if !settings.latching {
-                    let old = model.touchedPitches
-                    model.touchedPitches.removeValue(forKey: gesture.startLocation)
-                    sendEvents(old: old)
-                }
+                guard !settings.latching else { return }
+                let old = model.touchedPitches
+                model.touchedPitches.removeValue(forKey: gesture.startLocation)
+                sendEvents(old: old)
             }
         )
     }
