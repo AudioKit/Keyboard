@@ -16,17 +16,45 @@ public struct Keyboard: View {
         self.noteOff = noteOff
     }
 
+    var whiteKeys: [Pitch] {
+        var returnValue: [Pitch] = []
+        for pitch in settings.pitchRange {
+            if pitch.note(in: .C).accidental == .natural {
+                returnValue.append(pitch)
+            }
+        }
+        return returnValue
+    }
+
+    func blackKeyExists(for pitch: Pitch) -> Bool {
+        pitch.note(in: .C).accidental != .natural
+    }
+
     public var body: some View {
-        HStack {
-            ForEach(settings.pitchRange, id: \.self) { pitch in
-                KeyboardKey(pitch: pitch,
-                            model: model,
-                            settings: settings,
-                            noteOn: noteOn,
-                            noteOff: noteOff)
+        ZStack {
+            HStack {
+                ForEach(whiteKeys, id: \.self) { pitch in
+                    KeyboardKey(pitch: pitch,
+                                model: model,
+                                settings: settings,
+                                noteOn: noteOn,
+                                noteOff: noteOff)
+                }
+            }
+            HStack {
+                ForEach(whiteKeys, id: \.self) { pitch in
+                    KeyboardKey(pitch: Pitch(intValue: pitch.intValue + 1),
+                                model: model,
+                                settings: settings,
+                                noteOn: noteOn,
+                                noteOff: noteOff)
+                    .opacity(blackKeyExists(for: Pitch(intValue: pitch.intValue + 1)) ? 1 : 0.001)
+                }
             }
         }
         .frame(minWidth: 600, minHeight: 100)
+        .clipShape(Rectangle())
+
     }
 }
 

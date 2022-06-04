@@ -51,7 +51,11 @@ public struct KeyboardKey: View {
     }
 
     func rect(rect: CGRect) -> some View {
-        model.keyRects[pitch] = rect
+        var modRect = rect
+        if pitch.note(in: .C).accidental != .natural {
+            modRect = rect.offsetBy(dx: rect.width / 2, dy: -rect.height / 2)
+        }
+        model.keyRects[pitch] = modRect
         return ZStack(alignment: .bottom) {
             Rectangle()
             .foregroundColor(keyColor)
@@ -62,6 +66,8 @@ public struct KeyboardKey: View {
                     .padding(EdgeInsets(top: 0, leading: 0, bottom: rect.size.height / 20, trailing: 0))
             }
         }
+        .offset(x: pitch.note(in: .C).accidental == .natural ? 0 : rect.width / 2,
+                y: pitch.note(in: .C).accidental == .natural ? 0 : -rect.height / 2)
         .gesture(DragGesture(minimumDistance: 0, coordinateSpace: .global)
             .onChanged { gesture in
                 if let pitch = findPitch(location: gesture.location) {
