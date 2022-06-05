@@ -7,6 +7,8 @@ public class KeyboardModel: ObservableObject {
     /// assuming each is unique.
     @Published public var touchedPitches: [CGPoint: Pitch] = [:]
 
+    @Published var externalPitchSet: PitchSet = PitchSet()
+
     /// Computed key rectangles.
     ///
     /// This is not @Published because we populate it as a side-effect
