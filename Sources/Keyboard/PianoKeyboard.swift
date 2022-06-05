@@ -37,23 +37,20 @@ public struct PianoKeyboard<Content: View>: View {
         pitch.note(in: .C).accidental != .natural
     }
 
-    func multiplier(_ pitch: Pitch) -> Double {
-        if pitch.note(in: .C).letter == .C {
-            return 0.6
+    func blackKeyOffset(_ semitoneLowerPitch: Pitch, width: CGFloat) -> Double {
+        let multipler = width / (Double(pitchRange.count) * 28.0 / 12.0)
+        switch semitoneLowerPitch.note(in: .C).letter {
+        case .C:
+            return multipler * 0.6
+        case .D:
+            return multipler * 1.4
+        case .F:
+            return multipler * 0.6
+        case .A:
+            return multipler * 1.4
+        default:
+            return multipler
         }
-        if pitch.note(in: .C).letter == .D {
-            return 1.4
-        }
-        if pitch.note(in: .C).letter == .F {
-            return 0.6
-        }
-        if pitch.note(in: .C).letter == .G {
-            return 1
-        }
-        if pitch.note(in: .C).letter == .A {
-            return 1.4
-        }
-        return 1
     }
 
     public var body: some View {
@@ -83,7 +80,7 @@ public struct PianoKeyboard<Content: View>: View {
                                              content: content).environmentObject(model)
                                     .opacity(blackKeyExists(for: Pitch(intValue: pitch.intValue + 1)) ? 1 : 0)
                                     .frame(width: proxy.size.width / CGFloat(pitchRange.count) * 0.9)
-                                    .offset(x: multiplier(pitch) * proxy.size.width / (Double(pitchRange.count) * 28.0 / 12.0))
+                                    .offset(x: blackKeyOffset(pitch, width: proxy.size.width))
                                 Spacer()
                             }
                         }
