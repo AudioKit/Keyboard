@@ -39,7 +39,7 @@ public struct PianoKeyboard<Content: View>: View {
 
     public var body: some View {
         ZStack {
-            HStack {
+            HStack(spacing: 1) {
                 ForEach(whiteKeys, id: \.self) { pitch in
                     KeyContainer(model: model,
                                  pitch: pitch,
@@ -50,7 +50,7 @@ public struct PianoKeyboard<Content: View>: View {
                 }
             }
             VStack {
-                HStack {
+                HStack(spacing: 1) {
                     ForEach(whiteKeys, id: \.self) { pitch in
                         KeyContainer(model: model,
                                      pitch: Pitch(intValue: pitch.intValue + 1),
