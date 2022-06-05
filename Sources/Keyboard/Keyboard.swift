@@ -1,7 +1,12 @@
 import SwiftUI
 import Tonic
 
-public struct PianoKeyboard<Content>: View where Content: View {
+public enum KeyboardLayout {
+    case piano
+    case isomorphic
+}
+
+public struct Keyboard<Content>: View where Content: View {
     let content: (Pitch, KeyboardModel)->Content
 
     @StateObject var model: KeyboardModel = KeyboardModel()
@@ -10,14 +15,17 @@ public struct PianoKeyboard<Content>: View where Content: View {
     var latching: Bool
     var noteOn: (Pitch) -> Void
     var noteOff: (Pitch) -> Void
+    var layout: KeyboardLayout
 
     public init(pitchRange: ClosedRange<Pitch> = (Pitch(60)...Pitch(72)),
                 latching: Bool = false,
+                layout: KeyboardLayout = .piano,
                 noteOn: @escaping (Pitch) -> Void = { _ in },
                 noteOff: @escaping (Pitch) -> Void = { _ in },
                 @ViewBuilder content: @escaping (Pitch, KeyboardModel)->Content) {
         self.pitchRange = pitchRange
         self.latching = latching
+        self.layout = layout
         self.noteOn = noteOn
         self.noteOff = noteOff
         self.content = content
@@ -50,6 +58,31 @@ public struct PianoKeyboard<Content>: View where Content: View {
     }
 
     public var body: some View {
+        switch layout {
+        case .piano:
+            pianoBody
+        case .isomorphic:
+            isomorphicBody
+        }
+    }
+
+    var isomorphicBody: some View {
+        HStack(spacing: 1) {
+            ForEach(pitchRange, id: \.self) { pitch in
+                KeyContainer(model: model,
+                             pitch: pitch,
+                             latching: latching,
+                             isOffset: false,
+                             noteOn: noteOn,
+                             noteOff: noteOff,
+                             content: content).environmentObject(model)
+            }
+        }
+        .frame(minWidth: 600, minHeight: 100)
+        .clipShape(Rectangle())
+    }
+
+    var pianoBody: some View {
 
         ZStack {
             HStack(spacing: 1) {
@@ -90,14 +123,16 @@ public struct PianoKeyboard<Content>: View where Content: View {
     }
 }
 
-extension PianoKeyboard where Content == KeyboardKey {
+extension Keyboard where Content == KeyboardKey {
 
     public init(pitchRange: ClosedRange<Pitch> = (Pitch(60)...Pitch(72)),
-                        latching: Bool = false,
-                        noteOn: @escaping (Pitch) -> Void = { _ in },
-                        noteOff: @escaping (Pitch) -> Void = { _ in }) {
+                latching: Bool = false,
+                layout: KeyboardLayout = .piano,
+                noteOn: @escaping (Pitch) -> Void = { _ in },
+                noteOff: @escaping (Pitch) -> Void = { _ in }) {
         self.pitchRange = pitchRange
         self.latching = latching
+        self.layout = layout
         self.noteOn = noteOn
         self.noteOff = noteOff
         self.content = { KeyboardKey(pitch: $0, model: $1) }
@@ -107,7 +142,7 @@ extension PianoKeyboard where Content == KeyboardKey {
 
 struct Keyboard2_Previews: PreviewProvider {
     static var previews: some View {
-        PianoKeyboard() { pitch, model in
+        Keyboard() { pitch, model in
             KeyboardKey(pitch: pitch, model: model)
         }
     }

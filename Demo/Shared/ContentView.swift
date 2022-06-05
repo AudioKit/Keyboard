@@ -18,11 +18,11 @@ struct ContentView: View {
 
     var body: some View {
         VStack {
-            PianoKeyboard(pitchRange: Pitch(48)...Pitch(77), noteOn: noteOn, noteOff: noteOff)
-            IsomorphicKeyboard(pitchRange: Pitch(48)...Pitch(65)) { pitch, state in
+            Keyboard(pitchRange: Pitch(48)...Pitch(77), noteOn: noteOn, noteOff: noteOff)
+            Keyboard(pitchRange: Pitch(48)...Pitch(65), layout: .isomorphic) { pitch, state in
                 KeyboardKey(pitch: pitch, model: state, text: pitch.note(in: .F).description, color: .gray)
             }
-            PianoKeyboard(latching: true, noteOn: noteOn, noteOff: noteOff) { pitch, state in
+            Keyboard(latching: true, noteOn: noteOn, noteOff: noteOff) { pitch, state in
                 if state.touchedPitches.values.contains(pitch) {
                     ZStack {
                         Rectangle().foregroundColor(.black)
