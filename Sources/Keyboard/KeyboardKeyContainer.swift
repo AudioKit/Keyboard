@@ -1,6 +1,8 @@
 import SwiftUI
 import Tonic
 
+/// This handles the interaction for key, so the user can provide their own
+/// visual representation.
 public struct KeyboardKeyContainer: View {
 
     var pitch: Pitch
