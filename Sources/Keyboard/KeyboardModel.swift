@@ -3,10 +3,15 @@ import Tonic
 
 class KeyboardModel: ObservableObject {
 
+    /// Pitches indexed by starting point. We identify touches by starting point
+    /// assuming each is unique.
     @Published var touchedPitches: [CGPoint: Pitch] = [:]
+
+    /// Pitches highlighted due to external events such as MIDI.
     @Published var highlightedPitches: [Pitch] = []
 
     /// Computed key rectangles.
+    ///
     /// This is not @Published because we populate it as a side-effect
     /// of our body function. If it were @Published, that would cause
     /// runtime errors.
