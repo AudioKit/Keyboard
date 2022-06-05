@@ -42,7 +42,7 @@ public struct KeyboardKey: View {
     public var body: some View {
         GeometryReader { proxy in
             ZStack(alignment: .bottom) {
-                Rectangle()
+                RoundedRectangle(cornerSize: CGSize(width: proxy.size.width / 8.0, height: proxy.size.width / 8.0))
                     .foregroundColor(keyColor)
                 Text(text)
                     .font(Font(.init(.system, size: proxy.size.width / 3)))

@@ -37,7 +37,27 @@ public struct PianoKeyboard<Content: View>: View {
         pitch.note(in: .C).accidental != .natural
     }
 
+    func multiplier(_ pitch: Pitch) -> Double {
+        if pitch.note(in: .C).letter == .C {
+            return 0.6
+        }
+        if pitch.note(in: .C).letter == .D {
+            return 1.4
+        }
+        if pitch.note(in: .C).letter == .F {
+            return 0.6
+        }
+        if pitch.note(in: .C).letter == .G {
+            return 1
+        }
+        if pitch.note(in: .C).letter == .A {
+            return 1.4
+        }
+        return 1
+    }
+
     public var body: some View {
+
         ZStack {
             HStack(spacing: 1) {
                 ForEach(whiteKeys, id: \.self) { pitch in
@@ -49,9 +69,12 @@ public struct PianoKeyboard<Content: View>: View {
                                  content: content).environmentObject(model)
                 }
             }
+            GeometryReader { proxy in
             VStack {
                 HStack(spacing: 1) {
                     ForEach(whiteKeys, id: \.self) { pitch in
+                        HStack {
+                            Spacer()
                         KeyContainer(model: model,
                                      pitch: Pitch(intValue: pitch.intValue + 1),
                                      latching: latching,
@@ -59,10 +82,15 @@ public struct PianoKeyboard<Content: View>: View {
                                      noteOff: noteOff,
                                      content: content).environmentObject(model)
                             .opacity(blackKeyExists(for: Pitch(intValue: pitch.intValue + 1)) ? 1 : 0)
+                            .frame(width: proxy.size.width / CGFloat(pitchRange.count) * 0.9)
+                            .offset(x: multiplier(pitch) * proxy.size.width / (Double(pitchRange.count) * 28.0 / 12.0))
+                            Spacer()
+                        }
                     }
-                }
-                Rectangle().opacity(0.0001)
+                }.frame(height: proxy.size.height * 0.58)
+                Spacer()
             }
+        }
         }
         .frame(minWidth: 600, minHeight: 100)
         .clipShape(Rectangle())
