@@ -22,20 +22,6 @@ public struct IsomorphicKeyboard<Content: View>: View {
         self.noteOff = noteOff
         self.content = content
     }
-
-    var whiteKeys: [Pitch] {
-        var returnValue: [Pitch] = []
-        for pitch in pitchRange {
-            if pitch.note(in: .C).accidental == .natural {
-                returnValue.append(pitch)
-            }
-        }
-        return returnValue
-    }
-
-    func blackKeyExists(for pitch: Pitch) -> Bool {
-        pitch.note(in: .C).accidental != .natural
-    }
     
     public var body: some View {
         HStack(spacing: 1) {
