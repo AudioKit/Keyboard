@@ -18,3 +18,11 @@ class KeyboardModel: ObservableObject {
     var keyRects: [Pitch: CGRect] = [:]
 
 }
+
+extension CGPoint: Hashable {
+    public func hash(into hasher: inout Hasher) {
+        hasher.combine(x)
+        hasher.combine(y)
+    }
+}
+
