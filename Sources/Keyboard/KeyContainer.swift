@@ -12,19 +12,19 @@ struct KeyContainer<Content: View>: View {
     var latching: Bool
     var noteOn: (Pitch) -> Void
     var noteOff: (Pitch) -> Void
-    var isOffset: Bool
+    var layout: KeyboardLayout
 
     init(model: KeyboardModel,
          pitch: Pitch,
          latching: Bool,
-         isOffset: Bool = true,
+         layout: KeyboardLayout = .piano,
          noteOn: @escaping (Pitch) -> Void,
          noteOff: @escaping (Pitch) -> Void ,
          @ViewBuilder content: @escaping (Pitch, Bool)->Content) {
         self.model = model
         self.pitch = pitch
         self.latching = latching
-        self.isOffset = isOffset
+        self.layout = layout
         self.noteOn = noteOn
         self.noteOff = noteOff
         self.content = content
@@ -64,15 +64,31 @@ struct KeyContainer<Content: View>: View {
         }
     }
 
+    func blackKeyOffset(_ semitoneLowerPitch: Pitch) -> Double {
+        switch semitoneLowerPitch.note(in: .C).letter {
+        case .C, .F:
+            return 0
+        case .D, .A:
+            return 2
+        default:
+            return 1
+        }
+    }
+
     func rect(rect: CGRect) -> some View {
         var modRect = rect
-        if pitch.note(in: .C).accidental != .natural {
-            modRect = rect.offsetBy(dx: isOffset ? rect.width / 2 : 0, dy: 0)
+        if pitch.note(in: .C).accidental != .natural && layout == .piano {
+            modRect = rect.offsetBy(dx: rect.width / 2, dy: 0)
+            modRect = CGRect(x: modRect.minX + blackKeyOffset(pitch) * modRect.width * 0.15, y: modRect.minY, width: modRect.width * 0.7, height: modRect.height)
         }
         model.keyRects[pitch] = modRect
 
-        return content(pitch, model.touchedPitches.values.contains(pitch))
-        .offset(x: pitch.note(in: .C).accidental == .natural ? 0 : isOffset ? rect.width / 2 : 0)
+        return HStack(spacing: 0) {
+            Spacer().frame(width: layout == .piano && pitch.note(in: .C).accidental != .natural ? modRect.width * 0.15 * blackKeyOffset(pitch) : 0)
+            content(pitch, model.touchedPitches.values.contains(pitch))
+            Spacer().frame(width: layout == .piano && pitch.note(in: .C).accidental != .natural ? modRect.width * 0.15 * (2 - blackKeyOffset(pitch)) : 0)
+        }
+        .offset(x: pitch.note(in: .C).accidental == .natural ? 0 : layout == .piano ? rect.width / 2 : 0)
 
         .gesture(DragGesture(minimumDistance: 0, coordinateSpace: .global)
             .onChanged { gesture in

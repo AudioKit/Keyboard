@@ -45,18 +45,6 @@ public struct Keyboard<Content>: View where Content: View {
         pitch.note(in: .C).accidental != .natural
     }
 
-    func blackKeyOffset(_ semitoneLowerPitch: Pitch, width: CGFloat) -> Double {
-        let multipler = width / (Double(pitchRange.count) * 28.0 / 12.0)
-        switch semitoneLowerPitch.note(in: .C).letter {
-        case .C, .F:
-            return multipler * 0.6
-        case .D, .A:
-            return multipler * 1.2
-        default:
-            return multipler
-        }
-    }
-
     public var body: some View {
         switch layout {
         case .piano:
@@ -72,7 +60,7 @@ public struct Keyboard<Content>: View where Content: View {
                 KeyContainer(model: model,
                              pitch: pitch,
                              latching: latching,
-                             isOffset: false,
+                             layout: .isomorphic,
                              noteOn: noteOn,
                              noteOff: noteOff,
                              content: content)
@@ -99,20 +87,15 @@ public struct Keyboard<Content>: View where Content: View {
                 VStack {
                     HStack(spacing: 1) {
                         ForEach(whiteKeys, id: \.self) { pitch in
-                            HStack {
-                                Spacer()
-                                KeyContainer(model: model,
-                                             pitch: Pitch(intValue: pitch.intValue + 1),
-                                             latching: latching,
-                                             noteOn: noteOn,
-                                             noteOff: noteOff,
-                                             content: content)
-                                    .opacity(blackKeyExists(for: Pitch(intValue: pitch.intValue + 1)) ? 1 : 0)
-                                    .frame(width: proxy.size.width / CGFloat(pitchRange.count) * 0.9)
-                                    .offset(x: blackKeyOffset(pitch, width: proxy.size.width))
-                                Spacer()
-                            }
+                            KeyContainer(model: model,
+                                         pitch: Pitch(intValue: pitch.intValue + 1),
+                                         latching: latching,
+                                         noteOn: noteOn,
+                                         noteOff: noteOff,
+                                         content: content)
+                            .opacity(blackKeyExists(for: Pitch(intValue: pitch.intValue + 1)) ? 1 : 0)
                         }
+
                     }.frame(height: proxy.size.height * 0.58)
                     Spacer()
                 }
