@@ -19,7 +19,7 @@ struct ContentView: View {
     var body: some View {
         VStack {
             PianoKeyboard(pitchRange: Pitch(48)...Pitch(77), noteOn: noteOn, noteOff: noteOff) { pitch, state in
-                    KeyboardKey(pitch: pitch, model: state, text: pitch.note(in: .C).description, color: KeyboardColors.newtonian[Int(pitch.intValue) % 12])
+                    KeyboardKey(pitch: pitch, model: state, color: KeyboardColors.newtonian[Int(pitch.intValue) % 12])
             }
             IsomorphicKeyboard(pitchRange: Pitch(48)...Pitch(65)) { pitch, state in
                 KeyboardKey(pitch: pitch, model: state, text: pitch.note(in: .F).description, color: .gray)

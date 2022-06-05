@@ -4,10 +4,20 @@ import Tonic
 /// A default visual representation for a key.
 public struct KeyboardKey: View {
 
-    public init(pitch: Pitch, model: KeyboardModel, text: String = "", color: Color = .red, isActivatedExternally: Bool = false) {
+    public init(pitch: Pitch, model: KeyboardModel, text: String = "unset", color: Color = .red, isActivatedExternally: Bool = false) {
         self.pitch = pitch
         self.model = model
-        self.text = text
+        if text == "unset" {
+            var newText = ""
+            if pitch.note(in: .C).noteClass.description == "C" {
+                newText = pitch.note(in: .C).description
+            } else {
+                newText = ""
+            }
+            self.text = newText
+        } else {
+            self.text = text
+        }
         self.color = color
         self.isActivatedExternally = isActivatedExternally
     }
