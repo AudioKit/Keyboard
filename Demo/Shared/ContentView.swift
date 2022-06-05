@@ -12,19 +12,32 @@ struct ContentView: View {
         print("note off \(pitch)")
     }
 
+    var randomColors: [Color] = {
+        (0...12).map { _ in Color(red: Double.random(in: 0...1), green: Double.random(in: 0...1), blue: Double.random(in: 0...1), opacity: 1) }
+    }()
+
     var body: some View {
         VStack {
-            PianoKeyboard(noteOn: noteOn, noteOff: noteOff) { pitch, state in
-                KeyboardKey(pitch: pitch, model: state)
+            PianoKeyboard(
+                externalPitchSet: PitchSet(arrayLiteral: Pitch(64)),
+                noteOn: noteOn, noteOff: noteOff) { pitch, state in
+                    KeyboardKey(pitch: pitch, model: state, text: pitch.note(in: .C).description, color: KeyboardColors.newtonian[Int(pitch.intValue) % 12])
             }
             IsomorphicKeyboard(pitchRange: Pitch(48)...Pitch(65)) { pitch, state in
-                KeyboardKey(pitch: pitch, model: state)
+                KeyboardKey(pitch: pitch, model: state, text: pitch.note(in: .F).description, color: .gray)
             }
             PianoKeyboard(latching: true, noteOn: noteOn, noteOff: noteOff) { pitch, state in
                 if state.touchedPitches.values.contains(pitch) {
-                    Rectangle().foregroundColor(.black).overlay(Text("hi"))
+                    ZStack {
+                        Rectangle().foregroundColor(.black)
+                        VStack {
+                            Spacer()
+                            Text(pitch.note(in: .C).description).font(.largeTitle)
+                        }.padding()
+                    }
+
                 } else {
-                    Rectangle().foregroundColor(Color(red: Double.random(in: 0...1), green:     Double.random(in: 0...1), blue: Double.random(in: 0...1), opacity: 1))
+                    Rectangle().foregroundColor(randomColors[Int(pitch.intValue) % 12])
                 }
             }
         }
