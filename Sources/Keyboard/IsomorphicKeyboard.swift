@@ -1,7 +1,7 @@
 import SwiftUI
 import Tonic
 
-public struct Keyboard2<Content: View>: View {
+public struct IsomorphicKeyboard<Content: View>: View {
     let content: (Pitch, KeyboardModel)->Content
 
     @StateObject var model: KeyboardModel = KeyboardModel()
@@ -36,32 +36,17 @@ public struct Keyboard2<Content: View>: View {
     func blackKeyExists(for pitch: Pitch) -> Bool {
         pitch.note(in: .C).accidental != .natural
     }
-
+    
     public var body: some View {
-        ZStack {
-            HStack {
-                ForEach(whiteKeys, id: \.self) { pitch in
-                    KeyboardKeyContainer2(model: model,
-                                          pitch: pitch,
-                                          latching: latching,
-                                          noteOn: noteOn,
-                                          noteOff: noteOff,
-                                          content: content).environmentObject(model)
-                }
-            }
-            VStack {
-                HStack {
-                    ForEach(whiteKeys, id: \.self) { pitch in
-                        KeyboardKeyContainer2(model: model,
-                                              pitch: Pitch(intValue: pitch.intValue + 1),
-                                              latching: latching,
-                                              noteOn: noteOn,
-                                              noteOff: noteOff,
-                                              content: content).environmentObject(model)
-                        .opacity(blackKeyExists(for: Pitch(intValue: pitch.intValue + 1)) ? 1 : 0)
-                    }
-                }
-                Rectangle().opacity(0.0001)
+        HStack {
+            ForEach(pitchRange, id: \.self) { pitch in
+                KeyContainer(model: model,
+                             pitch: pitch,
+                             latching: latching,
+                             isOffset: false,
+                             noteOn: noteOn,
+                             noteOff: noteOff,
+                             content: content).environmentObject(model)
             }
         }
         .frame(minWidth: 600, minHeight: 100)
@@ -70,9 +55,9 @@ public struct Keyboard2<Content: View>: View {
     }
 }
 
-struct Keyboard2_Previews: PreviewProvider {
+struct IsomorphicKeyboard_Previews: PreviewProvider {
     static var previews: some View {
-        Keyboard2() { pitch, model in
+        IsomorphicKeyboard() { pitch, model in
             KeyboardKey(pitch: pitch, model: model)
         }
     }

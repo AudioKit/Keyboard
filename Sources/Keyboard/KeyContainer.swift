@@ -3,7 +3,7 @@ import Tonic
 
 /// This handles the interaction for key, so the user can provide their own
 /// visual representation.
-struct KeyboardKeyContainer2<Content: View>: View {
+struct KeyContainer<Content: View>: View {
     let content: (Pitch, KeyboardModel)->Content
     
     var pitch: Pitch
@@ -12,16 +12,19 @@ struct KeyboardKeyContainer2<Content: View>: View {
     var latching: Bool
     var noteOn: (Pitch) -> Void
     var noteOff: (Pitch) -> Void
+    var isOffset: Bool
 
     init(model: KeyboardModel,
          pitch: Pitch,
          latching: Bool,
+         isOffset: Bool = true,
          noteOn: @escaping (Pitch) -> Void,
          noteOff: @escaping (Pitch) -> Void ,
          @ViewBuilder content: @escaping (Pitch, KeyboardModel)->Content) {
         self.model = model
         self.pitch = pitch
         self.latching = latching
+        self.isOffset = isOffset
         self.noteOn = noteOn
         self.noteOff = noteOff
         self.content = content
@@ -64,12 +67,12 @@ struct KeyboardKeyContainer2<Content: View>: View {
     func rect(rect: CGRect) -> some View {
         var modRect = rect
         if pitch.note(in: .C).accidental != .natural {
-            modRect = rect.offsetBy(dx: rect.width / 2, dy: 0)
+            modRect = rect.offsetBy(dx: isOffset ? rect.width / 2 : 0, dy: 0)
         }
         model.keyRects[pitch] = modRect
 
         return content(pitch, model)
-        .offset(x: pitch.note(in: .C).accidental == .natural ? 0 : rect.width / 2)
+        .offset(x: pitch.note(in: .C).accidental == .natural ? 0 : isOffset ? rect.width / 2 : 0)
 
         .gesture(DragGesture(minimumDistance: 0, coordinateSpace: .global)
             .onChanged { gesture in
