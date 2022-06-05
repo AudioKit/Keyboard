@@ -4,7 +4,7 @@ import Tonic
 /// This handles the interaction for key, so the user can provide their own
 /// visual representation.
 struct KeyContainer<Content: View>: View {
-    let content: (Pitch, KeyboardModel)->Content
+    let content: (Pitch, Bool)->Content
     
     var pitch: Pitch
     @ObservedObject var model: KeyboardModel
@@ -20,7 +20,7 @@ struct KeyContainer<Content: View>: View {
          isOffset: Bool = true,
          noteOn: @escaping (Pitch) -> Void,
          noteOff: @escaping (Pitch) -> Void ,
-         @ViewBuilder content: @escaping (Pitch, KeyboardModel)->Content) {
+         @ViewBuilder content: @escaping (Pitch, Bool)->Content) {
         self.model = model
         self.pitch = pitch
         self.latching = latching
@@ -71,7 +71,7 @@ struct KeyContainer<Content: View>: View {
         }
         model.keyRects[pitch] = modRect
 
-        return content(pitch, model)
+        return content(pitch, model.touchedPitches.values.contains(pitch))
         .offset(x: pitch.note(in: .C).accidental == .natural ? 0 : isOffset ? rect.width / 2 : 0)
 
         .gesture(DragGesture(minimumDistance: 0, coordinateSpace: .global)

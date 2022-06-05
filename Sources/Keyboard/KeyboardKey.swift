@@ -4,9 +4,9 @@ import Tonic
 /// A default visual representation for a key.
 public struct KeyboardKey: View {
 
-    public init(pitch: Pitch, model: KeyboardModel, text: String = "unset", color: Color = .red, isActivatedExternally: Bool = false) {
+    public init(pitch: Pitch, isActivated: Bool, text: String = "unset", color: Color = .red, isActivatedExternally: Bool = false) {
         self.pitch = pitch
-        self.model = model
+        self.isActivated = isActivated
         if text == "unset" {
             var newText = ""
             if pitch.note(in: .C).noteClass.description == "C" {
@@ -23,13 +23,13 @@ public struct KeyboardKey: View {
     }
 
     var pitch: Pitch
-    @ObservedObject var model: KeyboardModel
+    var isActivated: Bool
     var color: Color
     var text: String
     var isActivatedExternally: Bool
 
     var keyColor: Color {
-        if isActivatedExternally || (model.touchedPitches.values).contains(pitch) {
+        if isActivatedExternally || isActivated {
             return color
         }
         return pitch.note(in: .C).accidental == .natural ? .white : .black

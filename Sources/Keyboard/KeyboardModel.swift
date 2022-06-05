@@ -1,11 +1,11 @@
 import SwiftUI
 import Tonic
 
-public class KeyboardModel: ObservableObject {
+class KeyboardModel: ObservableObject {
 
     /// Pitches indexed by starting point. We identify touches by starting point
     /// assuming each is unique.
-    @Published public var touchedPitches: [CGPoint: Pitch] = [:]
+    @Published var touchedPitches: [CGPoint: Pitch] = [:]
 
     /// Computed key rectangles.
     ///

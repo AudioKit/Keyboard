@@ -19,11 +19,11 @@ struct ContentView: View {
     var body: some View {
         VStack {
             Keyboard(pitchRange: Pitch(48)...Pitch(77), noteOn: noteOn, noteOff: noteOff)
-            Keyboard(pitchRange: Pitch(48)...Pitch(65), layout: .isomorphic) { pitch, state in
-                KeyboardKey(pitch: pitch, model: state, text: pitch.note(in: .F).description, color: .gray)
+            Keyboard(pitchRange: Pitch(48)...Pitch(65), layout: .isomorphic) { pitch, isActivated in
+                KeyboardKey(pitch: pitch, isActivated: isActivated, text: pitch.note(in: .F).description, color: .gray)
             }
-            Keyboard(latching: true, noteOn: noteOn, noteOff: noteOff) { pitch, state in
-                if state.touchedPitches.values.contains(pitch) {
+            Keyboard(latching: true, noteOn: noteOn, noteOff: noteOff) { pitch, isActivated in
+                if isActivated {
                     ZStack {
                         Rectangle().foregroundColor(.black)
                         VStack {

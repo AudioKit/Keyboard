@@ -7,7 +7,7 @@ public enum KeyboardLayout {
 }
 
 public struct Keyboard<Content>: View where Content: View {
-    let content: (Pitch, KeyboardModel)->Content
+    let content: (Pitch, Bool)->Content
 
     @StateObject var model: KeyboardModel = KeyboardModel()
 
@@ -22,7 +22,7 @@ public struct Keyboard<Content>: View where Content: View {
                 layout: KeyboardLayout = .piano,
                 noteOn: @escaping (Pitch) -> Void = { _ in },
                 noteOff: @escaping (Pitch) -> Void = { _ in },
-                @ViewBuilder content: @escaping (Pitch, KeyboardModel)->Content) {
+                @ViewBuilder content: @escaping (Pitch, Bool)->Content) {
         self.pitchRange = pitchRange
         self.latching = latching
         self.layout = layout
@@ -135,15 +135,15 @@ extension Keyboard where Content == KeyboardKey {
         self.layout = layout
         self.noteOn = noteOn
         self.noteOff = noteOff
-        self.content = { KeyboardKey(pitch: $0, model: $1) }
+        self.content = { KeyboardKey(pitch: $0, isActivated: $1) }
     }
 
 }
 
-struct Keyboard2_Previews: PreviewProvider {
+struct Keyboard_Previews: PreviewProvider {
     static var previews: some View {
-        Keyboard() { pitch, model in
-            KeyboardKey(pitch: pitch, model: model)
+        Keyboard() { pitch, isActivated in
+            KeyboardKey(pitch: pitch, isActivated: isActivated)
         }
     }
 }
