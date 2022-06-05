@@ -75,7 +75,7 @@ public struct Keyboard<Content>: View where Content: View {
                              isOffset: false,
                              noteOn: noteOn,
                              noteOff: noteOff,
-                             content: content).environmentObject(model)
+                             content: content)
             }
         }
         .frame(minWidth: 600, minHeight: 100)
@@ -92,7 +92,7 @@ public struct Keyboard<Content>: View where Content: View {
                                  latching: latching,
                                  noteOn: noteOn,
                                  noteOff: noteOff,
-                                 content: content).environmentObject(model)
+                                 content: content)
                 }
             }
             GeometryReader { proxy in
@@ -106,7 +106,7 @@ public struct Keyboard<Content>: View where Content: View {
                                              latching: latching,
                                              noteOn: noteOn,
                                              noteOff: noteOff,
-                                             content: content).environmentObject(model)
+                                             content: content)
                                     .opacity(blackKeyExists(for: Pitch(intValue: pitch.intValue + 1)) ? 1 : 0)
                                     .frame(width: proxy.size.width / CGFloat(pitchRange.count) * 0.9)
                                     .offset(x: blackKeyOffset(pitch, width: proxy.size.width))
