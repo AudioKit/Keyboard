@@ -1,7 +1,7 @@
 import SwiftUI
 import Tonic
 
-public struct PianoKeyboard<Content: View>: View {
+public struct PianoKeyboard<Content>: View where Content: View {
     let content: (Pitch, KeyboardModel)->Content
 
     @StateObject var model: KeyboardModel = KeyboardModel()
@@ -88,6 +88,21 @@ public struct PianoKeyboard<Content: View>: View {
         .frame(minWidth: 600, minHeight: 100)
         .clipShape(Rectangle())
     }
+}
+
+extension PianoKeyboard where Content == KeyboardKey {
+
+    public init(pitchRange: ClosedRange<Pitch> = (Pitch(60)...Pitch(72)),
+                        latching: Bool = false,
+                        noteOn: @escaping (Pitch) -> Void = { _ in },
+                        noteOff: @escaping (Pitch) -> Void = { _ in }) {
+        self.pitchRange = pitchRange
+        self.latching = latching
+        self.noteOn = noteOn
+        self.noteOff = noteOff
+        self.content = { KeyboardKey(pitch: $0, model: $1) }
+    }
+
 }
 
 struct Keyboard2_Previews: PreviewProvider {
