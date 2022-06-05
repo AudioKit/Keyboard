@@ -34,21 +34,21 @@ public struct Keyboard: View {
         ZStack {
             HStack {
                 ForEach(whiteKeys, id: \.self) { pitch in
-                    KeyboardKey(pitch: pitch,
-                                model: model,
-                                settings: settings,
-                                noteOn: noteOn,
-                                noteOff: noteOff)
+                    KeyboardKeyContainer(pitch: pitch,
+                                         model: model,
+                                         settings: settings,
+                                         noteOn: noteOn,
+                                         noteOff: noteOff)
                 }
             }
             VStack {
                 HStack {
                     ForEach(whiteKeys, id: \.self) { pitch in
-                        KeyboardKey(pitch: Pitch(intValue: pitch.intValue + 1),
-                                    model: model,
-                                    settings: settings,
-                                    noteOn: noteOn,
-                                    noteOff: noteOff)
+                        KeyboardKeyContainer(pitch: Pitch(intValue: pitch.intValue + 1),
+                                             model: model,
+                                             settings: settings,
+                                             noteOn: noteOn,
+                                             noteOff: noteOff)
                         .opacity(blackKeyExists(for: Pitch(intValue: pitch.intValue + 1)) ? 1 : 0)
                     }
                 }
