@@ -5,7 +5,7 @@ public class KeyboardModel: ObservableObject {
 
     /// Pitches indexed by starting point. We identify touches by starting point
     /// assuming each is unique.
-    @Published var touchedPitches: [CGPoint: Pitch] = [:]
+    @Published public var touchedPitches: [CGPoint: Pitch] = [:]
 
     /// Computed key rectangles.
     ///
