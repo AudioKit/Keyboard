@@ -1,6 +1,7 @@
 import SwiftUI
 import Tonic
 
+/// A default visual representation for a key.
 public struct KeyboardKey: View {
 
     var pitch: Pitch
