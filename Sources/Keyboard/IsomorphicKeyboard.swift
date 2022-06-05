@@ -8,11 +8,13 @@ public struct IsomorphicKeyboard<Content: View>: View {
 
     var pitchRange: ClosedRange<Pitch>
     var latching: Bool
+    var externalPitchSet: PitchSet
     var noteOn: (Pitch) -> Void
     var noteOff: (Pitch) -> Void
 
     public init(pitchRange: ClosedRange<Pitch> = (Pitch(60)...Pitch(72)),
                 latching: Bool = false,
+                externalPitchSet: PitchSet = PitchSet(),
                 noteOn: @escaping (Pitch) -> Void = { _ in },
                 noteOff: @escaping (Pitch) -> Void = { _ in },
                 @ViewBuilder content: @escaping (Pitch, KeyboardModel)->Content) {
@@ -21,6 +23,7 @@ public struct IsomorphicKeyboard<Content: View>: View {
         self.noteOn = noteOn
         self.noteOff = noteOff
         self.content = content
+        self.externalPitchSet = externalPitchSet
     }
 
     var whiteKeys: [Pitch] {
@@ -51,7 +54,9 @@ public struct IsomorphicKeyboard<Content: View>: View {
         }
         .frame(minWidth: 600, minHeight: 100)
         .clipShape(Rectangle())
-
+        .onAppear {
+            model.externalPitchSet = externalPitchSet
+        }
     }
 }
 
