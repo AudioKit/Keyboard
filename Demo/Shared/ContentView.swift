@@ -21,7 +21,7 @@ struct ContentView: View {
             Keyboard(pitchRange: Pitch(48)...Pitch(77), noteOn: noteOn, noteOff: noteOff)
             Keyboard(pitchRange: Pitch(12)...Pitch(84), noteOn: noteOn, noteOff: noteOff)
             Keyboard(pitchRange: Pitch(48)...Pitch(65), layout: .isomorphic) { pitch, isActivated in
-                KeyboardKey(pitch: pitch, isActivated: isActivated, text: pitch.note(in: .F).description, color: .gray)
+                KeyboardKey(pitch: pitch, isActivated: isActivated, text: pitch.note(in: .F).description, color: Color(PitchColor.newtonian[Int(pitch.pitchClass)]))
             }
             Keyboard(latching: true, noteOn: noteOn, noteOff: noteOff) { pitch, isActivated in
                 if isActivated {
