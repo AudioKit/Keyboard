@@ -83,22 +83,19 @@ public struct Keyboard<Content>: View where Content: View {
                                  content: content)
                 }
             }
-            GeometryReader { proxy in
-                VStack {
-                    HStack(spacing: 1) {
-                        ForEach(whiteKeys, id: \.self) { pitch in
-                            KeyContainer(model: model,
-                                         pitch: Pitch(intValue: pitch.intValue + 1),
-                                         latching: latching,
-                                         noteOn: noteOn,
-                                         noteOff: noteOff,
-                                         content: content)
-                            .opacity(blackKeyExists(for: Pitch(intValue: pitch.intValue + 1)) ? 1 : 0)
-                        }
-
-                    }.frame(height: proxy.size.height * 0.58)
-                    Spacer()
+            VStack {
+                HStack(spacing: 1) {
+                    ForEach(whiteKeys, id: \.self) { pitch in
+                        KeyContainer(model: model,
+                                     pitch: Pitch(intValue: pitch.intValue + 1),
+                                     latching: latching,
+                                     noteOn: noteOn,
+                                     noteOff: noteOff,
+                                     content: content)
+                        .opacity(blackKeyExists(for: Pitch(intValue: pitch.intValue + 1)) ? 1 : 0)
+                    }
                 }
+                Spacer()
             }
         }
         .frame(minWidth: 600, minHeight: 100)

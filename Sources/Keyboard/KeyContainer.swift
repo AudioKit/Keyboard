@@ -79,7 +79,7 @@ struct KeyContainer<Content: View>: View {
         var modRect = rect
         if pitch.note(in: .C).accidental != .natural && layout == .piano {
             modRect = rect.offsetBy(dx: rect.width / 2, dy: 0)
-            modRect = CGRect(x: modRect.minX + blackKeyOffset(pitch) * modRect.width * 0.15, y: modRect.minY, width: modRect.width * 0.7, height: modRect.height)
+            modRect = CGRect(x: modRect.minX + blackKeyOffset(pitch) * modRect.width * 0.15, y: modRect.minY, width: modRect.width * 0.7, height: modRect.height * 0.58)
         }
         model.keyRects[pitch] = modRect
 
@@ -89,6 +89,7 @@ struct KeyContainer<Content: View>: View {
             Spacer().frame(width: layout == .piano && pitch.note(in: .C).accidental != .natural ? modRect.width * 0.15 * (2 - blackKeyOffset(pitch)) : 0)
         }
         .offset(x: pitch.note(in: .C).accidental == .natural ? 0 : layout == .piano ? rect.width / 2 : 0)
+        .frame(height: rect.height * (pitch.note(in: .C).accidental != .natural && layout == .piano ? 0.58 : 1))
 
         .gesture(DragGesture(minimumDistance: 0, coordinateSpace: .global)
             .onChanged { gesture in
