@@ -4,9 +4,14 @@ import Tonic
 /// A default visual representation for a key.
 public struct KeyboardKey: View {
 
+    public init(pitch: Pitch, model: KeyboardModel) {
+        self.pitch = pitch
+        self.model = model
+    }
+
     var pitch: Pitch
     @ObservedObject var model: KeyboardModel
-    var settings: KeyboardSettings
+    var settings: KeyboardSettings = KeyboardSettings()
 
     var keyColor: Color {
         let baseColor: Color = settings.noteOffColors(pitch.note(in: .C).noteClass)

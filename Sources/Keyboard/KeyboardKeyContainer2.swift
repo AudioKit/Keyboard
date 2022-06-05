@@ -3,14 +3,29 @@ import Tonic
 
 /// This handles the interaction for key, so the user can provide their own
 /// visual representation.
-public struct KeyboardKeyContainer: View {
-
+struct KeyboardKeyContainer2<Content: View>: View {
+    let content: (Pitch, KeyboardModel)->Content
+    
     var pitch: Pitch
     @ObservedObject var model: KeyboardModel
 
-    var settings: KeyboardSettings
+    var latching: Bool
     var noteOn: (Pitch) -> Void
     var noteOff: (Pitch) -> Void
+
+    init(model: KeyboardModel,
+         pitch: Pitch,
+         latching: Bool,
+         noteOn: @escaping (Pitch) -> Void,
+         noteOff: @escaping (Pitch) -> Void ,
+         @ViewBuilder content: @escaping (Pitch, KeyboardModel)->Content) {
+        self.model = model
+        self.pitch = pitch
+        self.latching = latching
+        self.noteOn = noteOn
+        self.noteOff = noteOff
+        self.content = content
+    }
 
     func findPitch(location: CGPoint) -> Pitch? {
         var matches: [Pitch] = []
@@ -52,13 +67,13 @@ public struct KeyboardKeyContainer: View {
             modRect = rect.offsetBy(dx: rect.width / 2, dy: 0)
         }
         model.keyRects[pitch] = modRect
-        
-        return KeyboardKey(pitch: pitch, model: model)
+
+        return content(pitch, model)
         .offset(x: pitch.note(in: .C).accidental == .natural ? 0 : rect.width / 2)
 
         .gesture(DragGesture(minimumDistance: 0, coordinateSpace: .global)
             .onChanged { gesture in
-                guard !settings.latching else { return }
+                guard !latching else { return }
                 if let pitch = findPitch(location: gesture.location) {
                     let old = model.touchedPitches
                     model.touchedPitches[gesture.startLocation] = pitch
@@ -66,7 +81,7 @@ public struct KeyboardKeyContainer: View {
                 }
             }
             .onEnded { gesture in
-                guard !settings.latching else { return }
+                guard !latching else { return }
                 let old = model.touchedPitches
                 model.touchedPitches.removeValue(forKey: gesture.startLocation)
                 sendEvents(old: old)
@@ -74,7 +89,7 @@ public struct KeyboardKeyContainer: View {
         )
         .simultaneousGesture(
             TapGesture().onEnded({ _ in
-                guard settings.latching else { return }
+                guard latching else { return }
                 if model.touchedPitches.values.contains(pitch) {
                     let old = model.touchedPitches
                     for item in model.touchedPitches {
