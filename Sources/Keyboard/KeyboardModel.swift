@@ -7,9 +7,6 @@ class KeyboardModel: ObservableObject {
     /// assuming each is unique.
     @Published var touchedPitches: [CGPoint: Pitch] = [:]
 
-    /// Pitches highlighted due to external events such as MIDI.
-    @Published var highlightedPitches: [Pitch] = []
-
     /// Computed key rectangles.
     ///
     /// This is not @Published because we populate it as a side-effect
