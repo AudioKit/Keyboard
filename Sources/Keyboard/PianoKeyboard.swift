@@ -40,14 +40,10 @@ public struct PianoKeyboard<Content: View>: View {
     func blackKeyOffset(_ semitoneLowerPitch: Pitch, width: CGFloat) -> Double {
         let multipler = width / (Double(pitchRange.count) * 28.0 / 12.0)
         switch semitoneLowerPitch.note(in: .C).letter {
-        case .C:
+        case .C, .F:
             return multipler * 0.6
-        case .D:
-            return multipler * 1.4
-        case .F:
-            return multipler * 0.6
-        case .A:
-            return multipler * 1.4
+        case .D, .A:
+            return multipler * 1.2
         default:
             return multipler
         }
