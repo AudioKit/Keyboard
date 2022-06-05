@@ -38,7 +38,7 @@ public struct IsomorphicKeyboard<Content: View>: View {
     }
     
     public var body: some View {
-        HStack {
+        HStack(spacing: 1) {
             ForEach(pitchRange, id: \.self) { pitch in
                 KeyContainer(model: model,
                              pitch: pitch,
