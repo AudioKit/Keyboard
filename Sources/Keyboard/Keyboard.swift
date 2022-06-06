@@ -4,6 +4,7 @@ import Tonic
 public enum KeyboardLayout {
     case piano
     case isomorphic
+    case pianoRoll
 }
 
 public struct Keyboard<Content>: View where Content: View {
@@ -47,10 +48,9 @@ public struct Keyboard<Content>: View where Content: View {
 
     public var body: some View {
         switch layout {
-        case .piano:
-            pianoBody
-        case .isomorphic:
-            isomorphicBody
+        case .piano:      pianoBody
+        case .isomorphic: isomorphicBody
+        case .pianoRoll:  pianoRollBody
         }
     }
 
@@ -69,6 +69,23 @@ public struct Keyboard<Content>: View where Content: View {
         .frame(minWidth: 600, minHeight: 100)
         .clipShape(Rectangle())
     }
+
+    var pianoRollBody: some View {
+        VStack(spacing: 1) {
+            ForEach(pitchRange, id: \.self) { pitch in
+                KeyContainer(model: model,
+                             pitch: pitch,
+                             latching: latching,
+                             layout: .isomorphic,
+                             noteOn: noteOn,
+                             noteOff: noteOff,
+                             content: content)
+            }
+        }
+        .frame(minWidth: 100, minHeight: 600)
+        .clipShape(Rectangle())
+    }
+
 
     var pianoBody: some View {
 

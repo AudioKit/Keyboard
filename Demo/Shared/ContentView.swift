@@ -17,24 +17,35 @@ struct ContentView: View {
     }()
 
     var body: some View {
-        VStack {
-            Keyboard(pitchRange: Pitch(48)...Pitch(77), noteOn: noteOn, noteOff: noteOff)
-            Keyboard(pitchRange: Pitch(12)...Pitch(84), noteOn: noteOn, noteOff: noteOff)
-            Keyboard(pitchRange: Pitch(48)...Pitch(65), layout: .isomorphic) { pitch, isActivated in
-                KeyboardKey(pitch: pitch, isActivated: isActivated, text: pitch.note(in: .F).description, color: Color(PitchColor.newtonian[Int(pitch.pitchClass)]))
-            }
-            Keyboard(latching: true, noteOn: noteOn, noteOff: noteOff) { pitch, isActivated in
-                if isActivated {
-                    ZStack {
-                        Rectangle().foregroundColor(.black)
-                        VStack {
-                            Spacer()
-                            Text(pitch.note(in: .C).description).font(.largeTitle)
-                        }.padding()
-                    }
+        HStack {
+            Keyboard(pitchRange: Pitch(48)...Pitch(77),
+                     layout: .pianoRoll).frame(width: 200)
+            VStack {
+                Keyboard(pitchRange: Pitch(48)...Pitch(77),
+                         noteOn: noteOn, noteOff: noteOff)
+                Keyboard(pitchRange: Pitch(12)...Pitch(84),
+                         layout: .isomorphic,
+                         noteOn: noteOn, noteOff: noteOff)
+                Keyboard(pitchRange: Pitch(48)...Pitch(65),
+                         layout: .isomorphic) { pitch, isActivated in
+                    KeyboardKey(pitch: pitch,
+                                isActivated: isActivated,
+                                text: pitch.note(in: .F).description,
+                                color: Color(PitchColor.newtonian[Int(pitch.pitchClass)]))
+                }
+                Keyboard(latching: true, noteOn: noteOn, noteOff: noteOff) { pitch, isActivated in
+                    if isActivated {
+                        ZStack {
+                            Rectangle().foregroundColor(.black)
+                            VStack {
+                                Spacer()
+                                Text(pitch.note(in: .C).description).font(.largeTitle)
+                            }.padding()
+                        }
 
-                } else {
-                    Rectangle().foregroundColor(randomColors[Int(pitch.intValue) % 12])
+                    } else {
+                        Rectangle().foregroundColor(randomColors[Int(pitch.intValue) % 12])
+                    }
                 }
             }
         }
