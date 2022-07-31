@@ -49,8 +49,8 @@ struct KeyContainer<Content: View>: View {
     }
 
     func sendEvents(old: [CGPoint: Pitch]) {
-        let oldSet = PitchSet(old.values)
-        let newSet = PitchSet(model.touchedPitches.values)
+        let oldSet = PitchSet(pitches: Array(old.values))
+        let newSet = PitchSet(pitches: Array(model.touchedPitches.values))
 
         let newPitches = newSet.subtracting(oldSet)
         let removedPitches = oldSet.subtracting(newSet)
