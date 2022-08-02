@@ -1,0 +1,16 @@
+{
+  "object": {
+    "pins": [
+      {
+        "package": "Tonic",
+        "repositoryURL": "https://github.com/Audulus/Tonic.git",
+        "state": {
+          "branch": "main",
+          "revision": "121693a1fbee5aeb0bf065a97cc086f2c7c95017",
+          "version": null
+        }
+      }
+    ]
+  },
+  "version": 1
+}

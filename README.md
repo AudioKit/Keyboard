@@ -1,5 +1,7 @@
 # Keyboard
 
+<img src="demo.png" alt="Demo" />
+
 SwiftUI music keyboard
 
 Keyboard aims to be an easy-to-use musical keyboard with:
