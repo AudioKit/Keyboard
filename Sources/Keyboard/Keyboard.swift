@@ -55,7 +55,7 @@ public struct Keyboard<Content>: View where Content: View {
     }
 
     var isomorphicBody: some View {
-        HStack(spacing: 1) {
+        HStack(spacing: 0) {
             ForEach(pitchRange, id: \.self) { pitch in
                 KeyContainer(model: model,
                              pitch: pitch,
@@ -66,12 +66,12 @@ public struct Keyboard<Content>: View where Content: View {
                              content: content)
             }
         }
-        .frame(minWidth: 600, minHeight: 100)
+        .frame(minWidth: 100, minHeight: 100)
         .clipShape(Rectangle())
     }
 
     var pianoRollBody: some View {
-        VStack(spacing: 1) {
+        VStack(spacing: 0) {
             ForEach(pitchRange, id: \.self) { pitch in
                 KeyContainer(model: model,
                              pitch: pitch,
@@ -82,7 +82,7 @@ public struct Keyboard<Content>: View where Content: View {
                              content: content)
             }
         }
-        .frame(minWidth: 100, minHeight: 600)
+        .frame(minWidth: 100, minHeight: 100)
         .clipShape(Rectangle())
     }
 
@@ -90,7 +90,7 @@ public struct Keyboard<Content>: View where Content: View {
     var pianoBody: some View {
 
         ZStack {
-            HStack(spacing: 1) {
+            HStack(spacing: 0) {
                 ForEach(whiteKeys, id: \.self) { pitch in
                     KeyContainer(model: model,
                                  pitch: pitch,
@@ -101,7 +101,7 @@ public struct Keyboard<Content>: View where Content: View {
                 }
             }
             VStack {
-                HStack(spacing: 1) {
+                HStack(spacing: 0) {
                     ForEach(whiteKeys, id: \.self) { pitch in
                         KeyContainer(model: model,
                                      pitch: Pitch(intValue: pitch.intValue + 1),
@@ -115,7 +115,7 @@ public struct Keyboard<Content>: View where Content: View {
                 Spacer()
             }
         }
-        .frame(minWidth: 600, minHeight: 100)
+        .frame(minWidth: 100, minHeight: 100)
         .clipShape(Rectangle())
     }
 }

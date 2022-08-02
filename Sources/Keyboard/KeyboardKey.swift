@@ -49,6 +49,8 @@ public struct KeyboardKey: View {
                 RoundedRectangle(cornerSize: CGSize(width: minDimension(proxy.size) / 8.0,
                                                     height: minDimension(proxy.size) / 8.0))
                     .foregroundColor(keyColor)
+                    .overlay(RoundedRectangle(cornerRadius: minDimension(proxy.size) / 8.0)
+                            .strokeBorder(Color.black, lineWidth: 0.5))
                 Text(text)
                     .font(Font(.init(.system, size: minDimension(proxy.size) / 3)))
                     .foregroundColor(textColor)
