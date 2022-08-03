@@ -30,24 +30,6 @@ struct KeyContainer<Content: View>: View {
         self.content = content
     }
 
-    func findPitch(location: CGPoint) -> Pitch? {
-        var matches: [Pitch] = []
-        for rect in model.keyRects {
-            if rect.value.contains(location) {
-                matches.append(rect.key)
-            }
-        }
-        if matches.count == 1 { return matches.first! }
-        if matches.count > 1 {
-            for match in matches {
-                if match.note(in: .C).accidental != .natural {
-                    return match
-                }
-            }
-        }
-        return nil
-    }
-
     func sendEvents(old: [CGPoint: Pitch]) {
         let oldSet = PitchSet(pitches: Array(old.values))
         let newSet = PitchSet(pitches: Array(model.touchedPitches.values))
@@ -94,7 +76,7 @@ struct KeyContainer<Content: View>: View {
         .gesture(DragGesture(minimumDistance: 0, coordinateSpace: .global)
             .onChanged { gesture in
                 guard !latching else { return }
-                if let pitch = findPitch(location: gesture.location) {
+                if let pitch = model.findPitch(location: gesture.location) {
                     let old = model.touchedPitches
                     model.touchedPitches[gesture.startLocation] = pitch
                     sendEvents(old: old)

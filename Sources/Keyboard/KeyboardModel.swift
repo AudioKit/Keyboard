@@ -17,6 +17,25 @@ class KeyboardModel: ObservableObject {
     /// for the keyboard state.
     var keyRects: [Pitch: CGRect] = [:]
 
+    /// Searches keyRects for a pitch. Prefers the black keys since they're
+    /// assumed to be on top.
+    func findPitch(location: CGPoint) -> Pitch? {
+        var matches: [Pitch] = []
+        for rect in keyRects {
+            if rect.value.contains(location) {
+                matches.append(rect.key)
+            }
+        }
+        if matches.count == 1 { return matches.first! }
+        if matches.count > 1 {
+            for match in matches {
+                if match.note(in: .C).accidental != .natural {
+                    return match
+                }
+            }
+        }
+        return nil
+    }
 }
 
 extension CGPoint: Hashable {
