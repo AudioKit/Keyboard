@@ -109,7 +109,7 @@ public struct Keyboard<Content>: View where Content: View {
                                      noteOn: noteOn,
                                      noteOff: noteOff,
                                      content: content)
-                        .opacity(blackKeyExists(for: Pitch(intValue: pitch.intValue + 1)) ? 1 : 0)
+                        .opacity(blackKeyExists(for: Pitch(intValue: pitch.intValue + 1)) && pitch.intValue < pitchRange.upperBound.intValue ? 1 : 0)
                     }
                 }
                 Spacer()
