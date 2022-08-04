@@ -3,11 +3,11 @@
     "pins": [
       {
         "package": "Tonic",
-        "repositoryURL": "https://github.com/Audulus/Tonic.git",
+        "repositoryURL": "https://github.com/AudioKit/Tonic.git",
         "state": {
-          "branch": "main",
-          "revision": "1ce32a88caf64d857cef720cad00c990b135f30b",
-          "version": null
+          "branch": null,
+          "revision": "89c169f0d4e6eff29642bcf4c33cf6970936e0c4",
+          "version": "1.0.3"
         }
       }
     ]
