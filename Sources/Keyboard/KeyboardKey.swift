@@ -4,7 +4,19 @@ import Tonic
 /// A default visual representation for a key.
 public struct KeyboardKey: View {
 
-    public init(pitch: Pitch, isActivated: Bool, text: String = "unset", color: Color = .red, isActivatedExternally: Bool = false) {
+
+    /// Initialize the keyboard key
+    /// - Parameters:
+    ///   - pitch: Pitch assigned to the key
+    ///   - isActivated: Whether to represent this key in the "down" state
+    ///   - text: Label on the key
+    ///   - color: Color of the activated key
+    ///   - isActivatedExternally: Usually used for representing incoming MIDI
+    public init(pitch: Pitch,
+                isActivated: Bool,
+                text: String = "unset",
+                color: Color = .red,
+                isActivatedExternally: Bool = false) {
         self.pitch = pitch
         self.isActivated = isActivated
         if text == "unset" {
