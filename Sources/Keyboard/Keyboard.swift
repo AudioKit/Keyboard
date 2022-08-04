@@ -94,18 +94,30 @@ public struct Keyboard<Content>: View where Content: View {
                                  content: content)
                 }
             }
+
+            // Black keys.
             VStack {
                 HStack(spacing: 0) {
+
+                    // We lay out the black keys by adding transparent
+                    // rectangles between sets of black keys.
                     ForEach(whiteKeys, id: \.self) { pitch in
-                        KeyContainer(model: model,
-                                     pitch: Pitch(intValue: pitch.intValue + 1),
-                                     latching: latching,
-                                     noteOn: noteOn,
-                                     noteOff: noteOff,
-                                     content: content)
-                        .opacity(blackKeyExists(for: Pitch(intValue: pitch.intValue + 1)) && pitch.intValue < pitchRange.upperBound.intValue ? 1 : 0)
+                        if blackKeyExists(for: Pitch(intValue: pitch.intValue + 1)) && pitch.intValue < pitchRange.upperBound.intValue {
+                            KeyContainer(model: model,
+                                         pitch: Pitch(intValue: pitch.intValue + 1),
+                                         latching: latching,
+                                         noteOn: noteOn,
+                                         noteOff: noteOff,
+                                         content: content)
+                        } else {
+                            Rectangle().opacity(0)
+                        }
                     }
                 }
+
+                // This space pushes the black keys up.
+                // XXX: perhaps we should give the user control of
+                //      the spacing.
                 Spacer()
             }
         }
