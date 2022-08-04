@@ -1,12 +1,6 @@
 import SwiftUI
 import Tonic
 
-public enum KeyboardLayout {
-    case piano
-    case isomorphic
-    case pianoRoll
-}
-
 public struct Keyboard<Content>: View where Content: View {
     let content: (Pitch, Bool)->Content
 
