@@ -15,7 +15,10 @@ public struct KeyboardKey: View {
     public init(pitch: Pitch,
                 isActivated: Bool,
                 text: String = "unset",
-                color: Color = .red,
+                whiteKeyColor: Color = .white,
+                blackKeyColor: Color = .black,
+                pressedColor: Color = .red,
+                flatTop: Bool = false,
                 isActivatedExternally: Bool = false) {
         self.pitch = pitch
         self.isActivated = isActivated
@@ -30,25 +33,31 @@ public struct KeyboardKey: View {
         } else {
             self.text = text
         }
-        self.color = color
+        self.whiteKeyColor = whiteKeyColor
+        self.blackKeyColor = blackKeyColor
+        self.pressedColor = pressedColor
+        self.flatTop = flatTop
         self.isActivatedExternally = isActivatedExternally
     }
 
     var pitch: Pitch
     var isActivated: Bool
-    var color: Color
+    var whiteKeyColor: Color
+    var blackKeyColor: Color
+    var pressedColor: Color
+    var flatTop: Bool
     var text: String
     var isActivatedExternally: Bool
 
     var keyColor: Color {
         if isActivatedExternally || isActivated {
-            return color
+            return pressedColor
         }
-        return pitch.note(in: .C).accidental == .natural ? .white : .black
+        return pitch.note(in: .C).accidental == .natural ? whiteKeyColor : blackKeyColor
     }
 
     var textColor: Color {
-        return pitch.note(in: .C).accidental == .natural ? .black : .white
+        return pitch.note(in: .C).accidental == .natural ? blackKeyColor : whiteKeyColor
     }
 
     func minDimension(_ size: CGSize) -> CGFloat {
@@ -58,11 +67,11 @@ public struct KeyboardKey: View {
     public var body: some View {
         GeometryReader { proxy in
             ZStack(alignment: proxy.size.height > proxy.size.width ? .bottom : .trailing) {
-                RoundedRectangle(cornerSize: CGSize(width: minDimension(proxy.size) / 8.0,
-                                                    height: minDimension(proxy.size) / 8.0))
+                Rectangle()
                     .foregroundColor(keyColor)
-                    .overlay(RoundedRectangle(cornerRadius: minDimension(proxy.size) / 8.0)
-                            .strokeBorder(Color.black, lineWidth: 0.5))
+                    .padding(.top, flatTop ?minDimension(proxy.size) / 8.0 : 0)
+                    .cornerRadius(minDimension(proxy.size) / 8.0)
+                    .padding(.top, flatTop ? -minDimension(proxy.size) / 8.0 : 0)
                 Text(text)
                     .font(Font(.init(.system, size: minDimension(proxy.size) / 3)))
                     .foregroundColor(textColor)
