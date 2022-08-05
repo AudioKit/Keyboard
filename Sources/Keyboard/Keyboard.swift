@@ -145,7 +145,7 @@ extension Keyboard where Content == KeyboardKey {
         self.layout = layout
         self.noteOn = noteOn
         self.noteOff = noteOff
-        self.content = { KeyboardKey(pitch: $0, isActivated: $1) }
+        self.content = { KeyboardKey(pitch: $0, isActivated: $1, flatTop: layout == .piano) }
     }
 
 }
