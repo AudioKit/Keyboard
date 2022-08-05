@@ -56,7 +56,7 @@ public struct Keyboard<Content>: View where Content: View {
     }
 
     var isomorphicBody: some View {
-        HStack(spacing: 0) {
+        HStack(spacing: 1) {
             ForEach(pitchRange, id: \.self) { pitch in
                 KeyContainer(model: model,
                              pitch: pitch,
@@ -72,7 +72,7 @@ public struct Keyboard<Content>: View where Content: View {
     }
 
     var pianoRollBody: some View {
-        VStack(spacing: 0) {
+        VStack(spacing: 1) {
             ForEach(pitchRange, id: \.self) { pitch in
                 KeyContainer(model: model,
                              pitch: pitch,
@@ -91,7 +91,7 @@ public struct Keyboard<Content>: View where Content: View {
     var pianoBody: some View {
 
         ZStack {
-            HStack(spacing: 0) {
+            HStack(spacing: 1) {
                 ForEach(whiteKeys, id: \.self) { pitch in
                     KeyContainer(model: model,
                                  pitch: pitch,
@@ -104,7 +104,7 @@ public struct Keyboard<Content>: View where Content: View {
 
             // Black keys.
             VStack {
-                HStack(spacing: 0) {
+                HStack(spacing: 1) {
 
                     // We lay out the black keys by adding transparent
                     // rectangles between sets of black keys.
