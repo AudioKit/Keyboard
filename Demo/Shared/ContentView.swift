@@ -23,8 +23,8 @@ struct ContentView: View {
             Keyboard(pitchRange: Pitch(48)...Pitch(77),
                      layout: .pianoRoll).frame(width: 200)
             VStack {
-                Stepper("Octave \(octave)", value: $octave)
-                Keyboard(pitchRange: Pitch(intValue: 48 + (octave * 12))...Pitch(intValue: 77 + (octave * 12)),
+                Stepper("Octave \(octave)", onIncrement: { if octave < 7 { octave += 1 }}, onDecrement: { if octave > -1 { octave -= 1 }})
+                Keyboard(pitchRange: Note(.C, octave: octave).pitch...Note(.C, octave: octave + 2).pitch,
                          noteOn: noteOn, noteOff: noteOff)
                 Keyboard(pitchRange: Pitch(12)...Pitch(84),
                          layout: .isomorphic,
