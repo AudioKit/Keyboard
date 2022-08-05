@@ -41,11 +41,13 @@ public struct Keyboard<Content>: View where Content: View {
     }
 
     public var body: some View {
-        switch layout {
-        case .piano:      pianoBody
-        case .isomorphic: isomorphicBody
-        case .pianoRoll:  pianoRollBody
-        }
+        Group {
+            switch layout {
+            case .piano:      pianoBody
+            case .isomorphic: isomorphicBody
+            case .pianoRoll:  pianoRollBody
+            }
+        }.onAppear { model.keyRects = [:] }
     }
 
     var isomorphicBody: some View {
