@@ -46,32 +46,58 @@ struct KeyContainer<Content: View>: View {
         }
     }
 
+    // Black keys on the piano are not exactly halfway between the white keys
+    let extraBlackKeySeparation = 0.15
+
     func blackKeyOffset(_ semitoneLowerPitch: Pitch) -> Double {
         switch semitoneLowerPitch.note(in: .C).letter {
         case .C, .F:
             return 0
         case .D, .A:
-            return 2
+            return 2 * extraBlackKeySeparation
         default:
-            return 1
+            return 1 * extraBlackKeySeparation
         }
     }
 
+    // Size of a black key compared to white key
+    let relativeSizeOfBlackKey = CGSize(width: 0.7, height: 0.58)
+
+    func blackKeyWidth(whiteKeyRect: CGRect) -> CGFloat {
+        whiteKeyRect.width * relativeSizeOfBlackKey.width
+    }
+
+    func blackKeyHeight(whiteKeyRect: CGRect) -> CGFloat {
+        whiteKeyRect.height * relativeSizeOfBlackKey.height
+    }
+
+    var isKeyOffset: Bool {
+        layout == .piano && pitch.note(in: .C).accidental != .natural
+    }
+
+
+
     func rect(rect: CGRect) -> some View {
-        var modRect = rect
+        var modifiedRect = rect
         if pitch.note(in: .C).accidental != .natural && layout == .piano {
-            modRect = rect.offsetBy(dx: rect.width / 2, dy: 0)
-            modRect = CGRect(x: modRect.minX + blackKeyOffset(pitch) * modRect.width * 0.15, y: modRect.minY, width: modRect.width * 0.7, height: modRect.height * 0.58)
+            // First translate it to right between the two adjacent white keys
+            modifiedRect = rect.offsetBy(dx: rect.width / 2, dy: 0)
+
+
+            modifiedRect = CGRect(x: modifiedRect.minX + blackKeyOffset(pitch) * modifiedRect.width,
+                                  y: modifiedRect.minY,
+                                  width: blackKeyWidth(whiteKeyRect: modifiedRect),
+                                  height: blackKeyHeight(whiteKeyRect: modifiedRect))
         }
-        model.keyRects[pitch] = modRect
+        model.keyRects[pitch] = modifiedRect
 
         return HStack(spacing: 0) {
-            Spacer().frame(width: layout == .piano && pitch.note(in: .C).accidental != .natural ? modRect.width * 0.15 * blackKeyOffset(pitch) : 0)
+            Spacer().frame(width: isKeyOffset ? modifiedRect.width * blackKeyOffset(pitch) : 0)
             content(pitch, model.touchedPitches.values.contains(pitch))
-            Spacer().frame(width: layout == .piano && pitch.note(in: .C).accidental != .natural ? modRect.width * 0.15 * (2 - blackKeyOffset(pitch)) : 0)
+            Spacer().frame(width: isKeyOffset ? modifiedRect.width * (2 * extraBlackKeySeparation - blackKeyOffset(pitch)) : 0)
         }
-        .offset(x: pitch.note(in: .C).accidental == .natural ? 0 : layout == .piano ? rect.width / 2 : 0)
-        .frame(height: rect.height * (pitch.note(in: .C).accidental != .natural && layout == .piano ? 0.58 : 1))
+        .offset(x: isKeyOffset ? rect.width / 2 : 0)
+        .frame(height: rect.height * (isKeyOffset ? relativeSizeOfBlackKey.height : 1))
 
         .gesture(DragGesture(minimumDistance: 0, coordinateSpace: .global)
             .onChanged { gesture in
@@ -102,7 +128,7 @@ struct KeyContainer<Content: View>: View {
                     sendEvents(old: old)
                 } else {
                     let old = model.touchedPitches
-                    model.touchedPitches[CGPoint(x: rect.midX + CGFloat(pitch.intValue)/100.0, y: rect.midY)] = pitch
+                    model.touchedPitches[CGPoint(x: rect.midX, y: rect.midY)] = pitch
                     sendEvents(old: old)
                 }
             })

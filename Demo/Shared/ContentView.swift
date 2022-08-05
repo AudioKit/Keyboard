@@ -25,8 +25,8 @@ struct ContentView: View {
                      layout: .pianoRoll).frame(width: 200)
             VStack {
                 HStack {
-                    Stepper("Octave \(octave)", onIncrement: { if octave + range < 9 { octave += 1 }}, onDecrement: { if octave > -1 { octave -= 1 }})
-                    Stepper("Range \(range)", onIncrement: { if range + octave < 9 { range += 1 }}, onDecrement: { if range > 1 { range -= 1 }})
+                    Stepper("Starting Octave: \(octave)", onIncrement: { if octave + range < 9 { octave += 1 }}, onDecrement: { if octave > -1 { octave -= 1 }})
+                    Stepper("Number of Octaves: \(range)", onIncrement: { if range + octave < 9 { range += 1 }}, onDecrement: { if range > 1 { range -= 1 }})
                 }
                 Keyboard(pitchRange: Note(.C, octave: octave).pitch...Note(.C, octave: octave + range).pitch,
                          noteOn: noteOn, noteOff: noteOff)

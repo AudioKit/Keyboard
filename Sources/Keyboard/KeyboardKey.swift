@@ -64,20 +64,35 @@ public struct KeyboardKey: View {
         return min(size.width, size.height)
     }
 
+    func isTall(size: CGSize) -> Bool {
+        size.height > size.width
+    }
+
+    // How much of the key height to take up with label
+    func relativeFontSize(in containerSize: CGSize) -> CGFloat {
+        minDimension(containerSize) * 0.333
+    }
+
+    let relativeTextPadding = 0.05
+
+    func relativeCornerRadius(in containerSize: CGSize)-> CGFloat {
+        minDimension(containerSize) * 0.125
+    }
+
     public var body: some View {
         GeometryReader { proxy in
             ZStack(alignment: proxy.size.height > proxy.size.width ? .bottom : .trailing) {
                 Rectangle()
                     .foregroundColor(keyColor)
-                    .padding(.top, flatTop ?minDimension(proxy.size) / 8.0 : 0)
-                    .cornerRadius(minDimension(proxy.size) / 8.0)
-                    .padding(.top, flatTop ? -minDimension(proxy.size) / 8.0 : 0)
+                    .padding(.top, flatTop ? relativeCornerRadius(in: proxy.size) : 0)
+                    .cornerRadius(relativeCornerRadius(in: proxy.size))
+                    .padding(.top, flatTop ? -relativeCornerRadius(in: proxy.size): 0)
                 Text(text)
-                    .font(Font(.init(.system, size: minDimension(proxy.size) / 3)))
+                    .font(Font(.init(.system, size: relativeFontSize(in: proxy.size))))
                     .foregroundColor(textColor)
                     .padding(EdgeInsets(top: 0, leading: 0,
-                                        bottom: proxy.size.height > proxy.size.width ? proxy.size.height / 20 : 0,
-                                        trailing: proxy.size.height < proxy.size.width ? proxy.size.width / 20 : 0))
+                                        bottom: isTall(size: proxy.size) ? proxy.size.height * relativeTextPadding : 0,
+                                        trailing: isTall(size: proxy.size) ? 0 : proxy.size.width * relativeTextPadding))
             }
 
         }
