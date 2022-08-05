@@ -17,14 +17,18 @@ struct ContentView: View {
     }()
 
     @State var octave = 0
+    @State var range = 2
 
     var body: some View {
         HStack {
             Keyboard(pitchRange: Pitch(48)...Pitch(77),
                      layout: .pianoRoll).frame(width: 200)
             VStack {
-                Stepper("Octave \(octave)", onIncrement: { if octave < 7 { octave += 1 }}, onDecrement: { if octave > -1 { octave -= 1 }})
-                Keyboard(pitchRange: Note(.C, octave: octave).pitch...Note(.C, octave: octave + 2).pitch,
+                HStack {
+                    Stepper("Octave \(octave)", onIncrement: { if octave + range < 9 { octave += 1 }}, onDecrement: { if octave > -1 { octave -= 1 }})
+                    Stepper("Range \(range)", onIncrement: { if range + octave < 9 { range += 1 }}, onDecrement: { if range > 1 { range -= 1 }})
+                }
+                Keyboard(pitchRange: Note(.C, octave: octave).pitch...Note(.C, octave: octave + range).pitch,
                          noteOn: noteOn, noteOff: noteOff)
                 Keyboard(pitchRange: Pitch(12)...Pitch(84),
                          layout: .isomorphic,
@@ -34,7 +38,7 @@ struct ContentView: View {
                     KeyboardKey(pitch: pitch,
                                 isActivated: isActivated,
                                 text: pitch.note(in: .F).description,
-                                color: Color(PitchColor.newtonian[Int(pitch.pitchClass)]))
+                                pressedColor: Color(PitchColor.newtonian[Int(pitch.pitchClass)]))
                 }
                 Keyboard(latching: true, noteOn: noteOn, noteOff: noteOff) { pitch, isActivated in
                     if isActivated {
