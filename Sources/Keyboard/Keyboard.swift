@@ -47,7 +47,12 @@ public struct Keyboard<Content>: View where Content: View {
             case .isomorphic: isomorphicBody
             case .pianoRoll:  pianoRollBody
             }
-        }.onAppear { model.keyRects = [:] }
+        }.onChange(of: pitchRange) { _ in
+            model.keyRects = [:]
+            // Clearing touchedPitches will regenerate all the keys
+            // since touchedPitches is @Published.
+            model.touchedPitches = [:]
+        }
     }
 
     var isomorphicBody: some View {
