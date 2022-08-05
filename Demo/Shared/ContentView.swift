@@ -16,12 +16,15 @@ struct ContentView: View {
         (0...12).map { _ in Color(red: Double.random(in: 0...1), green: Double.random(in: 0...1), blue: Double.random(in: 0...1), opacity: 1) }
     }()
 
+    @State var octave = 0
+
     var body: some View {
         HStack {
             Keyboard(pitchRange: Pitch(48)...Pitch(77),
                      layout: .pianoRoll).frame(width: 200)
             VStack {
-                Keyboard(pitchRange: Pitch(48)...Pitch(77),
+                Stepper("Octave \(octave)", value: $octave)
+                Keyboard(pitchRange: Pitch(intValue: 48 + (octave * 12))...Pitch(intValue: 77 + (octave * 12)),
                          noteOn: noteOn, noteOff: noteOff)
                 Keyboard(pitchRange: Pitch(12)...Pitch(84),
                          layout: .isomorphic,
