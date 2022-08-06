@@ -1,30 +1,6 @@
 import SwiftUI
 import Tonic
 
-/// For accumulating touch positions from keys.
-struct TouchLocationsKey: PreferenceKey {
-    static var defaultValue: [CGPoint] = []
-
-    static func reduce(value: inout [CGPoint], nextValue: () -> [CGPoint]) {
-        value.append(contentsOf: nextValue())
-    }
-}
-
-struct KeyRectInfo: Equatable {
-    var rect: CGRect
-    var pitch: Pitch
-    var zIndex: Int = 0
-}
-
-/// For accumulating key rects.
-struct KeyRectsKey: PreferenceKey {
-    static var defaultValue: [KeyRectInfo] = []
-
-    static func reduce(value: inout [KeyRectInfo], nextValue: () -> [KeyRectInfo]) {
-        value.append(contentsOf: nextValue())
-    }
-}
-
 /// This handles the interaction for key, so the user can provide their own
 /// visual representation.
 struct KeyContainer<Content: View>: View {
@@ -99,9 +75,11 @@ struct KeyContainer<Content: View>: View {
         }
 
         return HStack(spacing: 0) {
-            Spacer().frame(width: isKeyOffset ? modifiedRect.width * blackKeyOffset(pitch) : 0)
+            Spacer()
+                .frame(width: isKeyOffset ? modifiedRect.width * blackKeyOffset(pitch) : 0)
             content(pitch, model.touchedPitches.contains(pitch) || model.externallyActivatedPitches.contains(pitch))
-            Spacer().frame(width: isKeyOffset ? modifiedRect.width * (2 * extraBlackKeySeparation - blackKeyOffset(pitch)) : 0)
+            Spacer()
+                .frame(width: isKeyOffset ? modifiedRect.width * (2 * extraBlackKeySeparation - blackKeyOffset(pitch)) : 0)
         }
         .offset(x: isKeyOffset ? rect.width / 2 : 0)
         .frame(height: rect.height * (isKeyOffset ? relativeSizeOfBlackKey.height : 1))
@@ -122,7 +100,10 @@ struct KeyContainer<Content: View>: View {
                 }
             })
         )
-        .preference(key: KeyRectsKey.self, value: [KeyRectInfo(rect: modifiedRect, pitch: pitch, zIndex: isKeyOffset ? 1 : 0)])
+        .preference(key: KeyRectsKey.self,
+                    value: [KeyRectInfo(rect: modifiedRect,
+                                        pitch: pitch,
+                                        zIndex: isKeyOffset ? 1 : 0)])
         .preference(key: TouchLocationsKey.self,
                     value: touchLocation != nil ? [touchLocation!] : [])
     }

@@ -1,6 +1,12 @@
 import SwiftUI
 import Tonic
 
+struct KeyRectInfo: Equatable {
+    var rect: CGRect
+    var pitch: Pitch
+    var zIndex: Int = 0
+}
+
 class KeyboardModel: ObservableObject {
 
     var keyRectInfos: [KeyRectInfo] = []
