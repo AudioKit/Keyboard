@@ -59,6 +59,10 @@ public struct Keyboard<Content>: View where Content: View {
                 noteOff(pitch)
             }
             model.touchedPitches = [:]
+        }.onPreferenceChange(TouchLocationsKey.self) { touchLocations in
+            print("touch locations: \(touchLocations)")
+        }.onPreferenceChange(KeyRectsKey.self) { keyRects in
+            print("key rects: \(keyRects)")
         }
     }
 
