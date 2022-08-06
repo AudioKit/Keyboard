@@ -1,6 +1,24 @@
 import SwiftUI
 import Tonic
 
+/// For accumulating touch positions from keys.
+struct TouchLocationsKey: PreferenceKey {
+    static var defaultValue: [CGPoint] = []
+
+    static func reduce(value: inout [CGPoint], nextValue: () -> [CGPoint]) {
+        value.append(contentsOf: nextValue())
+    }
+}
+
+/// For accumulating key rects.
+struct KeyRectsKey: PreferenceKey {
+    static var defaultValue: [(CGRect, Pitch)] = []
+
+    static func reduce(value: inout [(CGRect, Pitch)], nextValue: () -> [(CGRect, Pitch)]) {
+        value.append(contentsOf: nextValue())
+    }
+}
+
 /// This handles the interaction for key, so the user can provide their own
 /// visual representation.
 struct KeyContainer<Content: View>: View {
