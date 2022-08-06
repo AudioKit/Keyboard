@@ -33,4 +33,37 @@ final class KeyboardTests: XCTestCase {
         XCTAssertEqual(testPitch, Pitch(60))
         XCTAssertTrue(noteOffReceived)
     }
+
+    func testKeyboardModelZIndex() throws {
+
+        let model = KeyboardModel()
+
+        model.keyRectInfos = [
+            KeyRectInfo(rect: CGRect(origin: CGPoint.zero, size: CGSize(width: 100, height: 100)), pitch: Pitch(60)),
+            KeyRectInfo(rect: CGRect(origin: CGPoint.zero, size: CGSize(width: 100, height: 100)), pitch: Pitch(61), zIndex: 1)
+        ]
+
+        var testPitch: Pitch?
+        var noteOnReceived = false
+        model.noteOn = { pitch in
+            testPitch = pitch
+            noteOnReceived = true
+        }
+
+        var noteOffReceived = false
+        model.noteOff = { pitch in
+            testPitch = pitch
+            noteOffReceived = true
+        }
+
+        model.touchLocations = [CGPoint(x: 10, y: 10)]
+
+        XCTAssertEqual(testPitch, Pitch(61))
+        XCTAssertTrue(noteOnReceived)
+
+        model.touchLocations = []
+
+        XCTAssertEqual(testPitch, Pitch(61))
+        XCTAssertTrue(noteOffReceived)
+    }
 }
