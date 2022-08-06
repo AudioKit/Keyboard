@@ -53,22 +53,6 @@ struct KeyContainer<Content: View>: View {
         self.content = content
     }
 
-    func sendEvents(old: [CGPoint: Pitch]) {
-        let oldSet = PitchSet(pitches: Array(old.values))
-        let newSet = PitchSet(pitches: Array(model.touchedPitches.values))
-
-        let newPitches = newSet.subtracting(oldSet)
-        let removedPitches = oldSet.subtracting(newSet)
-
-        for pitch in removedPitches.array {
-            noteOff(pitch)
-        }
-
-        for pitch in newPitches.array {
-            noteOn(pitch)
-        }
-    }
-
     // Black keys on the piano are not exactly halfway between the white keys
     let extraBlackKeySeparation = 0.15
 
@@ -112,11 +96,10 @@ struct KeyContainer<Content: View>: View {
                                   width: blackKeyWidth(whiteKeyRect: modifiedRect),
                                   height: blackKeyHeight(whiteKeyRect: modifiedRect))
         }
-        model.keyRects[pitch] = modifiedRect
 
         return HStack(spacing: 0) {
             Spacer().frame(width: isKeyOffset ? modifiedRect.width * blackKeyOffset(pitch) : 0)
-            content(pitch, model.touchedPitches.values.contains(pitch))
+            content(pitch, model.touchedPitches.contains(pitch))
             Spacer().frame(width: isKeyOffset ? modifiedRect.width * (2 * extraBlackKeySeparation - blackKeyOffset(pitch)) : 0)
         }
         .offset(x: isKeyOffset ? rect.width / 2 : 0)
@@ -126,40 +109,13 @@ struct KeyContainer<Content: View>: View {
             .updating($touchLocation) { value, state, _ in
                 state = value.location
             }
-            .onChanged { gesture in
-                guard !latching else { return }
-                if let pitch = model.findPitch(location: gesture.location) {
-                    let old = model.touchedPitches
-                    model.touchedPitches[gesture.startLocation] = pitch
-                    sendEvents(old: old)
-                }
-            }
-            .onEnded { gesture in
-                guard !latching else { return }
-                let old = model.touchedPitches
-                model.touchedPitches.removeValue(forKey: gesture.startLocation)
-                sendEvents(old: old)
-            }
         )
         .simultaneousGesture(
             TapGesture().onEnded({ _ in
-                guard latching else { return }
-                if model.touchedPitches.values.contains(pitch) {
-                    let old = model.touchedPitches
-                    for item in model.touchedPitches {
-                        if item.value == pitch {
-                            model.touchedPitches.removeValue(forKey: item.key)
-                        }
-                    }
-                    sendEvents(old: old)
-                } else {
-                    let old = model.touchedPitches
-                    model.touchedPitches[CGPoint(x: rect.midX, y: rect.midY)] = pitch
-                    sendEvents(old: old)
-                }
+                // XXX: fix latching mode
             })
         )
-        .preference(key: KeyRectsKey.self, value: [KeyRectInfo(rect: rect, pitch: pitch)])
+        .preference(key: KeyRectsKey.self, value: [KeyRectInfo(rect: modifiedRect, pitch: pitch)])
         .preference(key: TouchLocationsKey.self,
                     value: touchLocation != nil ? [touchLocation!] : [])
     }

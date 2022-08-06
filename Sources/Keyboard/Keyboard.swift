@@ -48,21 +48,10 @@ public struct Keyboard<Content>: View where Content: View {
             case .isomorphic: isomorphicBody
             case .pianoRoll:  pianoRollBody
             }
-        }.onChange(of: pitchRange) { _ in
-            model.keyRects = [:]
-            // Clearing touchedPitches will regenerate all the keys
-            // since touchedPitches is @Published.
-            model.touchedPitches = [:]
-        }.onChange(of: scenePhase) { _ in
-            // Remove all touches when app the enters the background
-            for pitch in model.touchedPitches.values {
-                noteOff(pitch)
-            }
-            model.touchedPitches = [:]
         }.onPreferenceChange(TouchLocationsKey.self) { touchLocations in
-            print("touch locations: \(touchLocations)")
-        }.onPreferenceChange(KeyRectsKey.self) { keyRects in
-            print("key rects: \(keyRects)")
+            model.touchLocations = touchLocations
+        }.onPreferenceChange(KeyRectsKey.self) { keyRectInfos in
+            model.keyRectInfos = keyRectInfos
         }
     }
 
