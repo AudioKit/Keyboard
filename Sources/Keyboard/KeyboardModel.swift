@@ -7,8 +7,16 @@ class KeyboardModel: ObservableObject {
         didSet {
             var newPitches = PitchSet()
             for location in touchLocations {
+                var pitch: Pitch? = nil
+                var highestZindex = -1
                 for info in keyRectInfos where info.rect.contains(location) {
-                    newPitches.add(info.pitch)
+                    if pitch == nil || info.zIndex > highestZindex {
+                        pitch  = info.pitch
+                        highestZindex = info.zIndex
+                    }
+                }
+                if let p = pitch {
+                    newPitches.add(p)
                 }
             }
             touchedPitches = newPitches

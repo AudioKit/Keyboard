@@ -13,6 +13,7 @@ struct TouchLocationsKey: PreferenceKey {
 struct KeyRectInfo: Equatable {
     var rect: CGRect
     var pitch: Pitch
+    var zIndex: Int = 0
 }
 
 /// For accumulating key rects.
@@ -121,7 +122,7 @@ struct KeyContainer<Content: View>: View {
                 }
             })
         )
-        .preference(key: KeyRectsKey.self, value: [KeyRectInfo(rect: modifiedRect, pitch: pitch)])
+        .preference(key: KeyRectsKey.self, value: [KeyRectInfo(rect: modifiedRect, pitch: pitch, zIndex: isKeyOffset ? 1 : 0)])
         .preference(key: TouchLocationsKey.self,
                     value: touchLocation != nil ? [touchLocation!] : [])
     }
