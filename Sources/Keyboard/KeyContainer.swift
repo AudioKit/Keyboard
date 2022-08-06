@@ -34,8 +34,6 @@ struct KeyContainer<Content: View>: View {
     @ObservedObject var model: KeyboardModel
 
     var latching: Bool
-    var noteOn: (Pitch) -> Void
-    var noteOff: (Pitch) -> Void
     var layout: KeyboardLayout
 
     init(model: KeyboardModel,
@@ -49,8 +47,10 @@ struct KeyContainer<Content: View>: View {
         self.pitch = pitch
         self.latching = latching
         self.layout = layout
-        self.noteOn = noteOn
-        self.noteOff = noteOff
+
+        model.noteOn = noteOn
+        model.noteOff = noteOff
+
         self.content = content
     }
 

@@ -25,8 +25,24 @@ class KeyboardModel: ObservableObject {
 
     var keyRectInfos: [KeyRectInfo] = []
 
-    @Published var touchedPitches = PitchSet()
+    @Published var touchedPitches = PitchSet() {
+        willSet {
+            let newPitches = newValue.subtracting(touchedPitches)
+            let removedPitches = touchedPitches.subtracting(newValue)
+
+            for pitch in removedPitches.array {
+                noteOff(pitch)
+            }
+
+            for pitch in newPitches.array {
+                noteOn(pitch)
+            }
+        }
+    }
     @Published var externallyActivatedPitches = PitchSet()
+
+    var noteOn: (Pitch) -> Void = { _ in }
+    var noteOff: (Pitch) -> Void = { _ in }
 }
 
 extension CGPoint: Hashable {
