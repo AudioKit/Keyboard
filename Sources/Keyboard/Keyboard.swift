@@ -2,6 +2,7 @@ import SwiftUI
 import Tonic
 
 public struct Keyboard<Content>: View where Content: View {
+    @Environment(\.scenePhase) var scenePhase
     let content: (Pitch, Bool)->Content
 
     @StateObject var model: KeyboardModel = KeyboardModel()
@@ -51,6 +52,9 @@ public struct Keyboard<Content>: View where Content: View {
             model.keyRects = [:]
             // Clearing touchedPitches will regenerate all the keys
             // since touchedPitches is @Published.
+            model.touchedPitches = [:]
+        }.onChange(of: scenePhase) { _ in
+            // Remove all touches when app the enters the background
             model.touchedPitches = [:]
         }
     }
