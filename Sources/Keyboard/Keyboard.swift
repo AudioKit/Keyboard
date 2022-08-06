@@ -55,6 +55,9 @@ public struct Keyboard<Content>: View where Content: View {
             model.touchedPitches = [:]
         }.onChange(of: scenePhase) { _ in
             // Remove all touches when app the enters the background
+            for pitch in model.touchedPitches.values {
+                noteOff(pitch)
+            }
             model.touchedPitches = [:]
         }
     }
