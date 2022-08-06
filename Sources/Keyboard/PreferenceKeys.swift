@@ -18,3 +18,9 @@ struct KeyRectsKey: PreferenceKey {
         value.append(contentsOf: nextValue())
     }
 }
+
+struct KeyRectInfo: Equatable {
+    var rect: CGRect
+    var pitch: Pitch
+    var zIndex: Int = 0
+}
