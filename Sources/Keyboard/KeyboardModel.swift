@@ -21,10 +21,8 @@ class KeyboardModel: ObservableObject {
     /// assumed to be on top.
     func findPitch(location: CGPoint) -> Pitch? {
         var matches: [Pitch] = []
-        for rect in keyRects {
-            if rect.value.contains(location) {
-                matches.append(rect.key)
-            }
+        for rect in keyRects where rect.value.contains(location) {
+            matches.append(rect.key)
         }
         if matches.count == 1 { return matches.first! }
         if matches.count > 1 {
