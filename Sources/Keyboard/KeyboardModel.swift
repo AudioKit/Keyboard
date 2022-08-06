@@ -26,20 +26,25 @@ class KeyboardModel: ObservableObject {
     var keyRectInfos: [KeyRectInfo] = []
 
     @Published var touchedPitches = PitchSet() {
-        willSet {
-            let newPitches = newValue.subtracting(touchedPitches)
-            let removedPitches = touchedPitches.subtracting(newValue)
+        willSet { triggerNotesAndNoteOffs(from: touchedPitches, to: newValue) }
+    }
+    
+    @Published var externallyActivatedPitches = PitchSet() {
+        willSet { triggerNotesAndNoteOffs(from: externallyActivatedPitches, to: newValue) }
+    }
 
-            for pitch in removedPitches.array {
-                noteOff(pitch)
-            }
+    func triggerNotesAndNoteOffs(from oldValue: PitchSet, to newValue: PitchSet) {
+        let newPitches = newValue.subtracting(oldValue)
+        let removedPitches = oldValue.subtracting(newValue)
 
-            for pitch in newPitches.array {
-                noteOn(pitch)
-            }
+        for pitch in removedPitches.array {
+            noteOff(pitch)
+        }
+
+        for pitch in newPitches.array {
+            noteOn(pitch)
         }
     }
-    @Published var externallyActivatedPitches = PitchSet()
 
     var noteOn: (Pitch) -> Void = { _ in }
     var noteOff: (Pitch) -> Void = { _ in }
