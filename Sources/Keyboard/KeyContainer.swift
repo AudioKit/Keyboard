@@ -98,7 +98,7 @@ struct KeyContainer<Content: View>: View {
         layout == .piano && pitch.note(in: .C).accidental != .natural
     }
 
-
+    @GestureState var touchLocation: CGPoint?
 
     func rect(rect: CGRect) -> some View {
         var modifiedRect = rect
@@ -123,6 +123,9 @@ struct KeyContainer<Content: View>: View {
         .frame(height: rect.height * (isKeyOffset ? relativeSizeOfBlackKey.height : 1))
 
         .gesture(DragGesture(minimumDistance: 0, coordinateSpace: .global)
+            .updating($touchLocation) { value, state, _ in
+                state = value.location
+            }
             .onChanged { gesture in
                 guard !latching else { return }
                 if let pitch = model.findPitch(location: gesture.location) {
@@ -157,6 +160,8 @@ struct KeyContainer<Content: View>: View {
             })
         )
         .preference(key: KeyRectsKey.self, value: [KeyRectInfo(rect: rect, pitch: pitch)])
+        .preference(key: TouchLocationsKey.self,
+                    value: touchLocation != nil ? [touchLocation!] : [])
     }
 
     public var body: some View {
