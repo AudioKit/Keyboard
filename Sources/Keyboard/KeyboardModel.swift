@@ -18,6 +18,7 @@ class KeyboardModel: ObservableObject {
     var keyRectInfos: [KeyRectInfo] = []
 
     @Published var touchedPitches = PitchSet()
+    @Published var externallyActivatedPitches = PitchSet()
 }
 
 extension CGPoint: Hashable {

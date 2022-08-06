@@ -99,7 +99,7 @@ struct KeyContainer<Content: View>: View {
 
         return HStack(spacing: 0) {
             Spacer().frame(width: isKeyOffset ? modifiedRect.width * blackKeyOffset(pitch) : 0)
-            content(pitch, model.touchedPitches.contains(pitch))
+            content(pitch, model.touchedPitches.contains(pitch) || model.externallyActivatedPitches.contains(pitch))
             Spacer().frame(width: isKeyOffset ? modifiedRect.width * (2 * extraBlackKeySeparation - blackKeyOffset(pitch)) : 0)
         }
         .offset(x: isKeyOffset ? rect.width / 2 : 0)
@@ -107,12 +107,18 @@ struct KeyContainer<Content: View>: View {
 
         .gesture(DragGesture(minimumDistance: 0, coordinateSpace: .global)
             .updating($touchLocation) { value, state, _ in
+                guard !latching else { return }
                 state = value.location
             }
         )
         .simultaneousGesture(
             TapGesture().onEnded({ _ in
-                // XXX: fix latching mode
+                guard latching else { return }
+                if model.externallyActivatedPitches.contains(pitch) {
+                    model.externallyActivatedPitches.remove(pitch)
+                } else {
+                    model.externallyActivatedPitches.add(pitch)
+                }
             })
         )
         .preference(key: KeyRectsKey.self, value: [KeyRectInfo(rect: modifiedRect, pitch: pitch)])
