@@ -3,6 +3,10 @@ import Tonic
 
 class KeyboardModel: ObservableObject {
 
+    var keyRectInfos: [KeyRectInfo] = []
+    var noteOn: (Pitch) -> Void = { _ in }
+    var noteOff: (Pitch) -> Void = { _ in }
+
     var touchLocations: [CGPoint] = [] {
         didSet {
             var newPitches = PitchSet()
@@ -23,17 +27,15 @@ class KeyboardModel: ObservableObject {
         }
     }
 
-    var keyRectInfos: [KeyRectInfo] = []
-
     @Published var touchedPitches = PitchSet() {
-        willSet { triggerNotesAndNoteOffs(from: touchedPitches, to: newValue) }
-    }
-    
-    @Published var externallyActivatedPitches = PitchSet() {
-        willSet { triggerNotesAndNoteOffs(from: externallyActivatedPitches, to: newValue) }
+        willSet { triggerEvents(from: touchedPitches, to: newValue) }
     }
 
-    func triggerNotesAndNoteOffs(from oldValue: PitchSet, to newValue: PitchSet) {
+    @Published var externallyActivatedPitches = PitchSet() {
+        willSet { triggerEvents(from: externallyActivatedPitches, to: newValue) }
+    }
+
+    func triggerEvents(from oldValue: PitchSet, to newValue: PitchSet) {
         let newPitches = newValue.subtracting(oldValue)
         let removedPitches = oldValue.subtracting(newValue)
 
@@ -45,7 +47,4 @@ class KeyboardModel: ObservableObject {
             noteOn(pitch)
         }
     }
-
-    var noteOn: (Pitch) -> Void = { _ in }
-    var noteOff: (Pitch) -> Void = { _ in }
 }
