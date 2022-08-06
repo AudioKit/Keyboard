@@ -49,11 +49,3 @@ class KeyboardModel: ObservableObject {
     var noteOn: (Pitch) -> Void = { _ in }
     var noteOff: (Pitch) -> Void = { _ in }
 }
-
-extension CGPoint: Hashable {
-    public func hash(into hasher: inout Hasher) {
-        hasher.combine(x)
-        hasher.combine(y)
-    }
-}
-
