@@ -2,7 +2,6 @@ import SwiftUI
 import Tonic
 
 public struct Keyboard<Content>: View where Content: View {
-    @Environment(\.scenePhase) var scenePhase
     let content: (Pitch, Bool)->Content
 
     @StateObject var model: KeyboardModel = KeyboardModel()
@@ -62,8 +61,6 @@ public struct Keyboard<Content>: View where Content: View {
                              pitch: pitch,
                              latching: latching,
                              layout: .isomorphic,
-                             noteOn: noteOn,
-                             noteOff: noteOff,
                              content: content)
             }
         }
@@ -78,8 +75,6 @@ public struct Keyboard<Content>: View where Content: View {
                              pitch: pitch,
                              latching: latching,
                              layout: .isomorphic,
-                             noteOn: noteOn,
-                             noteOff: noteOff,
                              content: content)
             }
         }
@@ -96,8 +91,6 @@ public struct Keyboard<Content>: View where Content: View {
                     KeyContainer(model: model,
                                  pitch: pitch,
                                  latching: latching,
-                                 noteOn: noteOn,
-                                 noteOff: noteOff,
                                  content: content)
                 }
             }
@@ -113,8 +106,6 @@ public struct Keyboard<Content>: View where Content: View {
                             KeyContainer(model: model,
                                          pitch: Pitch(intValue: pitch.intValue + 1),
                                          latching: latching,
-                                         noteOn: noteOn,
-                                         noteOff: noteOff,
                                          content: content)
                         } else {
                             Rectangle().opacity(0)
@@ -130,6 +121,10 @@ public struct Keyboard<Content>: View where Content: View {
         }
         .frame(minWidth: 100, minHeight: 100)
         .clipShape(Rectangle())
+        .onAppear {
+            model.noteOn = noteOn
+            model.noteOff = noteOff
+        }
     }
 }
 

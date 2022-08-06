@@ -16,17 +16,11 @@ struct KeyContainer<Content: View>: View {
          pitch: Pitch,
          latching: Bool,
          layout: KeyboardLayout = .piano,
-         noteOn: @escaping (Pitch) -> Void,
-         noteOff: @escaping (Pitch) -> Void ,
          @ViewBuilder content: @escaping (Pitch, Bool)->Content) {
         self.model = model
         self.pitch = pitch
         self.latching = latching
         self.layout = layout
-
-        model.noteOn = noteOn
-        model.noteOff = noteOff
-
         self.content = content
     }
 
