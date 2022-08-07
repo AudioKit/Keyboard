@@ -31,6 +31,7 @@ class KeyboardModel: ObservableObject {
         willSet { triggerEvents(from: touchedPitches, to: newValue) }
     }
 
+    /// Either latched keys or keys active due to external MIDI events.
     @Published var externallyActivatedPitches = PitchSet() {
         willSet { triggerEvents(from: externallyActivatedPitches, to: newValue) }
     }
