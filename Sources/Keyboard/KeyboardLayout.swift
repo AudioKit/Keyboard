@@ -1,7 +1,7 @@
 import SwiftUI
 
 /// Types of keyboards we can generate
-public enum KeyboardLayout {
+public enum KeyboardLayout: Equatable, Hashable  {
     /// Traditional Piano layout with raised black keys over white keys
     case piano
     
@@ -9,7 +9,7 @@ public enum KeyboardLayout {
     case isomorphic
     
     /// Notes in 4ths layout with rows and columns
-    case guitar
+    case guitar(rowCount: Int)
 
     /// Vertical isomorphic
     case pianoRoll

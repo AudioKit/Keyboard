@@ -10,13 +10,12 @@ public struct Keyboard<Content>: View where Content: View {
     var latching: Bool
     var noteOn: (Pitch) -> Void
     var noteOff: (Pitch) -> Void
-    var rowCount: Int
+    var rowCount: Int = 1
     var layout: KeyboardLayout
 
     public init(pitchRange: ClosedRange<Pitch> = (Pitch(60)...Pitch(72)),
                 latching: Bool = false,
                 layout: KeyboardLayout = .piano,
-                rowCount: Int = 6,
                 noteOn: @escaping (Pitch) -> Void = { _ in },
                 noteOff: @escaping (Pitch) -> Void = { _ in },
                 @ViewBuilder content: @escaping (Pitch, Bool)->Content) {
@@ -25,7 +24,6 @@ public struct Keyboard<Content>: View where Content: View {
         self.layout = layout
         self.noteOn = noteOn
         self.noteOff = noteOff
-        self.rowCount = rowCount
         self.content = content
     }
 
@@ -83,7 +81,7 @@ public struct Keyboard<Content>: View where Content: View {
                     KeyContainer(model: model,
                                  pitch: Pitch(intValue: pitch.intValue + ((rowCount-row) * 5)),
                                  latching: latching,
-                                 layout: .guitar,
+                                 layout: .guitar(rowCount: rowCount),
                                  content: content)
                     }
                 }
@@ -156,18 +154,21 @@ extension Keyboard where Content == KeyboardKey {
     public init(pitchRange: ClosedRange<Pitch> = (Pitch(60)...Pitch(72)),
                 latching: Bool = false,
                 layout: KeyboardLayout = .piano,
-                rowCount: Int = 6,
                 noteOn: @escaping (Pitch) -> Void = { _ in },
                 noteOff: @escaping (Pitch) -> Void = { _ in }){
         self.pitchRange = pitchRange
         self.latching = latching
         self.layout = layout
-        self.rowCount = rowCount
         self.noteOn = noteOn
         self.noteOff = noteOff
+        switch layout {
+        case .guitar(let row):
+            self.rowCount = row
+        default:
+            self.rowCount = 1
+        }
         self.content = { KeyboardKey(pitch: $0, isActivated: $1, flatTop: layout == .piano) }
     }
-
 }
 
 struct Keyboard_Previews: PreviewProvider {
