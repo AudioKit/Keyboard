@@ -33,6 +33,9 @@ struct ContentView: View {
                 Keyboard(pitchRange: Pitch(12)...Pitch(84),
                          layout: .isomorphic,
                          noteOn: noteOn, noteOff: noteOff)
+                Keyboard(pitchRange: Pitch(24)...Pitch(64),
+                         layout: .guitar,
+                         noteOn: noteOn, noteOff: noteOff)
                 Keyboard(pitchRange: Pitch(48)...Pitch(65),
                          layout: .isomorphic) { pitch, isActivated in
                     KeyboardKey(pitch: pitch,
