@@ -16,8 +16,8 @@ struct ContentView: View {
         (0...12).map { _ in Color(red: Double.random(in: 0...1), green: Double.random(in: 0...1), blue: Double.random(in: 0...1), opacity: 1) }
     }()
 
-    @State var octave = 0
-    @State var range = 2
+    @State var lowNote = 24
+    @State var highNote = 48
 
     var body: some View {
         HStack {
@@ -25,10 +25,30 @@ struct ContentView: View {
                      layout: .pianoRoll).frame(width: 200)
             VStack {
                 HStack {
-                    Stepper("Starting Octave: \(octave)", onIncrement: { if octave + range < 9 { octave += 1 }}, onDecrement: { if octave > -1 { octave -= 1 }})
-                    Stepper("Number of Octaves: \(range)", onIncrement: { if range + octave < 9 { range += 1 }}, onDecrement: { if range > 1 { range -= 1 }})
+                    Stepper("Lowest Note: \(Pitch(intValue: lowNote).note(in: .C).description)",
+                            onIncrement: {
+                        if lowNote < 126 && highNote > lowNote + 12 {
+                            lowNote += 1
+                        }
+                    },
+                            onDecrement: {
+                        if lowNote > 0 {
+                            lowNote -= 1
+                        }
+                    })
+                    Stepper("Highest Note: \(Pitch(intValue: highNote).note(in: .C).description)",
+                            onIncrement: {
+                        if highNote < 126 {
+                            highNote += 1
+                        }},
+                            onDecrement: {
+                        if highNote > 1 && highNote > lowNote + 12 {
+                            highNote -= 1
+                        }
+
+                    })
                 }
-                Keyboard(pitchRange: Note(.C, octave: octave).pitch...Note(.C, octave: octave + range).pitch,
+                Keyboard(pitchRange: Pitch(intValue: lowNote)...Pitch(intValue: highNote),
                          noteOn: noteOn, noteOff: noteOff)
                 Keyboard(pitchRange: Pitch(12)...Pitch(84),
                          layout: .isomorphic,
