@@ -10,74 +10,24 @@ struct KeyContainer<Content: View>: View {
     @ObservedObject var model: KeyboardModel
 
     var latching: Bool
-    var layout: KeyboardLayout
+    var zIndex: Int
 
     init(model: KeyboardModel,
          pitch: Pitch,
+         zIndex: Int = 0,
          latching: Bool,
-         layout: KeyboardLayout = .piano,
          @ViewBuilder content: @escaping (Pitch, Bool)->Content) {
         self.model = model
         self.pitch = pitch
+        self.zIndex = zIndex
         self.latching = latching
-        self.layout = layout
         self.content = content
-    }
-
-    // Black keys on the piano are not exactly halfway between the white keys
-    let extraBlackKeySeparation = 0.15
-
-    func blackKeyOffset(_ semitoneLowerPitch: Pitch) -> Double {
-        switch semitoneLowerPitch.note(in: .C).letter {
-        case .C, .F:
-            return 0
-        case .D, .A:
-            return 2 * extraBlackKeySeparation
-        default:
-            return 1 * extraBlackKeySeparation
-        }
-    }
-
-    // Size of a black key compared to white key
-    let relativeSizeOfBlackKey = CGSize(width: 0.7, height: 0.58)
-
-    func blackKeyWidth(whiteKeyRect: CGRect) -> CGFloat {
-        whiteKeyRect.width * relativeSizeOfBlackKey.width
-    }
-
-    func blackKeyHeight(whiteKeyRect: CGRect) -> CGFloat {
-        whiteKeyRect.height * relativeSizeOfBlackKey.height
-    }
-
-    var isKeyOffset: Bool {
-        layout == .piano && pitch.note(in: .C).accidental != .natural
     }
 
     @GestureState var touchLocation: CGPoint?
 
     func rect(rect: CGRect) -> some View {
-        var modifiedRect = rect
-        if pitch.note(in: .C).accidental != .natural && layout == .piano {
-            // First translate it to right between the two adjacent white keys
-            modifiedRect = rect.offsetBy(dx: rect.width / 2, dy: 0)
-
-
-            modifiedRect = CGRect(x: modifiedRect.minX + blackKeyOffset(pitch) * modifiedRect.width,
-                                  y: modifiedRect.minY,
-                                  width: blackKeyWidth(whiteKeyRect: modifiedRect),
-                                  height: blackKeyHeight(whiteKeyRect: modifiedRect))
-        }
-
-        return HStack(spacing: 0) {
-            Spacer()
-                .frame(width: isKeyOffset ? modifiedRect.width * blackKeyOffset(pitch) : 0)
-            content(pitch, model.touchedPitches.contains(pitch) || model.externallyActivatedPitches.contains(pitch))
-            Spacer()
-                .frame(width: isKeyOffset ? modifiedRect.width * (2 * extraBlackKeySeparation - blackKeyOffset(pitch)) : 0)
-        }
-        .offset(x: isKeyOffset ? rect.width / 2 : 0)
-        .frame(height: rect.height * (isKeyOffset ? relativeSizeOfBlackKey.height : 1))
-
+        content(pitch, model.touchedPitches.contains(pitch) || model.externallyActivatedPitches.contains(pitch))
         .gesture(DragGesture(minimumDistance: 0, coordinateSpace: .global)
             .updating($touchLocation) { value, state, _ in
                 guard !latching else { return }
@@ -95,9 +45,9 @@ struct KeyContainer<Content: View>: View {
             })
         )
         .preference(key: KeyRectsKey.self,
-                    value: [KeyRectInfo(rect: modifiedRect,
+                    value: [KeyRectInfo(rect: rect,
                                         pitch: pitch,
-                                        zIndex: isKeyOffset ? 1 : 0)])
+                                        zIndex: zIndex)])
         .preference(key: TouchLocationsKey.self,
                     value: touchLocation != nil ? [touchLocation!] : [])
     }

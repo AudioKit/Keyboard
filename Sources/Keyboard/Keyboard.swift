@@ -62,7 +62,6 @@ public struct Keyboard<Content>: View where Content: View {
                 KeyContainer(model: model,
                              pitch: pitch,
                              latching: latching,
-                             layout: .isomorphic,
                              content: content)
             }
         }
@@ -81,7 +80,6 @@ public struct Keyboard<Content>: View where Content: View {
                     KeyContainer(model: model,
                                  pitch: Pitch(intValue: pitch.intValue + ((rowCount-row) * 5)),
                                  latching: latching,
-                                 layout: .guitar(rowCount: rowCount),
                                  content: content)
                     }
                 }
@@ -97,7 +95,6 @@ public struct Keyboard<Content>: View where Content: View {
                 KeyContainer(model: model,
                              pitch: pitch,
                              latching: latching,
-                             layout: .isomorphic,
                              content: content)
             }
         }
