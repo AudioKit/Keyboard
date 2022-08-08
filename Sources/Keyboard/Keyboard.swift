@@ -30,7 +30,7 @@ public struct Keyboard<Content>: View where Content: View {
     public var body: some View {
         Group {
             switch layout {
-            case .piano:      pianoBody
+            case .piano:      Piano(content: content, model: model, pitchRange: pitchRange, latching: latching)
             case .isomorphic: isomorphicBody
             case .guitar: guitarBody
             case .pianoRoll:  pianoRollBody
