@@ -33,7 +33,7 @@ struct ContentView: View {
                 Keyboard(pitchRange: Pitch(12)...Pitch(84),
                          layout: .isomorphic,
                          noteOn: noteOn, noteOff: noteOff)
-                Keyboard(pitchRange: Pitch(24)...Pitch(64),
+                Keyboard(pitchRange: Pitch(36)...Pitch(60),
                          layout: .guitar,
                          noteOn: noteOn, noteOff: noteOff)
                 Keyboard(pitchRange: Pitch(48)...Pitch(65),

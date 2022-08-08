@@ -79,7 +79,7 @@ public struct Keyboard<Content>: View where Content: View {
         HStack(spacing: 0) {
             ForEach(pitchRange, id: \.self) { pitch in
                 VStack(spacing: 0){
-                    ForEach(0...rows, id: \.self) { row in
+                    ForEach(1...rows, id: \.self) { row in
                     KeyContainer(model: model,
                                  pitch: Pitch(intValue: pitch.intValue + ((rows-row) * 5)),
                                  latching: latching,
