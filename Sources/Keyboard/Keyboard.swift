@@ -10,22 +10,22 @@ public struct Keyboard<Content>: View where Content: View {
     var latching: Bool
     var noteOn: (Pitch) -> Void
     var noteOff: (Pitch) -> Void
-    var rows: Int
+    var rowCount: Int
     var layout: KeyboardLayout
 
     public init(pitchRange: ClosedRange<Pitch> = (Pitch(60)...Pitch(72)),
                 latching: Bool = false,
                 layout: KeyboardLayout = .piano,
+                rowCount: Int = 6,
                 noteOn: @escaping (Pitch) -> Void = { _ in },
                 noteOff: @escaping (Pitch) -> Void = { _ in },
-                rows: Int = 6,
                 @ViewBuilder content: @escaping (Pitch, Bool)->Content) {
         self.pitchRange = pitchRange
         self.latching = latching
         self.layout = layout
         self.noteOn = noteOn
         self.noteOff = noteOff
-        self.rows = rows
+        self.rowCount = rowCount
         self.content = content
     }
 
@@ -79,9 +79,9 @@ public struct Keyboard<Content>: View where Content: View {
         HStack(spacing: 0) {
             ForEach(pitchRange, id: \.self) { pitch in
                 VStack(spacing: 0){
-                    ForEach(1...rows, id: \.self) { row in
+                    ForEach(1...rowCount, id: \.self) { row in
                     KeyContainer(model: model,
-                                 pitch: Pitch(intValue: pitch.intValue + ((rows-row) * 5)),
+                                 pitch: Pitch(intValue: pitch.intValue + ((rowCount-row) * 5)),
                                  latching: latching,
                                  layout: .guitar,
                                  content: content)
@@ -156,15 +156,15 @@ extension Keyboard where Content == KeyboardKey {
     public init(pitchRange: ClosedRange<Pitch> = (Pitch(60)...Pitch(72)),
                 latching: Bool = false,
                 layout: KeyboardLayout = .piano,
+                rowCount: Int = 6,
                 noteOn: @escaping (Pitch) -> Void = { _ in },
-                noteOff: @escaping (Pitch) -> Void = { _ in },
-                rows: Int = 6){
+                noteOff: @escaping (Pitch) -> Void = { _ in }){
         self.pitchRange = pitchRange
         self.latching = latching
         self.layout = layout
+        self.rowCount = rowCount
         self.noteOn = noteOn
         self.noteOff = noteOff
-        self.rows = rows
         self.content = { KeyboardKey(pitch: $0, isActivated: $1, flatTop: layout == .piano) }
     }
 
