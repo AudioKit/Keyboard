@@ -112,7 +112,7 @@ struct Piano<Content>: View where Content: View {
                     // This space pushes the black keys up.
                     // XXX: perhaps we should give the user control of
                     //      the spacing.
-                    Spacer().frame(height: geo.size.height * 0.4)
+                    Spacer().frame(height: geo.size.height * 0.47)
                 }
             }
         }
