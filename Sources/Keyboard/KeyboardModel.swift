@@ -23,7 +23,9 @@ class KeyboardModel: ObservableObject {
                     newPitches.add(p)
                 }
             }
-            touchedPitches = newPitches
+            if touchedPitches != newPitches {
+                touchedPitches = newPitches
+            }
         }
     }
 
