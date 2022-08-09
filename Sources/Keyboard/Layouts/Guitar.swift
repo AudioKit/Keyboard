@@ -16,7 +16,7 @@ struct Guitar<Content>: View where Content: View {
         VStack(spacing: 0) {
             ForEach(0..<openPitches.count, id: \.self) { string in
                 HStack(spacing: 0){
-                    ForEach(0..<fretCount, id: \.self) { fret in
+                    ForEach(0..<fretCount + 1, id: \.self) { fret in
                     KeyContainer(model: model,
                                  pitch: Pitch(intValue: openPitches[string].intValue + fret),
                                  latching: latching,

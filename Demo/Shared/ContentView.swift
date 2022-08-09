@@ -53,7 +53,7 @@ struct ContentView: View {
                 Keyboard(pitchRange: Pitch(12)...Pitch(84),
                          layout: .isomorphic,
                          noteOn: noteOn, noteOff: noteOff)
-                Keyboard(layout: .guitar(openPitches: [Pitch(64), Pitch(59), Pitch(55), Pitch(50), Pitch(45), Pitch(40)], fretcount: 12),
+                Keyboard(layout: .guitar(openPitches: [Pitch(64), Pitch(59), Pitch(55), Pitch(50), Pitch(45), Pitch(40)], fretcount: 22),
                          noteOn: noteOn, noteOff: noteOff)
                 Keyboard(pitchRange: Pitch(48)...Pitch(65),
                          layout: .isomorphic) { pitch, isActivated in
