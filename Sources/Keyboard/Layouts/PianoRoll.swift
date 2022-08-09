@@ -2,8 +2,7 @@ import SwiftUI
 import Tonic
 
 struct PianoRoll<Content>: View where Content: View {
-
-    let content: (Pitch, Bool)->Content
+    let content: (Pitch, Bool) -> Content
     var model: KeyboardModel
     var pitchRange: ClosedRange<Pitch>
     var latching: Bool
@@ -21,4 +20,3 @@ struct PianoRoll<Content>: View where Content: View {
         .clipShape(Rectangle())
     }
 }
-

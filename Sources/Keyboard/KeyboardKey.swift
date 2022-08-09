@@ -3,8 +3,6 @@ import Tonic
 
 /// A default visual representation for a key.
 public struct KeyboardKey: View {
-
-
     /// Initialize the keyboard key
     /// - Parameters:
     ///   - pitch: Pitch assigned to the key
@@ -20,7 +18,8 @@ public struct KeyboardKey: View {
                 pressedColor: Color = .red,
                 flatTop: Bool = false,
                 alignment: Alignment = .bottom,
-                isActivatedExternally: Bool = false) {
+                isActivatedExternally: Bool = false)
+    {
         self.pitch = pitch
         self.isActivated = isActivated
         if text == "unset" {
@@ -78,7 +77,7 @@ public struct KeyboardKey: View {
 
     let relativeTextPadding = 0.05
 
-    func relativeCornerRadius(in containerSize: CGSize)-> CGFloat {
+    func relativeCornerRadius(in containerSize: CGSize) -> CGFloat {
         minDimension(containerSize) * 0.125
     }
 
@@ -89,14 +88,13 @@ public struct KeyboardKey: View {
                     .foregroundColor(keyColor)
                     .padding(.top, flatTop ? relativeCornerRadius(in: proxy.size) : 0)
                     .cornerRadius(relativeCornerRadius(in: proxy.size))
-                    .padding(.top, flatTop ? -relativeCornerRadius(in: proxy.size): 1)
+                    .padding(.top, flatTop ? -relativeCornerRadius(in: proxy.size) : 1)
                     .padding(.trailing, 1)
                 Text(text)
                     .font(Font(.init(.system, size: relativeFontSize(in: proxy.size))))
                     .foregroundColor(textColor)
                     .padding(relativeFontSize(in: proxy.size) / 3.0)
             }
-
         }
     }
 }

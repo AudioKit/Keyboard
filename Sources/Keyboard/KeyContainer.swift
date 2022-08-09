@@ -4,8 +4,8 @@ import Tonic
 /// This handles the interaction for key, so the user can provide their own
 /// visual representation.
 struct KeyContainer<Content: View>: View {
-    let content: (Pitch, Bool)->Content
-    
+    let content: (Pitch, Bool) -> Content
+
     var pitch: Pitch
     @ObservedObject var model: KeyboardModel
 
@@ -16,7 +16,8 @@ struct KeyContainer<Content: View>: View {
          pitch: Pitch,
          zIndex: Int = 0,
          latching: Bool,
-         @ViewBuilder content: @escaping (Pitch, Bool)->Content) {
+         @ViewBuilder content: @escaping (Pitch, Bool) -> Content)
+    {
         self.model = model
         self.pitch = pitch
         self.zIndex = zIndex
@@ -36,14 +37,14 @@ struct KeyContainer<Content: View>: View {
                 }
             )
             .simultaneousGesture(
-                TapGesture().onEnded({ _ in
+                TapGesture().onEnded { _ in
                     guard latching else { return }
                     if model.externallyActivatedPitches.contains(pitch) {
                         model.externallyActivatedPitches.remove(pitch)
                     } else {
                         model.externallyActivatedPitches.add(pitch)
                     }
-                })
+                }
             )
             .preference(key: KeyRectsKey.self,
                         value: [KeyRectInfo(rect: rect,

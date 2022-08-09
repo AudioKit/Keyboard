@@ -2,8 +2,7 @@ import SwiftUI
 import Tonic
 
 struct Piano<Content>: View where Content: View {
-
-    let content: (Pitch, Bool)->Content
+    let content: (Pitch, Bool) -> Content
     var model: KeyboardModel
     var pitchRange: ClosedRange<Pitch>
     var latching: Bool
@@ -26,7 +25,6 @@ struct Piano<Content>: View where Content: View {
     var initialSpacer: CGFloat {
         let note = pitchRangeBoundedByNaturals.lowerBound.note(in: .C)
         switch note.letter {
-
         case .C:
             return 0.0
         case .D:
@@ -55,7 +53,7 @@ struct Piano<Content>: View where Content: View {
     }
 
     func whiteKeyWidth(size: CGSize) -> CGFloat {
-        size.width / (CGFloat(whiteKeys.count))
+        size.width / CGFloat(whiteKeys.count)
     }
 
     var relativeBlackKeyWidth: CGFloat { 9.0 / 16.0 }
@@ -73,7 +71,7 @@ struct Piano<Content>: View where Content: View {
         if upperBound.note(in: .C).accidental != .natural {
             upperBound = Pitch(intValue: upperBound.intValue + 1)
         }
-        return lowerBound...upperBound
+        return lowerBound ... upperBound
     }
 
     var body: some View {
@@ -85,7 +83,7 @@ struct Piano<Content>: View where Content: View {
                                      pitch: pitch,
                                      latching: latching,
                                      content: content)
-                        .frame(width: whiteKeyWidth(size: geo.size))
+                            .frame(width: whiteKeyWidth(size: geo.size))
                     }
                 }
 
@@ -103,13 +101,12 @@ struct Piano<Content>: View where Content: View {
                                              zIndex: 1,
                                              latching: latching,
                                              content: content)
-                                .frame(width: blackKeyWidth(size: geo.size))
+                                    .frame(width: blackKeyWidth(size: geo.size))
                             } else {
                                 Rectangle().opacity(0)
                                     .frame(width: whiteKeyWidth(size: geo.size) * space(pitch: pitch))
                             }
                         }
-
                     }
 
                     // This space pushes the black keys up.
@@ -123,4 +120,3 @@ struct Piano<Content>: View where Content: View {
         .clipShape(Rectangle())
     }
 }
-

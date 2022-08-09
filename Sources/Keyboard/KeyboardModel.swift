@@ -2,7 +2,6 @@ import SwiftUI
 import Tonic
 
 class KeyboardModel: ObservableObject {
-
     var keyRectInfos: [KeyRectInfo] = []
     var noteOn: (Pitch) -> Void = { _ in }
     var noteOff: (Pitch) -> Void = { _ in }
@@ -11,11 +10,11 @@ class KeyboardModel: ObservableObject {
         didSet {
             var newPitches = PitchSet()
             for location in touchLocations {
-                var pitch: Pitch? = nil
+                var pitch: Pitch?
                 var highestZindex = -1
                 for info in keyRectInfos where info.rect.contains(location) {
                     if pitch == nil || info.zIndex > highestZindex {
-                        pitch  = info.pitch
+                        pitch = info.pitch
                         highestZindex = info.zIndex
                     }
                 }

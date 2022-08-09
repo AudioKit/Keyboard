@@ -1,10 +1,9 @@
-import XCTest
 @testable import Keyboard
 import Tonic
+import XCTest
 
 final class KeyboardTests: XCTestCase {
     func testKeyboardModel() throws {
-
         let model = KeyboardModel()
 
         model.keyRectInfos = [KeyRectInfo(rect: CGRect(origin: CGPoint.zero, size: CGSize(width: 100, height: 100)), pitch: Pitch(60))]
@@ -35,12 +34,11 @@ final class KeyboardTests: XCTestCase {
     }
 
     func testKeyboardModelZIndex() throws {
-
         let model = KeyboardModel()
 
         model.keyRectInfos = [
             KeyRectInfo(rect: CGRect(origin: CGPoint.zero, size: CGSize(width: 100, height: 100)), pitch: Pitch(60)),
-            KeyRectInfo(rect: CGRect(origin: CGPoint.zero, size: CGSize(width: 100, height: 100)), pitch: Pitch(61), zIndex: 1)
+            KeyRectInfo(rect: CGRect(origin: CGPoint.zero, size: CGSize(width: 100, height: 100)), pitch: Pitch(61), zIndex: 1),
         ]
 
         var testPitch: Pitch?
