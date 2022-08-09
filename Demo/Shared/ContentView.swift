@@ -54,7 +54,13 @@ struct ContentView: View {
                          layout: .isomorphic,
                          noteOn: noteOn, noteOff: noteOff)
                 Keyboard(layout: .guitar(openPitches: [Pitch(64), Pitch(59), Pitch(55), Pitch(50), Pitch(45), Pitch(40)], fretcount: 22),
-                         noteOn: noteOn, noteOff: noteOff)
+                         noteOn: noteOn, noteOff: noteOff) { pitch, isActivated in
+                    KeyboardKey(pitch: pitch,
+                                isActivated: isActivated,
+                                text: pitch.note(in: .F).description,
+                                pressedColor: Color(PitchColor.newtonian[Int(pitch.pitchClass)]),
+                                alignment: .center)
+                }
                 Keyboard(pitchRange: Pitch(48)...Pitch(65),
                          layout: .isomorphic) { pitch, isActivated in
                     KeyboardKey(pitch: pitch,

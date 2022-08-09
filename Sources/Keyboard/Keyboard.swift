@@ -12,10 +12,6 @@ public struct Keyboard<Content>: View where Content: View {
     var noteOff: (Pitch) -> Void
     var layout: KeyboardLayout
 
-    // For guitar
-    var openPitches: [Pitch] = []
-    var fretCount: Int = 0
-
     public init(pitchRange: ClosedRange<Pitch> = (Pitch(60)...Pitch(72)),
                 latching: Bool = false,
                 layout: KeyboardLayout = .piano,
@@ -68,14 +64,12 @@ extension Keyboard where Content == KeyboardKey {
         self.noteOff = noteOff
         var alignment: Alignment = .bottom
         switch layout {
-        case .guitar(let openPitches, let fretCount):
-            self.openPitches = openPitches
-            self.fretCount = fretCount
+        case .guitar(_, _):
             alignment = .center
         case .pianoRoll:
             alignment = .trailing
         default:
-            self.fretCount = 0
+            alignment = .bottom
 
         }
         self.content = { KeyboardKey(pitch: $0, isActivated: $1, flatTop: layout == .piano, alignment: alignment) }
