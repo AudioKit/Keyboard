@@ -21,8 +21,7 @@ struct ContentView: View {
 
     var body: some View {
         HStack {
-            Keyboard(pitchRange: Pitch(48)...Pitch(77),
-                     layout: .pianoRoll).frame(width: 200)
+            Keyboard(layout: .pianoRoll(pitchRange: Pitch(48)...Pitch(77))).frame(width: 200)
             VStack {
                 HStack {
                     Stepper("Lowest Note: \(Pitch(intValue: lowNote).note(in: .C).description)",
@@ -48,10 +47,9 @@ struct ContentView: View {
 
                     })
                 }
-                Keyboard(pitchRange: Pitch(intValue: lowNote)...Pitch(intValue: highNote),
+                Keyboard(layout: .piano(pitchRange: Pitch(intValue: lowNote)...Pitch(intValue: highNote)),
                          noteOn: noteOn, noteOff: noteOff)
-                Keyboard(pitchRange: Pitch(12)...Pitch(84),
-                         layout: .isomorphic,
+                Keyboard(layout: .isomorphic(pitchRange: Pitch(12)...Pitch(84)),
                          noteOn: noteOn, noteOff: noteOff)
                 Keyboard(layout: .guitar(openPitches: [Pitch(64), Pitch(59), Pitch(55), Pitch(50), Pitch(45), Pitch(40)], fretcount: 22),
                          noteOn: noteOn, noteOff: noteOff) { pitch, isActivated in
@@ -61,8 +59,7 @@ struct ContentView: View {
                                 pressedColor: Color(PitchColor.newtonian[Int(pitch.pitchClass)]),
                                 alignment: .center)
                 }
-                Keyboard(pitchRange: Pitch(48)...Pitch(65),
-                         layout: .isomorphic) { pitch, isActivated in
+                Keyboard(layout: .isomorphic(pitchRange: Pitch(48)...Pitch(65))) { pitch, isActivated in
                     KeyboardKey(pitch: pitch,
                                 isActivated: isActivated,
                                 text: pitch.note(in: .F).description,
