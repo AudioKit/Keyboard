@@ -28,28 +28,29 @@ struct KeyContainer<Content: View>: View {
 
     func rect(rect: CGRect) -> some View {
         content(pitch, model.touchedPitches.contains(pitch) || model.externallyActivatedPitches.contains(pitch))
-        .gesture(DragGesture(minimumDistance: 0, coordinateSpace: .global)
-            .updating($touchLocation) { value, state, _ in
-                guard !latching else { return }
-                state = value.location
-            }
-        )
-        .simultaneousGesture(
-            TapGesture().onEnded({ _ in
-                guard latching else { return }
-                if model.externallyActivatedPitches.contains(pitch) {
-                    model.externallyActivatedPitches.remove(pitch)
-                } else {
-                    model.externallyActivatedPitches.add(pitch)
+            .contentShape(Rectangle()) // Added to improve tap/click reliability
+            .gesture(DragGesture(minimumDistance: 0, coordinateSpace: .global)
+                .updating($touchLocation) { value, state, _ in
+                    guard !latching else { return }
+                    state = value.location
                 }
-            })
-        )
-        .preference(key: KeyRectsKey.self,
-                    value: [KeyRectInfo(rect: rect,
-                                        pitch: pitch,
-                                        zIndex: zIndex)])
-        .preference(key: TouchLocationsKey.self,
-                    value: touchLocation != nil ? [touchLocation!] : [])
+            )
+            .simultaneousGesture(
+                TapGesture().onEnded({ _ in
+                    guard latching else { return }
+                    if model.externallyActivatedPitches.contains(pitch) {
+                        model.externallyActivatedPitches.remove(pitch)
+                    } else {
+                        model.externallyActivatedPitches.add(pitch)
+                    }
+                })
+            )
+            .preference(key: KeyRectsKey.self,
+                        value: [KeyRectInfo(rect: rect,
+                                            pitch: pitch,
+                                            zIndex: zIndex)])
+            .preference(key: TouchLocationsKey.self,
+                        value: touchLocation != nil ? [touchLocation!] : [])
     }
 
     public var body: some View {
