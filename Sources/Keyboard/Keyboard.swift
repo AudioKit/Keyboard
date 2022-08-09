@@ -30,62 +30,24 @@ public struct Keyboard<Content>: View where Content: View {
     public var body: some View {
         Group {
             switch layout {
-            case .piano:      Piano(content: content, model: model, pitchRange: pitchRange, latching: latching)
-            case .isomorphic: isomorphicBody
-            case .guitar: guitarBody
-            case .pianoRoll:  pianoRollBody
+            case .piano:
+                Piano(content: content, model: model, pitchRange: pitchRange, latching: latching)
+            case .isomorphic:
+                Isomorphic(content: content, model: model, pitchRange: pitchRange, latching: latching)
+            case .guitar:
+                Guitar(content: content, model: model, pitchRange: pitchRange, rowCount: rowCount, latching: latching)
+            case .pianoRoll:
+                PianoRoll(content: content, model: model, pitchRange: pitchRange, latching: latching)
             }
+
         }.onPreferenceChange(TouchLocationsKey.self) { touchLocations in
             model.touchLocations = touchLocations
         }.onPreferenceChange(KeyRectsKey.self) { keyRectInfos in
             model.keyRectInfos = keyRectInfos
+        }.onAppear {
+            model.noteOn = noteOn
+            model.noteOff = noteOff
         }
-    }
-
-    var isomorphicBody: some View {
-        HStack(spacing: 0) {
-            ForEach(pitchRange, id: \.self) { pitch in
-                KeyContainer(model: model,
-                             pitch: pitch,
-                             latching: latching,
-                             content: content)
-            }
-        }
-        .frame(minWidth: 100, minHeight: 100)
-        .clipShape(Rectangle())
-    }
-    
-    var guitarBody: some View {
-        //Loop through the keys and add rows (strings)
-        //Each row has a 5 note offset tuning them to 4ths
-        //The pitchRange is for the lowest row (string)
-        HStack(spacing: 0) {
-            ForEach(pitchRange, id: \.self) { pitch in
-                VStack(spacing: 0){
-                    ForEach(1...rowCount, id: \.self) { row in
-                    KeyContainer(model: model,
-                                 pitch: Pitch(intValue: pitch.intValue + ((rowCount-row) * 5)),
-                                 latching: latching,
-                                 content: content)
-                    }
-                }
-            }
-        }
-        .frame(minWidth: 100, minHeight: 100)
-        .clipShape(Rectangle())
-    }
-
-    var pianoRollBody: some View {
-        VStack(spacing: 0) {
-            ForEach(pitchRange, id: \.self) { pitch in
-                KeyContainer(model: model,
-                             pitch: pitch,
-                             latching: latching,
-                             content: content)
-            }
-        }
-        .frame(minWidth: 100, minHeight: 100)
-        .clipShape(Rectangle())
     }
 }
 
