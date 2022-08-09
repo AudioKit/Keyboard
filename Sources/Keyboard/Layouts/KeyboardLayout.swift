@@ -1,4 +1,5 @@
 import SwiftUI
+import Tonic
 
 /// Types of keyboards we can generate
 public enum KeyboardLayout: Equatable, Hashable  {
@@ -8,8 +9,8 @@ public enum KeyboardLayout: Equatable, Hashable  {
     /// All notes linearly right after one another
     case isomorphic
     
-    /// Notes in 4ths layout with rows and columns
-    case guitar(rowCount: Int)
+    /// Guitar in arbitrary tuning, from first string (highest) to loweset string
+    case guitar(openPitches: [Pitch], fretcount: Int)
 
     /// Vertical isomorphic
     case pianoRoll

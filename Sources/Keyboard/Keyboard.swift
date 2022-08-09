@@ -10,8 +10,11 @@ public struct Keyboard<Content>: View where Content: View {
     var latching: Bool
     var noteOn: (Pitch) -> Void
     var noteOff: (Pitch) -> Void
-    var rowCount: Int = 1
     var layout: KeyboardLayout
+
+    // For guitar
+    var openPitches: [Pitch] = []
+    var fretCount: Int = 0
 
     public init(pitchRange: ClosedRange<Pitch> = (Pitch(60)...Pitch(72)),
                 latching: Bool = false,
@@ -35,7 +38,7 @@ public struct Keyboard<Content>: View where Content: View {
             case .isomorphic:
                 Isomorphic(content: content, model: model, pitchRange: pitchRange, latching: latching)
             case .guitar:
-                Guitar(content: content, model: model, pitchRange: pitchRange, rowCount: rowCount, latching: latching)
+                Guitar(content: content, model: model, openPitches: openPitches, fretCount: fretCount, latching: latching)
             case .pianoRoll:
                 PianoRoll(content: content, model: model, pitchRange: pitchRange, latching: latching)
             }
@@ -65,13 +68,14 @@ extension Keyboard where Content == KeyboardKey {
         self.noteOff = noteOff
         var alignment: Alignment = .bottom
         switch layout {
-        case .guitar(let row):
-            self.rowCount = row
+        case .guitar(let openPitches, let fretCount):
+            self.openPitches = openPitches
+            self.fretCount = fretCount
             alignment = .center
         case .pianoRoll:
             alignment = .trailing
         default:
-            self.rowCount = 1
+            self.fretCount = 0
 
         }
         self.content = { KeyboardKey(pitch: $0, isActivated: $1, flatTop: layout == .piano, alignment: alignment) }
