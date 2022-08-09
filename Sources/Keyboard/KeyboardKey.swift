@@ -19,6 +19,7 @@ public struct KeyboardKey: View {
                 blackKeyColor: Color = .black,
                 pressedColor: Color = .red,
                 flatTop: Bool = false,
+                alignment: Alignment = .bottom,
                 isActivatedExternally: Bool = false) {
         self.pitch = pitch
         self.isActivated = isActivated
@@ -37,6 +38,7 @@ public struct KeyboardKey: View {
         self.blackKeyColor = blackKeyColor
         self.pressedColor = pressedColor
         self.flatTop = flatTop
+        self.alignment = alignment
         self.isActivatedExternally = isActivatedExternally
     }
 
@@ -46,6 +48,7 @@ public struct KeyboardKey: View {
     var blackKeyColor: Color
     var pressedColor: Color
     var flatTop: Bool
+    var alignment: Alignment
     var text: String
     var isActivatedExternally: Bool
 
@@ -81,7 +84,7 @@ public struct KeyboardKey: View {
 
     public var body: some View {
         GeometryReader { proxy in
-            ZStack(alignment: proxy.size.height > proxy.size.width ? .bottom : .trailing) {
+            ZStack(alignment: alignment) {
                 Rectangle()
                     .foregroundColor(keyColor)
                     .padding(.top, flatTop ? relativeCornerRadius(in: proxy.size) : 0)
@@ -91,9 +94,7 @@ public struct KeyboardKey: View {
                 Text(text)
                     .font(Font(.init(.system, size: relativeFontSize(in: proxy.size))))
                     .foregroundColor(textColor)
-                    .padding(EdgeInsets(top: 0, leading: 0,
-                                        bottom: isTall(size: proxy.size) ? proxy.size.height * relativeTextPadding : 0,
-                                        trailing: isTall(size: proxy.size) ? 0 : proxy.size.width * relativeTextPadding))
+                    .padding(relativeFontSize(in: proxy.size) / 3.0)
             }
 
         }

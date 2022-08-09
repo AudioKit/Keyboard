@@ -63,20 +63,17 @@ extension Keyboard where Content == KeyboardKey {
         self.layout = layout
         self.noteOn = noteOn
         self.noteOff = noteOff
+        var alignment: Alignment = .bottom
         switch layout {
         case .guitar(let row):
             self.rowCount = row
+            alignment = .center
+        case .pianoRoll:
+            alignment = .trailing
         default:
             self.rowCount = 1
-        }
-        self.content = { KeyboardKey(pitch: $0, isActivated: $1, flatTop: layout == .piano) }
-    }
-}
 
-struct Keyboard_Previews: PreviewProvider {
-    static var previews: some View {
-        Keyboard() { pitch, isActivated in
-            KeyboardKey(pitch: pitch, isActivated: isActivated)
         }
+        self.content = { KeyboardKey(pitch: $0, isActivated: $1, flatTop: layout == .piano, alignment: alignment) }
     }
 }
