@@ -16,7 +16,6 @@ struct Isomorphic<Content>: View where Content: View {
                              content: content)
             }
         }
-        .frame(minWidth: 100, minHeight: 100)
         .clipShape(Rectangle())
     }
 }
