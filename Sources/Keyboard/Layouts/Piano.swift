@@ -116,7 +116,6 @@ struct Piano<Content>: View where Content: View {
                 }
             }
         }
-        .frame(minWidth: 100, minHeight: 100)
         .clipShape(Rectangle())
     }
 }

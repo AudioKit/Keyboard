@@ -51,8 +51,12 @@ struct ContentView: View {
                 }
                 Keyboard(layout: .piano(pitchRange: Pitch(intValue: lowNote) ... Pitch(intValue: highNote)),
                          noteOn: noteOn, noteOff: noteOff)
+                .frame(minWidth: 100, minHeight: 100)
+                
                 Keyboard(layout: .isomorphic(pitchRange: Pitch(12) ... Pitch(84)),
                          noteOn: noteOn, noteOff: noteOff)
+                .frame(minWidth: 100, minHeight: 100)
+                
                 Keyboard(layout: .guitar(openPitches: [Pitch(64), Pitch(59), Pitch(55), Pitch(50), Pitch(45), Pitch(40)], fretcount: 22),
                          noteOn: noteOn, noteOff: noteOff) { pitch, isActivated in
                     KeyboardKey(pitch: pitch,
@@ -61,12 +65,16 @@ struct ContentView: View {
                                 pressedColor: Color(PitchColor.newtonian[Int(pitch.pitchClass)]),
                                 alignment: .center)
                 }
+                .frame(minWidth: 100, minHeight: 100)
+                
                 Keyboard(layout: .isomorphic(pitchRange: Pitch(48) ... Pitch(65))) { pitch, isActivated in
                     KeyboardKey(pitch: pitch,
                                 isActivated: isActivated,
                                 text: pitch.note(in: .F).description,
                                 pressedColor: Color(PitchColor.newtonian[Int(pitch.pitchClass)]))
                 }
+                .frame(minWidth: 100, minHeight: 100)
+                
                 Keyboard(latching: true, noteOn: noteOn, noteOff: noteOff) { pitch, isActivated in
                     if isActivated {
                         ZStack {
@@ -81,6 +89,7 @@ struct ContentView: View {
                         Rectangle().foregroundColor(randomColors[Int(pitch.intValue) % 12])
                     }
                 }
+                .frame(minWidth: 100, minHeight: 100)
             }
         }
     }
