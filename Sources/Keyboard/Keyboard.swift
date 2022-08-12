@@ -7,14 +7,14 @@ public struct Keyboard<Content>: View where Content: View {
     @StateObject var model: KeyboardModel = .init()
 
     var latching: Bool
-    var noteOn: (Pitch) -> Void
+    var noteOn: (Pitch, CGPoint) -> Void
     var noteOff: (Pitch) -> Void
     var layout: KeyboardLayout
 
     public init(layout: KeyboardLayout = .piano(pitchRange: Pitch(60) ... Pitch(72)),
                 latching: Bool = false,
 
-                noteOn: @escaping (Pitch) -> Void = { _ in },
+                noteOn: @escaping (Pitch, CGPoint) -> Void = { _, _ in },
                 noteOff: @escaping (Pitch) -> Void = { _ in },
                 @ViewBuilder content: @escaping (Pitch, Bool) -> Content)
     {
@@ -52,7 +52,7 @@ public struct Keyboard<Content>: View where Content: View {
 public extension Keyboard where Content == KeyboardKey {
     init(layout: KeyboardLayout = .piano(pitchRange: Pitch(60) ... Pitch(72)),
          latching: Bool = false,
-         noteOn: @escaping (Pitch) -> Void = { _ in },
+         noteOn: @escaping (Pitch, CGPoint) -> Void = { _, _ in },
          noteOff: @escaping (Pitch) -> Void = { _ in })
     {
         self.layout = layout

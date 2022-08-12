@@ -3,8 +3,9 @@ import Tonic
 
 class KeyboardModel: ObservableObject {
     var keyRectInfos: [KeyRectInfo] = []
-    var noteOn: (Pitch) -> Void = { _ in }
+    var noteOn: (Pitch, CGPoint) -> Void = { _, _ in }
     var noteOff: (Pitch) -> Void = { _ in }
+    var normalizedPoints = Array(repeating: CGPoint.zero, count: 128)
 
     var touchLocations: [CGPoint] = [] {
         didSet {
@@ -12,14 +13,18 @@ class KeyboardModel: ObservableObject {
             for location in touchLocations {
                 var pitch: Pitch?
                 var highestZindex = -1
+                var normalizedPoint = CGPoint.zero
                 for info in keyRectInfos where info.rect.contains(location) {
                     if pitch == nil || info.zIndex > highestZindex {
                         pitch = info.pitch
                         highestZindex = info.zIndex
+                        normalizedPoint = CGPoint(x: (location.x - info.rect.minX) / info.rect.width,
+                                                  y: (location.y - info.rect.minY) / info.rect.height)
                     }
                 }
                 if let p = pitch {
                     newPitches.add(p)
+                    normalizedPoints[p.intValue] = normalizedPoint
                 }
             }
             if touchedPitches.array != newPitches.array {
@@ -46,7 +51,7 @@ class KeyboardModel: ObservableObject {
         }
 
         for pitch in newPitches.array {
-            noteOn(pitch)
+            noteOn(pitch, normalizedPoints[pitch.intValue])
         }
     }
 }

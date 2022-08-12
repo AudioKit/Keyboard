@@ -3,13 +3,24 @@ import SwiftUI
 import Tonic
 
 struct ContentView: View {
-    func noteOn(pitch: Pitch) {
+
+    func noteOn(pitch: Pitch, point: CGPoint) {
         print("note on \(pitch)")
     }
 
     func noteOff(pitch: Pitch) {
         print("note off \(pitch)")
     }
+
+
+    func noteOnWithVerticalVelocity(pitch: Pitch, point: CGPoint) {
+        print("note on \(pitch), midiVelocity: \(Int(point.y * 127))")
+    }
+
+    func noteOnWithReversedVerticalVelocity(pitch: Pitch, point: CGPoint) {
+        print("note on \(pitch), midiVelocity: \(Int((1.0 - point.y) * 127))")
+    }
+
 
     var randomColors: [Color] = (0 ... 12).map { _ in
         Color(red: Double.random(in: 0 ... 1),
@@ -50,11 +61,11 @@ struct ContentView: View {
                             })
                 }
                 Keyboard(layout: .piano(pitchRange: Pitch(intValue: lowNote) ... Pitch(intValue: highNote)),
-                         noteOn: noteOn, noteOff: noteOff)
+                         noteOn: noteOnWithVerticalVelocity(pitch:point:), noteOff: noteOff)
                 .frame(minWidth: 100, minHeight: 100)
 
                 Keyboard(layout: .isomorphic(pitchRange: Pitch(12) ... Pitch(84)),
-                         noteOn: noteOn, noteOff: noteOff)
+                         noteOn: noteOnWithReversedVerticalVelocity(pitch:point:), noteOff: noteOff)
                 .frame(minWidth: 100, minHeight: 100)
 
                 Keyboard(layout: .guitar(openPitches: [Pitch(64), Pitch(59), Pitch(55), Pitch(50), Pitch(45), Pitch(40)], fretcount: 22),
