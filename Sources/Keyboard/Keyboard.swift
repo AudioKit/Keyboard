@@ -1,6 +1,7 @@
 import SwiftUI
 import Tonic
 
+/// Touch-oriented musical keyboard
 public struct Keyboard<Content>: View where Content: View {
     let content: (Pitch, Bool) -> Content
 
@@ -11,6 +12,13 @@ public struct Keyboard<Content>: View where Content: View {
     var noteOff: (Pitch) -> Void
     var layout: KeyboardLayout
 
+    /// Initialize the keyboard
+    /// - Parameters:
+    ///   - layout: The geometry of the keys
+    ///   - latching: Latched keys stay on until they are pressed again
+    ///   - noteOn: Closure to perform when a key is pressed
+    ///   - noteOff: Closure to perform when a note ends
+    ///   - content: View defining how to render a specific key
     public init(layout: KeyboardLayout = .piano(pitchRange: Pitch(60) ... Pitch(72)),
                 latching: Bool = false,
 
@@ -25,6 +33,7 @@ public struct Keyboard<Content>: View where Content: View {
         self.content = content
     }
 
+    /// Body enclosing the various layout views
     public var body: some View {
         Group {
             switch layout {
@@ -50,6 +59,12 @@ public struct Keyboard<Content>: View where Content: View {
 }
 
 public extension Keyboard where Content == KeyboardKey {
+    /// Initialize the Keyboard with KeyboardKey as its content
+    /// - Parameters:
+    ///   - layout: The geometry of the keys
+    ///   - latching: Latched keys stay on until they are pressed again
+    ///   - noteOn: Closure to perform when a key is pressed
+    ///   - noteOff: Closure to perform when a note ends
     init(layout: KeyboardLayout = .piano(pitchRange: Pitch(60) ... Pitch(72)),
          latching: Bool = false,
          noteOn: @escaping (Pitch, CGPoint) -> Void = { _, _ in },
