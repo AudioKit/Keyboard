@@ -9,19 +9,16 @@ struct KeyContainer<Content: View>: View {
     var pitch: Pitch
     @ObservedObject var model: KeyboardModel
 
-    var latching: Bool
     var zIndex: Int
 
     init(model: KeyboardModel,
          pitch: Pitch,
          zIndex: Int = 0,
-         latching: Bool,
          @ViewBuilder content: @escaping (Pitch, Bool) -> Content)
     {
         self.model = model
         self.pitch = pitch
         self.zIndex = zIndex
-        self.latching = latching
         self.content = content
     }
 
@@ -30,7 +27,6 @@ struct KeyContainer<Content: View>: View {
             .contentShape(Rectangle()) // Added to improve tap/click reliability
             .gesture(
                 TapGesture().onEnded { _ in
-                    guard latching else { return }
                     if model.externallyActivatedPitches.contains(pitch) {
                         model.externallyActivatedPitches.remove(pitch)
                     } else {

@@ -12,7 +12,6 @@ struct Isomorphic<Content>: View where Content: View {
             ForEach(pitchRange, id: \.self) { pitch in
                 KeyContainer(model: model,
                              pitch: pitch,
-                             latching: latching,
                              content: content)
             }
         }

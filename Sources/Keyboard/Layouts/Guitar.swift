@@ -18,7 +18,6 @@ struct Guitar<Content>: View where Content: View {
                     ForEach(0 ..< fretCount + 1, id: \.self) { fret in
                         KeyContainer(model: model,
                                      pitch: Pitch(intValue: openPitches[string].intValue + fret),
-                                     latching: latching,
                                      content: content)
                     }
                 }
