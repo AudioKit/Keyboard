@@ -5,7 +5,6 @@ struct Piano<Content>: View where Content: View {
     let content: (Pitch, Bool) -> Content
     var model: KeyboardModel
     var pitchRange: ClosedRange<Pitch>
-    var latching: Bool
 
     var whiteKeys: [Pitch] {
         var returnValue: [Pitch] = []

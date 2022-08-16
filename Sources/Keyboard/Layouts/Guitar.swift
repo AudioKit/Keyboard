@@ -6,7 +6,6 @@ struct Guitar<Content>: View where Content: View {
     var model: KeyboardModel
     var openPitches: [Pitch]
     var fretCount: Int
-    var latching: Bool
 
     var body: some View {
         // Loop through the keys and add rows (strings)

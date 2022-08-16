@@ -29,13 +29,13 @@ public struct Keyboard<Content>: View where Content: View {
         ZStack {
             switch layout {
             case let .piano(pitchRange):
-                Piano(content: content, model: model, pitchRange: pitchRange, latching: latching)
+                Piano(content: content, model: model, pitchRange: pitchRange)
             case let .isomorphic(pitchRange):
-                Isomorphic(content: content, model: model, pitchRange: pitchRange, latching: latching)
+                Isomorphic(content: content, model: model, pitchRange: pitchRange)
             case let .guitar(openPitches, fretCount):
-                Guitar(content: content, model: model, openPitches: openPitches, fretCount: fretCount, latching: latching)
+                Guitar(content: content, model: model, openPitches: openPitches, fretCount: fretCount)
             case let .pianoRoll(pitchRange):
-                PianoRoll(content: content, model: model, pitchRange: pitchRange, latching: latching)
+                PianoRoll(content: content, model: model, pitchRange: pitchRange)
             }
             
             if !latching {
