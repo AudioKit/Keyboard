@@ -38,9 +38,11 @@ public struct Keyboard<Content>: View where Content: View {
                 PianoRoll(content: content, model: model, pitchRange: pitchRange, latching: latching)
             }
             
-            MultitouchView { touches in
-                print("touches: \(touches)")
-                model.touchLocations = touches
+            if !latching {
+                MultitouchView { touches in
+                    print("touches: \(touches)")
+                    model.touchLocations = touches
+                }
             }
 
         }.onPreferenceChange(KeyRectsKey.self) { keyRectInfos in
