@@ -26,7 +26,7 @@ public struct Keyboard<Content>: View where Content: View {
     }
 
     public var body: some View {
-        Group {
+        ZStack {
             switch layout {
             case let .piano(pitchRange):
                 Piano(content: content, model: model, pitchRange: pitchRange, latching: latching)
@@ -37,8 +37,14 @@ public struct Keyboard<Content>: View where Content: View {
             case let .pianoRoll(pitchRange):
                 PianoRoll(content: content, model: model, pitchRange: pitchRange, latching: latching)
             }
+            
+            MultitouchView { touches in
+                print("touches: \(touches)")
+                model.touchLocations = touches
+            }
 
         }.onPreferenceChange(TouchLocationsKey.self) { touchLocations in
+            print("touches: \(touchLocations)")
             model.touchLocations = touchLocations
         }.onPreferenceChange(KeyRectsKey.self) { keyRectInfos in
             model.keyRectInfos = keyRectInfos
