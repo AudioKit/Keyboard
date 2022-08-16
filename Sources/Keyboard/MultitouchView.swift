@@ -40,6 +40,7 @@ struct MultitouchView: UIViewRepresentable {
     func makeUIView(context: Context) -> MultitouchViewIOS {
         let view = MultitouchViewIOS()
         view.callback = callback
+        view.isMultipleTouchEnabled = true
         return view
     }
     
