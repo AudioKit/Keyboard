@@ -31,6 +31,9 @@ struct ContentView: View {
     @State var lowNote = 24
     @State var highNote = 48
 
+    @State var scale: Scale = .chromatic
+    @State var root: NoteClass = .C
+
     var body: some View {
         HStack {
             Keyboard(layout: .verticalIsomorphic(pitchRange: Pitch(48) ... Pitch(77))).frame(width: 200)
@@ -64,7 +67,44 @@ struct ContentView: View {
                          noteOn: noteOnWithVerticalVelocity(pitch:point:), noteOff: noteOff)
                 .frame(minWidth: 100, minHeight: 100)
 
-                Keyboard(layout: .isomorphic(pitchRange: Pitch(12) ... Pitch(84)),
+                HStack {
+                    Stepper("Root: \(root.description)",
+                            onIncrement: {
+                        var allSharpNotes = (0...11).map { Note(pitch: Pitch(intValue: $0)).noteClass }
+                        var index = allSharpNotes.firstIndex(of: root.canonicalNote.noteClass) ?? 0
+                        index += 1
+                        if index > 11 { index = 0}
+                        if index < 0 { index = 1}
+                        root = allSharpNotes[index]
+                    },
+                            onDecrement: {
+                        var allSharpNotes = (0...11).map { Note(pitch: Pitch(intValue: $0)).noteClass }
+                        var index = allSharpNotes.firstIndex(of: root.canonicalNote.noteClass) ?? 0
+                        index -= 1
+                        if index > 11 { index = 0}
+                        if index < 0 { index = 1}
+                        root = allSharpNotes[index]
+                    })
+
+                    Stepper("Scale: \(scale.description)",
+                            onIncrement: {
+                        var index = Scale.allCases.firstIndex(of: scale) ?? 0
+                        index += 1
+                        if index >= Scale.allCases.count { index = 0}
+                        if index < 0 { index = Scale.allCases.count  - 1}
+                        scale = Scale.allCases[index]
+                    },
+                            onDecrement: {
+                        var index = Scale.allCases.firstIndex(of: scale) ?? 0
+                        index += 1
+                        if index >= Scale.allCases.count { index = 0}
+                        if index < 0 { index = Scale.allCases.count  - 1}
+                        scale = Scale.allCases[index]
+                    })
+                }
+                Keyboard(layout: .isomorphic(pitchRange: Pitch(12) ... Pitch(84),
+                                             root: root,
+                                             scale: scale),
                          noteOn: noteOnWithReversedVerticalVelocity(pitch:point:), noteOff: noteOff)
                 .frame(minWidth: 100, minHeight: 100)
 
@@ -103,6 +143,7 @@ struct ContentView: View {
                 .frame(minWidth: 100, minHeight: 100)
             }
         }
+        .background(Color.gray.opacity(0.5))
     }
 }
 
