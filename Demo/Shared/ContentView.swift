@@ -31,6 +31,14 @@ struct ContentView: View {
     @State var lowNote = 24
     @State var highNote = 48
 
+    @State var scaleIndex = Scale.allCases.firstIndex(of: .chromatic) ?? 0 {
+        didSet {
+            if scaleIndex >= Scale.allCases.count { scaleIndex = 0}
+            if scaleIndex < 0 { scaleIndex = Scale.allCases.count  - 1}
+            scale = Scale.allCases[scaleIndex]
+        }
+    }
+
     @State var scale: Scale = .chromatic
     @State var root: NoteClass = .C
 
@@ -70,7 +78,7 @@ struct ContentView: View {
                 HStack {
                     Stepper("Root: \(root.description)",
                             onIncrement: {
-                        var allSharpNotes = (0...11).map { Note(pitch: Pitch(intValue: $0)).noteClass }
+                        let allSharpNotes = (0...11).map { Note(pitch: Pitch(intValue: $0)).noteClass }
                         var index = allSharpNotes.firstIndex(of: root.canonicalNote.noteClass) ?? 0
                         index += 1
                         if index > 11 { index = 0}
@@ -78,7 +86,7 @@ struct ContentView: View {
                         root = allSharpNotes[index]
                     },
                             onDecrement: {
-                        var allSharpNotes = (0...11).map { Note(pitch: Pitch(intValue: $0)).noteClass }
+                        let allSharpNotes = (0...11).map { Note(pitch: Pitch(intValue: $0)).noteClass }
                         var index = allSharpNotes.firstIndex(of: root.canonicalNote.noteClass) ?? 0
                         index -= 1
                         if index > 11 { index = 0}
@@ -87,20 +95,8 @@ struct ContentView: View {
                     })
 
                     Stepper("Scale: \(scale.description)",
-                            onIncrement: {
-                        var index = Scale.allCases.firstIndex(of: scale) ?? 0
-                        index += 1
-                        if index >= Scale.allCases.count { index = 0}
-                        if index < 0 { index = Scale.allCases.count  - 1}
-                        scale = Scale.allCases[index]
-                    },
-                            onDecrement: {
-                        var index = Scale.allCases.firstIndex(of: scale) ?? 0
-                        index += 1
-                        if index >= Scale.allCases.count { index = 0}
-                        if index < 0 { index = Scale.allCases.count  - 1}
-                        scale = Scale.allCases[index]
-                    })
+                            onIncrement: { scaleIndex += 1 },
+                            onDecrement: { scaleIndex -= 1 })
                 }
                 Keyboard(layout: .isomorphic(pitchRange: Pitch(12) ... Pitch(84),
                                              root: root,
