@@ -39,8 +39,12 @@ public struct Keyboard<Content>: View where Content: View {
             switch layout {
             case let .piano(pitchRange):
                 Piano(content: content, model: model, pitchRange: pitchRange)
-            case let .isomorphic(pitchRange, scale):
-                Isomorphic(content: content, model: model, pitchRange: pitchRange, scale: scale)
+            case let .isomorphic(pitchRange, root, scale):
+                Isomorphic(content: content,
+                           model: model,
+                           pitchRange: pitchRange,
+                           root: root,
+                           scale: scale)
             case let .guitar(openPitches, fretCount):
                 Guitar(content: content, model: model, openPitches: openPitches, fretCount: fretCount)
             case let .pianoRoll(pitchRange):

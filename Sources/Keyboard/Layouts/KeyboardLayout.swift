@@ -7,7 +7,7 @@ public enum KeyboardLayout: Equatable, Hashable {
     case guitar(openPitches: [Pitch], fretcount: Int)
 
     /// All notes linearly right after one another
-    case isomorphic(pitchRange: ClosedRange<Pitch>, scale: Scale = .chromatic)
+    case isomorphic(pitchRange: ClosedRange<Pitch>, root: NoteClass = .C, scale: Scale = .chromatic)
 
     /// Traditional Piano layout with raised black keys over white keys
     case piano(pitchRange: ClosedRange<Pitch>)
