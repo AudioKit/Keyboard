@@ -5,7 +5,6 @@ struct Piano<Content>: View where Content: View {
     let content: (Pitch, Bool) -> Content
     var model: KeyboardModel
     var pitchRange: ClosedRange<Pitch>
-    var latching: Bool
 
     var whiteKeys: [Pitch] {
         var returnValue: [Pitch] = []
@@ -81,7 +80,6 @@ struct Piano<Content>: View where Content: View {
                     ForEach(whiteKeys, id: \.self) { pitch in
                         KeyContainer(model: model,
                                      pitch: pitch,
-                                     latching: latching,
                                      content: content)
                             .frame(width: whiteKeyWidth(size: geo.size))
                     }
@@ -99,7 +97,6 @@ struct Piano<Content>: View where Content: View {
                                 KeyContainer(model: model,
                                              pitch: Pitch(intValue: pitch.intValue),
                                              zIndex: 1,
-                                             latching: latching,
                                              content: content)
                                     .frame(width: blackKeyWidth(size: geo.size))
                             } else {

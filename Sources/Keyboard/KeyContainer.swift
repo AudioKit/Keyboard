@@ -9,36 +9,24 @@ struct KeyContainer<Content: View>: View {
     var pitch: Pitch
     @ObservedObject var model: KeyboardModel
 
-    var latching: Bool
     var zIndex: Int
 
     init(model: KeyboardModel,
          pitch: Pitch,
          zIndex: Int = 0,
-         latching: Bool,
          @ViewBuilder content: @escaping (Pitch, Bool) -> Content)
     {
         self.model = model
         self.pitch = pitch
         self.zIndex = zIndex
-        self.latching = latching
         self.content = content
     }
-
-    @GestureState var touchLocation: CGPoint?
 
     func rect(rect: CGRect) -> some View {
         content(pitch, model.touchedPitches.contains(pitch) || model.externallyActivatedPitches.contains(pitch))
             .contentShape(Rectangle()) // Added to improve tap/click reliability
-            .gesture(DragGesture(minimumDistance: 0, coordinateSpace: .global)
-                .updating($touchLocation) { value, state, _ in
-                    guard !latching else { return }
-                    state = value.location
-                }
-            )
-            .simultaneousGesture(
+            .gesture(
                 TapGesture().onEnded { _ in
-                    guard latching else { return }
                     if model.externallyActivatedPitches.contains(pitch) {
                         model.externallyActivatedPitches.remove(pitch)
                     } else {
@@ -50,8 +38,6 @@ struct KeyContainer<Content: View>: View {
                         value: [KeyRectInfo(rect: rect,
                                             pitch: pitch,
                                             zIndex: zIndex)])
-            .preference(key: TouchLocationsKey.self,
-                        value: touchLocation != nil ? [touchLocation!] : [])
     }
 
     public var body: some View {

@@ -1,5 +1,3 @@
-
-import Foundation
 import SwiftUI
 
 public typealias TouchCallback = ([CGPoint])->Void
@@ -15,21 +13,21 @@ class MultitouchViewIOS: UIView {
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         self.touches.formUnion(touches)
-        callback(self.touches.map { $0.location(in: self )})
+        callback(self.touches.map { $0.location(in: nil)})
     }
 
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
-        callback(self.touches.map { $0.location(in: self )})
+        callback(self.touches.map { $0.location(in: nil)})
     }
 
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
         self.touches.subtract(touches)
-        callback(self.touches.map { $0.location(in: self )})
+        callback(self.touches.map { $0.location(in: nil)})
     }
 
     override func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent?) {
         self.touches.subtract(touches)
-        callback(self.touches.map { $0.location(in: self )})
+        callback(self.touches.map { $0.location(in: nil)})
     }
 }
 
@@ -40,6 +38,7 @@ struct MultitouchView: UIViewRepresentable {
     func makeUIView(context: Context) -> MultitouchViewIOS {
         let view = MultitouchViewIOS()
         view.callback = callback
+        view.isMultipleTouchEnabled = true
         return view
     }
     
@@ -56,12 +55,16 @@ class MultitouchViewMacOS: NSView {
     
     var callback: TouchCallback = { _ in }
     
+    func flip(_ p: CGPoint) -> CGPoint {
+        CGPoint(x: p.x, y: window!.frame.size.height - p.y)
+    }
+    
     override func mouseDown(with event: NSEvent) {
-        callback([convert(event.locationInWindow, from: nil)])
+        callback([flip(event.locationInWindow)])
     }
     
     override func mouseDragged(with event: NSEvent) {
-        callback([convert(event.locationInWindow, from: nil)])
+        callback([flip(event.locationInWindow)])
     }
     
     override func mouseUp(with event: NSEvent) {
