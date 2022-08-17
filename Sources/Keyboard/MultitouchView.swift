@@ -1,5 +1,3 @@
-
-import Foundation
 import SwiftUI
 
 public typealias TouchCallback = ([CGPoint])->Void
