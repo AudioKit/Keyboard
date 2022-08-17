@@ -33,7 +33,7 @@ struct ContentView: View {
 
     var body: some View {
         HStack {
-            Keyboard(layout: .pianoRoll(pitchRange: Pitch(48) ... Pitch(77))).frame(width: 200)
+            Keyboard(layout: .verticalIsomorphic(pitchRange: Pitch(48) ... Pitch(77))).frame(width: 200)
             VStack {
                 HStack {
                     Stepper("Lowest Note: \(Pitch(intValue: lowNote).note(in: .C).description)",

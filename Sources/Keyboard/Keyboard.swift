@@ -47,8 +47,8 @@ public struct Keyboard<Content>: View where Content: View {
                            scale: scale)
             case let .guitar(openPitches, fretCount):
                 Guitar(content: content, model: model, openPitches: openPitches, fretCount: fretCount)
-            case let .pianoRoll(pitchRange):
-                PianoRoll(content: content, model: model, pitchRange: pitchRange)
+            case let .verticalIsomorphic(pitchRange):
+                VerticalIsomorphic(content: content, model: model, pitchRange: pitchRange)
             }
             
             if !latching {
@@ -93,7 +93,7 @@ public extension Keyboard where Content == KeyboardKey {
             alignment = .bottom
         case .piano:
             flatTop = true
-        case .pianoRoll:
+        case .verticalIsomorphic:
             alignment = .trailing
         }
         content = { KeyboardKey(pitch: $0, isActivated: $1, flatTop: flatTop, alignment: alignment) }

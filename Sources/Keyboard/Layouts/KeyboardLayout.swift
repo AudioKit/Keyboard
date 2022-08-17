@@ -12,6 +12,6 @@ public enum KeyboardLayout: Equatable, Hashable {
     /// Traditional Piano layout with raised black keys over white keys
     case piano(pitchRange: ClosedRange<Pitch>)
 
-    /// Vertical isomorphic
-    case pianoRoll(pitchRange: ClosedRange<Pitch>)
+    /// For piano roll, jam strip type views
+    case verticalIsomorphic(pitchRange: ClosedRange<Pitch>)
 }

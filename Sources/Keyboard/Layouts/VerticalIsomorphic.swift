@@ -1,7 +1,7 @@
 import SwiftUI
 import Tonic
 
-struct PianoRoll<Content>: View where Content: View {
+struct VerticalIsomorphic<Content>: View where Content: View {
     let content: (Pitch, Bool) -> Content
     var model: KeyboardModel
     var pitchRange: ClosedRange<Pitch>
