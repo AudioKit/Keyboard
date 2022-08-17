@@ -11,10 +11,8 @@ struct VerticalIsomorphic<Content>: View where Content: View {
     var pitchesToShow: [Pitch] {
         var pitchArray: [Pitch] = []
         let key = Key(root: root, scale: scale)
-        for pitch in pitchRange {
-            if pitch.existsNaturally(in: key) {
-                pitchArray.append(pitch)
-            }
+        for pitch in pitchRange where pitch.existsNaturally(in: key) {
+            pitchArray.append(pitch)
         }
         return Array(pitchArray)
     }
