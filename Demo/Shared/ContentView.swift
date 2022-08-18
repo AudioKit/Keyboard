@@ -113,7 +113,7 @@ struct ContentView: View {
                                              root: root,
                                              scale: scale),
                          noteOn: noteOnWithReversedVerticalVelocity(pitch:point:),
-                         noteOff: noteOff){ pitch, isActivated in
+                         noteOff: noteOff) { pitch, isActivated in
                     ScaleKey(pitch: pitch,
                                 isActivated: isActivated,
                                 text: pitch.note(in: key).description,
