@@ -43,6 +43,9 @@ struct ContentView: View {
     @State var root: NoteClass = .C
     @State var key = Key(root: .C, scale: .chromatic)
     @State var rootIndex = 0
+    let pressedScaleKeyColor = Color(red: 0.6, green: 0.8, blue: 1.0)
+    let rootScaleKeyColor = Color(red: 0.4, green: 0.6, blue: 0.9)
+    let scaleKeyColor = Color(red: 0.2, green: 0.4, blue: 0.7)
     @Environment(\.colorScheme) var colorScheme
 
     var body: some View {
@@ -112,9 +115,9 @@ struct ContentView: View {
                     ScaleKey(pitch: pitch,
                                 isActivated: isActivated,
                                 text: pitch.note(in: key).description,
-                                keyColor: (pitch.intValue - rootIndex + 12) % 12 == 0 ? Color(red: 0.4, green: 0.6, blue: 0.9) : Color(red: 0.2, green: 0.4, blue: 0.7),
-                                textColor: (isActivated ? Color(red: 0.2, green: 0.4, blue: 0.7) : Color.white),
-                                pressedColor: Color(red: 0.6, green: 0.8, blue: 1.0),
+                                keyColor: (pitch.intValue - rootIndex + 12) % 12 == 0 ? rootScaleKeyColor : scaleKeyColor,
+                                textColor: (isActivated ? scaleKeyColor : Color.white),
+                                pressedColor: pressedScaleKeyColor,
                                 alignment: .bottom)
                 }
                 .frame(minWidth: 100, minHeight: 100)
