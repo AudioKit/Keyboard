@@ -108,10 +108,12 @@ struct ContentView: View {
                             onIncrement: { scaleIndex += 1 },
                             onDecrement: { scaleIndex -= 1 })
                 }
-                Keyboard(layout: .isomorphic(pitchRange: Pitch(intValue: 12 + rootIndex) ... Pitch(intValue: 48 + rootIndex),
+                Keyboard(layout: .isomorphic(pitchRange:
+                                                Pitch(intValue: 12 + rootIndex) ... Pitch(intValue: 48 + rootIndex),
                                              root: root,
                                              scale: scale),
-                         noteOn: noteOnWithReversedVerticalVelocity(pitch:point:), noteOff: noteOff){ pitch, isActivated in
+                         noteOn: noteOnWithReversedVerticalVelocity(pitch:point:),
+                         noteOff: noteOff){ pitch, isActivated in
                     ScaleKey(pitch: pitch,
                                 isActivated: isActivated,
                                 text: pitch.note(in: key).description,

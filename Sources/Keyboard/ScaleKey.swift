@@ -18,8 +18,7 @@ public struct ScaleKey: View {
                 pressedColor: Color = .red,
                 flatTop: Bool = false,
                 alignment: Alignment = .bottom,
-                isActivatedExternally: Bool = false)
-    {
+                isActivatedExternally: Bool = false){
         self.pitch = pitch
         self.isActivated = isActivated
         if text == "unset" {
