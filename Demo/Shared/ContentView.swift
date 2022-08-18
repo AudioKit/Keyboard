@@ -41,6 +41,9 @@ struct ContentView: View {
 
     @State var scale: Scale = .chromatic
     @State var root: NoteClass = .C
+    @State var key = Key(root: .C, scale: .chromatic)
+    @State var rootIndex = 0
+    @Environment(\.colorScheme) var colorScheme
 
     var body: some View {
         HStack {
@@ -84,6 +87,8 @@ struct ContentView: View {
                         if index > 11 { index = 0}
                         if index < 0 { index = 1}
                         root = allSharpNotes[index]
+                        rootIndex = index
+                        key = Key(root: root, scale: scale)
                     },
                             onDecrement: {
                         let allSharpNotes = (0...11).map { Note(pitch: Pitch(intValue: $0)).noteClass }
@@ -92,16 +97,26 @@ struct ContentView: View {
                         if index > 11 { index = 0}
                         if index < 0 { index = 1}
                         root = allSharpNotes[index]
+                        rootIndex = index
+                        key = Key(root: root, scale: scale)
                     })
 
                     Stepper("Scale: \(scale.description)",
                             onIncrement: { scaleIndex += 1 },
                             onDecrement: { scaleIndex -= 1 })
                 }
-                Keyboard(layout: .isomorphic(pitchRange: Pitch(12) ... Pitch(84),
+                Keyboard(layout: .isomorphic(pitchRange: Pitch(intValue: 12 + rootIndex) ... Pitch(intValue: 48 + rootIndex),
                                              root: root,
                                              scale: scale),
-                         noteOn: noteOnWithReversedVerticalVelocity(pitch:point:), noteOff: noteOff)
+                         noteOn: noteOnWithReversedVerticalVelocity(pitch:point:), noteOff: noteOff){ pitch, isActivated in
+                    ScaleKey(pitch: pitch,
+                                isActivated: isActivated,
+                                text: pitch.note(in: key).description,
+                                keyColor: (pitch.intValue - rootIndex + 12) % 12 == 0 ? Color(red: 0.4, green: 0.6, blue: 0.9) : Color(red: 0.2, green: 0.4, blue: 0.7),
+                                textColor: (isActivated ? Color(red: 0.2, green: 0.4, blue: 0.7) : Color.white),
+                                pressedColor: Color(red: 0.6, green: 0.8, blue: 1.0),
+                                alignment: .bottom)
+                }
                 .frame(minWidth: 100, minHeight: 100)
 
                 Keyboard(layout: .guitar(openPitches: [Pitch(64), Pitch(59), Pitch(55), Pitch(50), Pitch(45), Pitch(40)], fretcount: 22),
@@ -139,7 +154,7 @@ struct ContentView: View {
                 .frame(minWidth: 100, minHeight: 100)
             }
         }
-        .background(Color.gray.opacity(0.5))
+        .background(colorScheme == .dark ? Color.clear : Color(red: 0.9, green: 0.9, blue: 0.9))
     }
 }
 
