@@ -117,7 +117,8 @@ struct ContentView: View {
                     ScaleKey(pitch: pitch,
                                 isActivated: isActivated,
                                 text: pitch.note(in: key).description,
-                                keyColor: (pitch.intValue - rootIndex + 12) % 12 == 0 ? rootScaleKeyColor : scaleKeyColor,
+                                keyColor: (pitch.intValue - rootIndex + 12) % 12 == 0 ?
+                             rootScaleKeyColor : scaleKeyColor,
                                 textColor: (isActivated ? scaleKeyColor : Color.white),
                                 pressedColor: pressedScaleKeyColor,
                                 alignment: .bottom)
