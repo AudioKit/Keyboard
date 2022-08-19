@@ -1,6 +1,6 @@
 import SwiftUI
 
-public typealias TouchCallback = ([CGPoint])->Void
+public typealias TouchCallback = ([CGPoint]) -> Void
 
 #if os(iOS)
 

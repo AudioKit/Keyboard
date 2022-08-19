@@ -12,7 +12,6 @@ struct ContentView: View {
         print("note off \(pitch)")
     }
 
-
     func noteOnWithVerticalVelocity(pitch: Pitch, point: CGPoint) {
         print("note on \(pitch), midiVelocity: \(Int(point.y * 127))")
     }
@@ -20,7 +19,6 @@ struct ContentView: View {
     func noteOnWithReversedVerticalVelocity(pitch: Pitch, point: CGPoint) {
         print("note on \(pitch), midiVelocity: \(Int((1.0 - point.y) * 127))")
     }
-
 
     var randomColors: [Color] = (0 ... 12).map { _ in
         Color(red: Double.random(in: 0 ... 1),
@@ -33,8 +31,8 @@ struct ContentView: View {
 
     @State var scaleIndex = Scale.allCases.firstIndex(of: .chromatic) ?? 0 {
         didSet {
-            if scaleIndex >= Scale.allCases.count { scaleIndex = 0}
-            if scaleIndex < 0 { scaleIndex = Scale.allCases.count  - 1}
+            if scaleIndex >= Scale.allCases.count { scaleIndex = 0 }
+            if scaleIndex < 0 { scaleIndex = Scale.allCases.count - 1 }
             scale = Scale.allCases[scaleIndex]
         }
     }

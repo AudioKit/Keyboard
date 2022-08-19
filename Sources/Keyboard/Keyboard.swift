@@ -54,7 +54,7 @@ public struct Keyboard<Content>: View where Content: View {
                                    root: root,
                                    scale: scale)
             }
-            
+
             if !latching {
                 MultitouchView { touches in
                     model.touchLocations = touches
