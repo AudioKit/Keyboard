@@ -100,7 +100,8 @@ struct ContentView: View {
                             onIncrement: { scaleIndex += 1 },
                             onDecrement: { scaleIndex -= 1 })
                 }
-                Keyboard(layout: .isomorphic(pitchRange: Pitch(intValue: 12 + rootIndex) ... Pitch(intValue: 84 + rootIndex),
+                Keyboard(layout: .isomorphic(pitchRange:
+                                                Pitch(intValue: 12 + rootIndex) ... Pitch(intValue: 84 + rootIndex),
                                              root: root,
                                              scale: scale),
                          noteOn: noteOnWithReversedVerticalVelocity(pitch:point:), noteOff: noteOff)
@@ -141,7 +142,8 @@ struct ContentView: View {
                 .frame(minWidth: 100, minHeight: 100)
             }
         }
-        .background(colorScheme == .dark ? Color.clear : Color(red: 0.9, green: 0.9, blue: 0.9))
+        .background(colorScheme == .dark ?
+                    Color.clear : Color(red: 0.9, green: 0.9, blue: 0.9))
     }
 }
 
