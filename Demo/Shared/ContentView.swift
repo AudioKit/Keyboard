@@ -39,6 +39,8 @@ struct ContentView: View {
 
     @State var scale: Scale = .chromatic
     @State var root: NoteClass = .C
+    @State var rootIndex = 0
+    @Environment(\.colorScheme) var colorScheme
 
     var body: some View {
         HStack {
@@ -81,6 +83,7 @@ struct ContentView: View {
                         index += 1
                         if index > 11 { index = 0}
                         if index < 0 { index = 1}
+                        rootIndex = index
                         root = allSharpNotes[index]
                     },
                             onDecrement: {
@@ -89,6 +92,7 @@ struct ContentView: View {
                         index -= 1
                         if index > 11 { index = 0}
                         if index < 0 { index = 1}
+                        rootIndex = index
                         root = allSharpNotes[index]
                     })
 
@@ -96,7 +100,8 @@ struct ContentView: View {
                             onIncrement: { scaleIndex += 1 },
                             onDecrement: { scaleIndex -= 1 })
                 }
-                Keyboard(layout: .isomorphic(pitchRange: Pitch(12) ... Pitch(84),
+                Keyboard(layout: .isomorphic(pitchRange:
+                                                Pitch(intValue: 12 + rootIndex) ... Pitch(intValue: 84 + rootIndex),
                                              root: root,
                                              scale: scale),
                          noteOn: noteOnWithReversedVerticalVelocity(pitch:point:), noteOff: noteOff)
@@ -137,7 +142,8 @@ struct ContentView: View {
                 .frame(minWidth: 100, minHeight: 100)
             }
         }
-        .background(Color.gray.opacity(0.5))
+        .background(colorScheme == .dark ?
+                    Color.clear : Color(red: 0.9, green: 0.9, blue: 0.9))
     }
 }
 
