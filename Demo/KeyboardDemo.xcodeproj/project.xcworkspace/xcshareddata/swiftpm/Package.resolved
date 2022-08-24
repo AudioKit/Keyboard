@@ -6,8 +6,8 @@
         "repositoryURL": "https://github.com/AudioKit/Tonic.git",
         "state": {
           "branch": null,
-          "revision": "77f74471a5166f8ea642b7577078f3f3982fd456",
-          "version": "1.0.6"
+          "revision": "d9280b44489bb753c4a2ac7206142547f2a986cc",
+          "version": "1.0.7"
         }
       }
     ]
