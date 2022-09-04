@@ -11,7 +11,7 @@ final class KeyboardTests: XCTestCase {
         var testPitch: Pitch?
 
         var noteOnReceived = false
-        model.noteOn = { pitch in
+        model.noteOn = { pitch, _ in
             testPitch = pitch
             noteOnReceived = true
         }
@@ -43,7 +43,7 @@ final class KeyboardTests: XCTestCase {
 
         var testPitch: Pitch?
         var noteOnReceived = false
-        model.noteOn = { pitch in
+        model.noteOn = { pitch, _ in
             testPitch = pitch
             noteOnReceived = true
         }
