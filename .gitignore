@@ -92,3 +92,4 @@ iOSInjectionProject/
 .DS_Store
 
 Package.resolved
+.swiftpm

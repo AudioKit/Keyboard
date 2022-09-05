@@ -1,8 +1,13 @@
-# Keyboard
-
-<img src="Sources/Keyboard/Keyboard.docc/Resources/demo.png" alt="Demo" />
+# ``Keyboard``
 
 SwiftUI music keyboard
+
+## Overview
+
+Code is hosted on Github: [](https://github.com/AudioKit/Keyboard/)
+
+![Demo Screenshot](demo)
+
 
 Keyboard aims to be an easy-to-use musical keyboard with:
 
@@ -16,6 +21,8 @@ Keyboard aims to be an easy-to-use musical keyboard with:
 - Good user interface
 - Good performance. We rely on SwiftUI's drag gestures
 
-## Install
+## Topics
 
-Install using Swift Package Manager.
+### <!--@START_MENU_TOKEN@-->Group<!--@END_MENU_TOKEN@-->
+
+- <!--@START_MENU_TOKEN@-->``Symbol``<!--@END_MENU_TOKEN@-->
