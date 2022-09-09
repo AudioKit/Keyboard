@@ -107,7 +107,7 @@ struct ContentView: View {
                          noteOn: noteOnWithReversedVerticalVelocity(pitch:point:), noteOff: noteOff)
                 .frame(minWidth: 100, minHeight: 100)
 
-                Keyboard(layout: .guitar(openPitches: [Pitch(64), Pitch(59), Pitch(55), Pitch(50), Pitch(45), Pitch(40)], fretcount: 22),
+                Keyboard(layout: .guitar(),
                          noteOn: noteOn, noteOff: noteOff) { pitch, isActivated in
                     KeyboardKey(pitch: pitch,
                                 isActivated: isActivated,
