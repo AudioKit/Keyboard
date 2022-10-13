@@ -1,5 +1,5 @@
 import SwiftUI
-import Tonic
+@_exported import Tonic
 
 /// Touch-oriented musical keyboard
 public struct Keyboard<Content>: View where Content: View {
