@@ -38,7 +38,7 @@ public struct Keyboard<Content>: View where Content: View {
         ZStack {
             switch layout {
             case let .piano(pitchRange):
-                Piano(content: content, model: model, pitchRange: pitchRange)
+                Piano(content: content, model: .init(keyboard: model, pitchRange: pitchRange))
             case let .isomorphic(pitchRange, root, scale):
                 Isomorphic(content: content,
                            model: model,
@@ -54,7 +54,7 @@ public struct Keyboard<Content>: View where Content: View {
                                    root: root,
                                    scale: scale)
             case .verticalPiano(pitchRange: let pitchRange):
-                VerticalPiano(content: content, model: model, pitchRange: pitchRange)
+                VerticalPiano(content: content, model: .init(keyboard: model, pitchRange: pitchRange))
             }
 
             if !latching {
