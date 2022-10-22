@@ -102,7 +102,8 @@ struct VerticalPiano<Content>: View where Content: View {
                             }
                         }
                         if pitchRange.lowerBound != pitchRangeBoundedByNaturals.lowerBound {
-                            Rectangle().opacity(0).frame(height: whiteKeyHeight(size: geo.size) * space(pitch: pitchRange.lowerBound))
+                            Rectangle().opacity(0)
+                                .frame(height: whiteKeyHeight(size: geo.size) * space(pitch: pitchRange.lowerBound))
                         }
                         Rectangle().opacity(0).frame(height: whiteKeyHeight(size: geo.size) * initialSpacer)
                     }

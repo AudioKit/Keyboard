@@ -106,6 +106,14 @@ public extension Keyboard where Content == KeyboardKey {
             flatLeading = true
             alignment = .trailing
         }
-        content = { KeyboardKey(pitch: $0, isActivated: $1, flatLeading: flatLeading, flatTop: flatTop, alignment: alignment) }
+        content = {
+            KeyboardKey(
+                pitch: $0,
+                isActivated: $1,
+                flatLeading: flatLeading,
+                flatTop: flatTop,
+                alignment: alignment
+            )
+        }
     }
 }
