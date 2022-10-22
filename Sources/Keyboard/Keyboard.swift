@@ -53,6 +53,8 @@ public struct Keyboard<Content>: View where Content: View {
                                    pitchRange: pitchRange,
                                    root: root,
                                    scale: scale)
+            case .verticalPiano(pitchRange: let pitchRange):
+                VerticalPiano(content: content, model: model, pitchRange: pitchRange)
             }
 
             if !latching {
@@ -90,6 +92,7 @@ public extension Keyboard where Content == KeyboardKey {
         var alignment: Alignment = .bottom
 
         var flatTop = false
+        var flatLeading = false
         switch layout {
         case .guitar:
             alignment = .center
@@ -99,7 +102,10 @@ public extension Keyboard where Content == KeyboardKey {
             flatTop = true
         case .verticalIsomorphic:
             alignment = .trailing
+        case .verticalPiano:
+            flatLeading = true
+            alignment = .trailing
         }
-        content = { KeyboardKey(pitch: $0, isActivated: $1, flatTop: flatTop, alignment: alignment) }
+        content = { KeyboardKey(pitch: $0, isActivated: $1, flatLeading: flatLeading, flatTop: flatTop, alignment: alignment) }
     }
 }

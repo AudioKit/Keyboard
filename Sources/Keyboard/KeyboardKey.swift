@@ -16,6 +16,7 @@ public struct KeyboardKey: View {
                 whiteKeyColor: Color = .white,
                 blackKeyColor: Color = .black,
                 pressedColor: Color = .red,
+                flatLeading: Bool = false,
                 flatTop: Bool = false,
                 alignment: Alignment = .bottom,
                 isActivatedExternally: Bool = false)
@@ -36,6 +37,7 @@ public struct KeyboardKey: View {
         self.whiteKeyColor = whiteKeyColor
         self.blackKeyColor = blackKeyColor
         self.pressedColor = pressedColor
+        self.flatLeading = flatLeading
         self.flatTop = flatTop
         self.alignment = alignment
         self.isActivatedExternally = isActivatedExternally
@@ -46,6 +48,7 @@ public struct KeyboardKey: View {
     var whiteKeyColor: Color
     var blackKeyColor: Color
     var pressedColor: Color
+    var flatLeading: Bool
     var flatTop: Bool
     var alignment: Alignment
     var text: String
@@ -87,8 +90,10 @@ public struct KeyboardKey: View {
                 Rectangle()
                     .foregroundColor(keyColor)
                     .padding(.top, flatTop ? relativeCornerRadius(in: proxy.size) : 0)
+                    .padding(.leading, flatLeading ? relativeCornerRadius(in: proxy.size) : 0)
                     .cornerRadius(relativeCornerRadius(in: proxy.size))
                     .padding(.top, flatTop ? -relativeCornerRadius(in: proxy.size) : 1)
+                    .padding(.leading, flatLeading ? -relativeCornerRadius(in: proxy.size) : 1)
                     .padding(.trailing, 1)
                 Text(text)
                     .font(Font(.init(.system, size: relativeFontSize(in: proxy.size))))

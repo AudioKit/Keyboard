@@ -18,4 +18,7 @@ public enum KeyboardLayout: Equatable, Hashable {
     case verticalIsomorphic(pitchRange: ClosedRange<Pitch>,
                             root: NoteClass = .C,
                             scale: Scale = .chromatic)
+    
+    /// Traditional Piano vertical layout with raised black keys over white keys
+    case verticalPiano(pitchRange: ClosedRange<Pitch>)
 }
