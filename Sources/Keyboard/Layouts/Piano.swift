@@ -75,11 +75,11 @@ struct PianoModel {
     func initialSpacerDimension(_ dimension: CGFloat) -> CGFloat {
         whiteKeyDimension(dimension) * initialSpacer
     }
-    
+
     func lowerBoundSpacerDimension(_ dimension: CGFloat) -> CGFloat {
         whiteKeyDimension(dimension) * space(pitch: pitchRange.lowerBound)
     }
-    
+
     func blackKeySpacerDimension(_ dimension: CGFloat, pitch: Pitch) -> CGFloat {
         whiteKeyDimension(dimension) * space(pitch: pitch)
     }
