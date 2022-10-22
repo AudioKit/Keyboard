@@ -2,7 +2,7 @@ import SwiftUI
 
 public typealias TouchCallback = ([CGPoint]) -> Void
 
-#if os(iOS)
+#if !os(macOS)
 
 import UIKit
 

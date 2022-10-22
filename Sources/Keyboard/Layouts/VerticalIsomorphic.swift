@@ -19,7 +19,7 @@ struct VerticalIsomorphic<Content>: View where Content: View {
 
     var body: some View {
         VStack(spacing: 0) {
-            ForEach(pitchesToShow, id: \.self) { pitch in
+            ForEach(pitchesToShow.reversed(), id: \.self) { pitch in
                 KeyContainer(model: model,
                              pitch: pitch,
                              content: content)
