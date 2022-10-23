@@ -1,9 +1,8 @@
 import SwiftUI
 import Tonic
 
-struct Piano<Content>: View where Content: View {
-    let content: (Pitch, Bool) -> Content
-    var model: KeyboardModel
+struct PianoModel {
+    var keyboard: KeyboardModel
     var pitchRange: ClosedRange<Pitch>
 
     var whiteKeys: [Pitch] {
@@ -51,14 +50,14 @@ struct Piano<Content>: View where Content: View {
         }
     }
 
-    func whiteKeyWidth(size: CGSize) -> CGFloat {
-        size.width / CGFloat(whiteKeys.count)
+    func whiteKeyWidth(_ width: CGFloat) -> CGFloat {
+        width / CGFloat(whiteKeys.count)
     }
 
     var relativeBlackKeyWidth: CGFloat { 9.0 / 16.0 }
 
-    func blackKeyWidth(size: CGSize) -> CGFloat {
-        whiteKeyWidth(size: size) * relativeBlackKeyWidth
+    func blackKeyWidth(_ width: CGFloat) -> CGFloat {
+        whiteKeyWidth(width) * relativeBlackKeyWidth
     }
 
     var pitchRangeBoundedByNaturals: ClosedRange<Pitch> {
@@ -73,35 +72,53 @@ struct Piano<Content>: View where Content: View {
         return lowerBound ... upperBound
     }
 
+    func initialSpacerWidth(_ width: CGFloat) -> CGFloat {
+        whiteKeyWidth(width) * initialSpacer
+    }
+
+    func lowerBoundSpacerWidth(_ width: CGFloat) -> CGFloat {
+        whiteKeyWidth(width) * space(pitch: pitchRange.lowerBound)
+    }
+
+    func blackKeySpacerWidth(_ width: CGFloat, pitch: Pitch) -> CGFloat {
+        whiteKeyWidth(width) * space(pitch: pitch)
+    }
+}
+
+struct Piano<Content>: View where Content: View {
+    let content: (Pitch, Bool) -> Content
+    let model: PianoModel
+
     var body: some View {
         GeometryReader { geo in
             ZStack(alignment: .topLeading) {
                 HStack(spacing: 0) {
-                    ForEach(whiteKeys, id: \.self) { pitch in
-                        KeyContainer(model: model,
+                    ForEach(model.whiteKeys, id: \.self) { pitch in
+                        KeyContainer(model: model.keyboard,
                                      pitch: pitch,
                                      content: content)
-                            .frame(width: whiteKeyWidth(size: geo.size))
+                            .frame(width: model.whiteKeyWidth(geo.size.width))
                     }
                 }
 
                 // Black keys.
                 VStack(alignment: .leading) {
                     HStack(spacing: 0) {
-                        Rectangle().opacity(0).frame(width: whiteKeyWidth(size: geo.size) * initialSpacer)
-                        if pitchRange.lowerBound != pitchRangeBoundedByNaturals.lowerBound {
-                            Rectangle().opacity(0).frame(width: whiteKeyWidth(size: geo.size) * space(pitch: pitchRange.lowerBound))
+                        Rectangle().opacity(0)
+                            .frame(width: model.initialSpacerWidth(geo.size.width))
+                        if model.pitchRange.lowerBound != model.pitchRangeBoundedByNaturals.lowerBound {
+                            Rectangle().opacity(0).frame(width: model.lowerBoundSpacerWidth(geo.size.width))
                         }
-                        ForEach(pitchRange, id: \.self) { pitch in
-                            if isBlackKey(Pitch(intValue: pitch.intValue)) {
-                                KeyContainer(model: model,
+                        ForEach(model.pitchRange, id: \.self) { pitch in
+                            if model.isBlackKey(Pitch(intValue: pitch.intValue)) {
+                                KeyContainer(model: model.keyboard,
                                              pitch: Pitch(intValue: pitch.intValue),
                                              zIndex: 1,
                                              content: content)
-                                    .frame(width: blackKeyWidth(size: geo.size))
+                                    .frame(width: model.blackKeyWidth(geo.size.width))
                             } else {
                                 Rectangle().opacity(0)
-                                    .frame(width: whiteKeyWidth(size: geo.size) * space(pitch: pitch))
+                                    .frame(width: model.blackKeySpacerWidth(geo.size.width, pitch: pitch))
                             }
                         }
                     }

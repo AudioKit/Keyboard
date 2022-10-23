@@ -86,9 +86,11 @@ public struct KeyboardKey: View {
             ZStack(alignment: alignment) {
                 Rectangle()
                     .foregroundColor(keyColor)
-                    .padding(.top, flatTop ? relativeCornerRadius(in: proxy.size) : 0)
+                    .padding(.top, flatTop && alignment == .bottom ? relativeCornerRadius(in: proxy.size) : 0)
+                    .padding(.leading, flatTop && alignment == .trailing ? relativeCornerRadius(in: proxy.size) : 0)
                     .cornerRadius(relativeCornerRadius(in: proxy.size))
-                    .padding(.top, flatTop ? -relativeCornerRadius(in: proxy.size) : 1)
+                    .padding(.top, flatTop && alignment == .bottom ? -relativeCornerRadius(in: proxy.size) : 1)
+                    .padding(.leading, flatTop && alignment == .trailing ? -relativeCornerRadius(in: proxy.size) : 1)
                     .padding(.trailing, 1)
                 Text(text)
                     .font(Font(.init(.system, size: relativeFontSize(in: proxy.size))))
