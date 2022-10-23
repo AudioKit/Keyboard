@@ -92,7 +92,6 @@ public extension Keyboard where Content == KeyboardKey {
         var alignment: Alignment = .bottom
 
         var flatTop = false
-        var flatLeading = false
         switch layout {
         case .guitar:
             alignment = .center
@@ -103,14 +102,13 @@ public extension Keyboard where Content == KeyboardKey {
         case .verticalIsomorphic:
             alignment = .trailing
         case .verticalPiano:
-            flatLeading = true
+            flatTop = true
             alignment = .trailing
         }
         content = {
             KeyboardKey(
                 pitch: $0,
                 isActivated: $1,
-                flatLeading: flatLeading,
                 flatTop: flatTop,
                 alignment: alignment
             )
