@@ -13,7 +13,7 @@ struct VerticalPiano<Content>: View where Content: View {
                         KeyContainer(model: model.keyboard,
                                      pitch: pitch,
                                      content: content)
-                            .frame(height: model.whiteKeyDimension(geo.size.height))
+                            .frame(height: model.whiteKeyWidth(geo.size.height))
                     }
                 }
 
@@ -27,17 +27,17 @@ struct VerticalPiano<Content>: View where Content: View {
                                              pitch: Pitch(intValue: pitch.intValue),
                                              zIndex: 1,
                                              content: content)
-                                    .frame(height: model.blackKeyDimension(geo.size.height))
+                                    .frame(height: model.blackKeyWidth(geo.size.height))
                             } else {
                                 Rectangle().opacity(0)
-                                    .frame(height: model.blackKeySpacerDimension(geo.size.height, pitch: pitch))
+                                    .frame(height: model.blackKeySpacerWidth(geo.size.height, pitch: pitch))
                             }
                         }
                         if model.pitchRange.lowerBound != model.pitchRangeBoundedByNaturals.lowerBound {
                             Rectangle().opacity(0)
-                                .frame(height: model.lowerBoundSpacerDimension(geo.size.height))
+                                .frame(height: model.lowerBoundSpacerWidth(geo.size.height))
                         }
-                        Rectangle().opacity(0).frame(height: model.initialSpacerDimension(geo.size.height))
+                        Rectangle().opacity(0).frame(height: model.initialSpacerWidth(geo.size.height))
                     }
 
                     // This space pushes the black keys left.

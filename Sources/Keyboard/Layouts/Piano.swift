@@ -50,14 +50,14 @@ struct PianoModel {
         }
     }
 
-    func whiteKeyDimension(_ dimension: CGFloat) -> CGFloat {
-        dimension / CGFloat(whiteKeys.count)
+    func whiteKeyWidth(_ width: CGFloat) -> CGFloat {
+        width / CGFloat(whiteKeys.count)
     }
 
-    var relativeBlackKeyDimension: CGFloat { 9.0 / 16.0 }
+    var relativeBlackKeyWidth: CGFloat { 9.0 / 16.0 }
 
-    func blackKeyDimension(_ dimension: CGFloat) -> CGFloat {
-        whiteKeyDimension(dimension) * relativeBlackKeyDimension
+    func blackKeyWidth(_ width: CGFloat) -> CGFloat {
+        whiteKeyWidth(width) * relativeBlackKeyWidth
     }
 
     var pitchRangeBoundedByNaturals: ClosedRange<Pitch> {
@@ -72,16 +72,16 @@ struct PianoModel {
         return lowerBound ... upperBound
     }
 
-    func initialSpacerDimension(_ dimension: CGFloat) -> CGFloat {
-        whiteKeyDimension(dimension) * initialSpacer
+    func initialSpacerWidth(_ width: CGFloat) -> CGFloat {
+        whiteKeyWidth(width) * initialSpacer
     }
 
-    func lowerBoundSpacerDimension(_ dimension: CGFloat) -> CGFloat {
-        whiteKeyDimension(dimension) * space(pitch: pitchRange.lowerBound)
+    func lowerBoundSpacerWidth(_ width: CGFloat) -> CGFloat {
+        whiteKeyWidth(width) * space(pitch: pitchRange.lowerBound)
     }
 
-    func blackKeySpacerDimension(_ dimension: CGFloat, pitch: Pitch) -> CGFloat {
-        whiteKeyDimension(dimension) * space(pitch: pitch)
+    func blackKeySpacerWidth(_ width: CGFloat, pitch: Pitch) -> CGFloat {
+        whiteKeyWidth(width) * space(pitch: pitch)
     }
 }
 
@@ -97,7 +97,7 @@ struct Piano<Content>: View where Content: View {
                         KeyContainer(model: model.keyboard,
                                      pitch: pitch,
                                      content: content)
-                            .frame(width: model.whiteKeyDimension(geo.size.width))
+                            .frame(width: model.whiteKeyWidth(geo.size.width))
                     }
                 }
 
@@ -105,9 +105,9 @@ struct Piano<Content>: View where Content: View {
                 VStack(alignment: .leading) {
                     HStack(spacing: 0) {
                         Rectangle().opacity(0)
-                            .frame(width: model.initialSpacerDimension(geo.size.width))
+                            .frame(width: model.initialSpacerWidth(geo.size.width))
                         if model.pitchRange.lowerBound != model.pitchRangeBoundedByNaturals.lowerBound {
-                            Rectangle().opacity(0).frame(width: model.lowerBoundSpacerDimension(geo.size.width))
+                            Rectangle().opacity(0).frame(width: model.lowerBoundSpacerWidth(geo.size.width))
                         }
                         ForEach(model.pitchRange, id: \.self) { pitch in
                             if model.isBlackKey(Pitch(intValue: pitch.intValue)) {
@@ -115,10 +115,10 @@ struct Piano<Content>: View where Content: View {
                                              pitch: Pitch(intValue: pitch.intValue),
                                              zIndex: 1,
                                              content: content)
-                                    .frame(width: model.blackKeyDimension(geo.size.width))
+                                    .frame(width: model.blackKeyWidth(geo.size.width))
                             } else {
                                 Rectangle().opacity(0)
-                                    .frame(width: model.blackKeySpacerDimension(geo.size.width, pitch: pitch))
+                                    .frame(width: model.blackKeySpacerWidth(geo.size.width, pitch: pitch))
                             }
                         }
                     }
