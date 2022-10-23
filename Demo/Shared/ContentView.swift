@@ -45,7 +45,6 @@ struct ContentView: View {
     var body: some View {
         HStack {
             Keyboard(layout: .verticalIsomorphic(pitchRange: Pitch(48) ... Pitch(77))).frame(width: 100)
-            Keyboard(layout: .verticalPiano(pitchRange: Pitch(48) ... Pitch(77))).frame(width: 100)
             VStack {
                 HStack {
                     Stepper("Lowest Note: \(Pitch(intValue: lowNote).note(in: .C).description)",
@@ -142,6 +141,7 @@ struct ContentView: View {
                 }
                 .frame(minWidth: 100, minHeight: 100)
             }
+            Keyboard(layout: .verticalPiano(pitchRange: Pitch(48) ... Pitch(77))).frame(width: 100)
         }
         .background(colorScheme == .dark ?
                     Color.clear : Color(red: 0.9, green: 0.9, blue: 0.9))
