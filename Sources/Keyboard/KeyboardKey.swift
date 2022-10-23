@@ -81,25 +81,16 @@ public struct KeyboardKey: View {
         minDimension(containerSize) * 0.125
     }
 
-    var isVertical: Bool {
-        switch alignment {
-        case .trailing:
-            return true
-        default:
-            return false
-        }
-    }
-
     public var body: some View {
         GeometryReader { proxy in
             ZStack(alignment: alignment) {
                 Rectangle()
                     .foregroundColor(keyColor)
-                    .padding(.top, flatTop && !isVertical ? relativeCornerRadius(in: proxy.size) : 0)
-                    .padding(.leading, flatTop && isVertical ? relativeCornerRadius(in: proxy.size) : 0)
+                    .padding(.top, flatTop && alignment != .trailing ? relativeCornerRadius(in: proxy.size) : 0)
+                    .padding(.leading, flatTop && alignment == .trailing ? relativeCornerRadius(in: proxy.size) : 0)
                     .cornerRadius(relativeCornerRadius(in: proxy.size))
-                    .padding(.top, flatTop && !isVertical ? -relativeCornerRadius(in: proxy.size) : 1)
-                    .padding(.leading, flatTop && isVertical ? -relativeCornerRadius(in: proxy.size) : 1)
+                    .padding(.top, flatTop && alignment != .trailing ? -relativeCornerRadius(in: proxy.size) : 1)
+                    .padding(.leading, flatTop && alignment == .trailing ? -relativeCornerRadius(in: proxy.size) : 1)
                     .padding(.trailing, 1)
                 Text(text)
                     .font(Font(.init(.system, size: relativeFontSize(in: proxy.size))))
