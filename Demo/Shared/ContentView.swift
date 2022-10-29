@@ -2,6 +2,37 @@ import Keyboard
 import SwiftUI
 import Tonic
 
+// This is a spacer which piano space between black key and black key width are the same.
+struct EvenPianoSpacer: PianoSpacerProtocol {
+    var initialSpacer: CGFloat {
+        let note = pitchRangeBoundedByNaturals.lowerBound.note(in: .C)
+        switch note.letter {
+        case .C:
+            return 0.0
+        case .D:
+            return 2.0 / 12.0
+        case .E:
+            return 4.0 / 12.0
+        case .F:
+            return 0.0 / 12.0
+        case .G:
+            return 1.0 / 12.0
+        case .A:
+            return 3.0 / 12.0
+        case .B:
+            return 5.0 / 12.0
+        }
+    }
+
+    func space(pitch: Tonic.Pitch) -> CGFloat {
+        relativeBlackKeyWidth
+    }
+
+    var pitchRange: ClosedRange<Tonic.Pitch>
+
+    var relativeBlackKeyWidth: CGFloat { 7.0 / 12.0 }
+}
+
 struct ContentView: View {
 
     func noteOn(pitch: Pitch, point: CGPoint) {
@@ -141,7 +172,10 @@ struct ContentView: View {
                 }
                 .frame(minWidth: 100, minHeight: 100)
             }
-            Keyboard(layout: .verticalPiano(pitchRange: Pitch(48) ... Pitch(77))).frame(width: 100)
+            Keyboard(
+                layout: .verticalPiano(pitchRange: Pitch(48) ... Pitch(77)),
+                spacer: EvenPianoSpacer(pitchRange: Pitch(48) ... Pitch(77))
+            ).frame(width: 100)
         }
         .background(colorScheme == .dark ?
                     Color.clear : Color(red: 0.9, green: 0.9, blue: 0.9))

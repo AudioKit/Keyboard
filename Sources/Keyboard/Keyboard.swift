@@ -11,17 +11,19 @@ public struct Keyboard<Content>: View where Content: View {
     var noteOn: (Pitch, CGPoint) -> Void
     var noteOff: (Pitch) -> Void
     var layout: KeyboardLayout
+    var spacer: (any PianoSpacerProtocol)?
 
     /// Initialize the keyboard
     /// - Parameters:
     ///   - layout: The geometry of the keys
     ///   - latching: Latched keys stay on until they are pressed again
+    ///   - spacer: Custom piano key spacer which conforms to `PianoSpacerProtocol`
     ///   - noteOn: Closure to perform when a key is pressed
     ///   - noteOff: Closure to perform when a note ends
     ///   - content: View defining how to render a specific key
     public init(layout: KeyboardLayout = .piano(pitchRange: Pitch(60) ... Pitch(72)),
                 latching: Bool = false,
-
+                spacer: (any PianoSpacerProtocol)? = nil,
                 noteOn: @escaping (Pitch, CGPoint) -> Void = { _, _ in },
                 noteOff: @escaping (Pitch) -> Void = { _ in },
                 @ViewBuilder content: @escaping (Pitch, Bool) -> Content)
@@ -31,6 +33,7 @@ public struct Keyboard<Content>: View where Content: View {
         self.noteOn = noteOn
         self.noteOff = noteOff
         self.content = content
+        self.spacer = spacer
     }
 
     /// Body enclosing the various layout views
@@ -38,7 +41,7 @@ public struct Keyboard<Content>: View where Content: View {
         ZStack {
             switch layout {
             case let .piano(pitchRange):
-                Piano(content: content, model: .init(keyboard: model, pitchRange: pitchRange))
+                Piano(content: content, keyboard: model, spacer: spacer ?? PianoSpacer(pitchRange: pitchRange))
             case let .isomorphic(pitchRange, root, scale):
                 Isomorphic(content: content,
                            model: model,
@@ -54,7 +57,7 @@ public struct Keyboard<Content>: View where Content: View {
                                    root: root,
                                    scale: scale)
             case .verticalPiano(pitchRange: let pitchRange):
-                VerticalPiano(content: content, model: .init(keyboard: model, pitchRange: pitchRange))
+                VerticalPiano(content: content, keyboard: model, spacer: spacer ?? PianoSpacer(pitchRange: pitchRange))
             }
 
             if !latching {
@@ -77,10 +80,12 @@ public extension Keyboard where Content == KeyboardKey {
     /// - Parameters:
     ///   - layout: The geometry of the keys
     ///   - latching: Latched keys stay on until they are pressed again
+    ///   - spacer: Custom piano key spacer which conforms to `PianoSpacerProtocol`
     ///   - noteOn: Closure to perform when a key is pressed
     ///   - noteOff: Closure to perform when a note ends
     init(layout: KeyboardLayout = .piano(pitchRange: Pitch(60) ... Pitch(72)),
          latching: Bool = false,
+         spacer: (any PianoSpacerProtocol)? = nil,
          noteOn: @escaping (Pitch, CGPoint) -> Void = { _, _ in },
          noteOff: @escaping (Pitch) -> Void = { _ in })
     {
@@ -88,6 +93,7 @@ public extension Keyboard where Content == KeyboardKey {
         self.latching = latching
         self.noteOn = noteOn
         self.noteOff = noteOff
+        self.spacer = spacer
 
         var alignment: Alignment = .bottom
 

@@ -3,17 +3,18 @@ import Tonic
 
 struct VerticalPiano<Content>: View where Content: View {
     let content: (Pitch, Bool) -> Content
-    var model: PianoModel
+    let keyboard: KeyboardModel
+    let spacer: any PianoSpacerProtocol
 
     var body: some View {
         GeometryReader { geo in
             ZStack(alignment: .topLeading) {
                 VStack(spacing: 0) {
-                    ForEach(model.whiteKeys.reversed(), id: \.self) { pitch in
-                        KeyContainer(model: model.keyboard,
+                    ForEach(spacer.whiteKeys.reversed(), id: \.self) { pitch in
+                        KeyContainer(model: keyboard,
                                      pitch: pitch,
                                      content: content)
-                            .frame(height: model.whiteKeyWidth(geo.size.height))
+                            .frame(height: spacer.whiteKeyWidth(geo.size.height))
                     }
                 }
 
@@ -21,23 +22,23 @@ struct VerticalPiano<Content>: View where Content: View {
                 HStack(alignment: .bottom) {
                     VStack(spacing: 0) {
                         Spacer()
-                        ForEach(model.pitchRange.reversed(), id: \.self) { pitch in
-                            if model.isBlackKey(Pitch(intValue: pitch.intValue)) {
-                                KeyContainer(model: model.keyboard,
+                        ForEach(spacer.pitchRange.reversed(), id: \.self) { pitch in
+                            if spacer.isBlackKey(Pitch(intValue: pitch.intValue)) {
+                                KeyContainer(model: keyboard,
                                              pitch: Pitch(intValue: pitch.intValue),
                                              zIndex: 1,
                                              content: content)
-                                    .frame(height: model.blackKeyWidth(geo.size.height))
+                                    .frame(height: spacer.blackKeyWidth(geo.size.height))
                             } else {
                                 Rectangle().opacity(0)
-                                    .frame(height: model.blackKeySpacerWidth(geo.size.height, pitch: pitch))
+                                    .frame(height: spacer.blackKeySpacerWidth(geo.size.height, pitch: pitch))
                             }
                         }
-                        if model.pitchRange.lowerBound != model.pitchRangeBoundedByNaturals.lowerBound {
+                        if spacer.pitchRange.lowerBound != spacer.pitchRangeBoundedByNaturals.lowerBound {
                             Rectangle().opacity(0)
-                                .frame(height: model.lowerBoundSpacerWidth(geo.size.height))
+                                .frame(height: spacer.lowerBoundSpacerWidth(geo.size.height))
                         }
-                        Rectangle().opacity(0).frame(height: model.initialSpacerWidth(geo.size.height))
+                        Rectangle().opacity(0).frame(height: spacer.initialSpacerWidth(geo.size.height))
                     }
 
                     // This space pushes the black keys left.
