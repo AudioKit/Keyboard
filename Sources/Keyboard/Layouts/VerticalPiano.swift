@@ -4,7 +4,7 @@ import Tonic
 struct VerticalPiano<Content>: View where Content: View {
     let content: (Pitch, Bool) -> Content
     let keyboard: KeyboardModel
-    let spacer: any PianoSpacerProtocol
+    let spacer: PianoSpacerProtocol
 
     var body: some View {
         GeometryReader { geo in

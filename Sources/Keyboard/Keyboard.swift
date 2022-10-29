@@ -11,7 +11,7 @@ public struct Keyboard<Content>: View where Content: View {
     var noteOn: (Pitch, CGPoint) -> Void
     var noteOff: (Pitch) -> Void
     var layout: KeyboardLayout
-    var spacer: (any PianoSpacerProtocol)?
+    var spacer: PianoSpacerProtocol?
 
     /// Initialize the keyboard
     /// - Parameters:
@@ -23,7 +23,7 @@ public struct Keyboard<Content>: View where Content: View {
     ///   - content: View defining how to render a specific key
     public init(layout: KeyboardLayout = .piano(pitchRange: Pitch(60) ... Pitch(72)),
                 latching: Bool = false,
-                spacer: (any PianoSpacerProtocol)? = nil,
+                spacer: PianoSpacerProtocol? = nil,
                 noteOn: @escaping (Pitch, CGPoint) -> Void = { _, _ in },
                 noteOff: @escaping (Pitch) -> Void = { _ in },
                 @ViewBuilder content: @escaping (Pitch, Bool) -> Content)
@@ -85,7 +85,7 @@ public extension Keyboard where Content == KeyboardKey {
     ///   - noteOff: Closure to perform when a note ends
     init(layout: KeyboardLayout = .piano(pitchRange: Pitch(60) ... Pitch(72)),
          latching: Bool = false,
-         spacer: (any PianoSpacerProtocol)? = nil,
+         spacer: PianoSpacerProtocol? = nil,
          noteOn: @escaping (Pitch, CGPoint) -> Void = { _, _ in },
          noteOff: @escaping (Pitch) -> Void = { _ in })
     {
