@@ -21,7 +21,6 @@ public struct Keyboard<Content>: View where Content: View {
     ///   - content: View defining how to render a specific key
     public init(layout: KeyboardLayout = .piano(pitchRange: Pitch(60) ... Pitch(72)),
                 latching: Bool = false,
-
                 noteOn: @escaping (Pitch, CGPoint) -> Void = { _, _ in },
                 noteOff: @escaping (Pitch) -> Void = { _ in },
                 @ViewBuilder content: @escaping (Pitch, Bool) -> Content)
@@ -37,8 +36,13 @@ public struct Keyboard<Content>: View where Content: View {
     public var body: some View {
         ZStack {
             switch layout {
-            case let .piano(pitchRange):
-                Piano(content: content, model: .init(keyboard: model, pitchRange: pitchRange))
+            case let .piano(pitchRange, initialSpacerRatio, spacerRatio, relativeBlackKeyWidth):
+                Piano(content: content,
+                      keyboard: model,
+                      spacer: PianoSpacer(pitchRange: pitchRange,
+                                          initialSpacerRatio: initialSpacerRatio,
+                                          spacerRatio: spacerRatio,
+                                          relativeBlackKeyWidth: relativeBlackKeyWidth))
             case let .isomorphic(pitchRange, root, scale):
                 Isomorphic(content: content,
                            model: model,
@@ -53,8 +57,13 @@ public struct Keyboard<Content>: View where Content: View {
                                    pitchRange: pitchRange,
                                    root: root,
                                    scale: scale)
-            case .verticalPiano(pitchRange: let pitchRange):
-                VerticalPiano(content: content, model: .init(keyboard: model, pitchRange: pitchRange))
+            case let .verticalPiano(pitchRange, initialSpacerRatio, spacerRatio, relativeBlackKeyWidth):
+                VerticalPiano(content: content,
+                              keyboard: model,
+                              spacer: PianoSpacer(pitchRange: pitchRange,
+                                                  initialSpacerRatio: initialSpacerRatio,
+                                                  spacerRatio: spacerRatio,
+                                                  relativeBlackKeyWidth: relativeBlackKeyWidth))
             }
 
             if !latching {

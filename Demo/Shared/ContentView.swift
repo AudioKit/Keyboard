@@ -2,6 +2,28 @@ import Keyboard
 import SwiftUI
 import Tonic
 
+let evenSpacingInitialSpacerRatio: [Letter: CGFloat] = [
+    .C: 0.0,
+    .D: 2.0 / 12.0,
+    .E: 4.0 / 12.0,
+    .F: 0.0 / 12.0,
+    .G: 1.0 / 12.0,
+    .A: 3.0 / 12.0,
+    .B: 5.0 / 12.0
+]
+
+let evenSpacingSpacerRatio: [Letter: CGFloat] = [
+    .C: 7.0 / 12.0,
+    .D: 7.0 / 12.0,
+    .E: 7.0 / 12.0,
+    .F: 7.0 / 12.0,
+    .G: 7.0 / 12.0,
+    .A: 7.0 / 12.0,
+    .B: 7.0 / 12.0
+]
+
+let evenSpacingRelativeBlackKeyWidth: CGFloat = 7.0 / 12.0
+
 struct ContentView: View {
 
     func noteOn(pitch: Pitch, point: CGPoint) {
@@ -141,7 +163,12 @@ struct ContentView: View {
                 }
                 .frame(minWidth: 100, minHeight: 100)
             }
-            Keyboard(layout: .verticalPiano(pitchRange: Pitch(48) ... Pitch(77))).frame(width: 100)
+            Keyboard(
+                layout: .verticalPiano(pitchRange: Pitch(48) ... Pitch(77),
+                                       initialSpacerRatio: evenSpacingInitialSpacerRatio,
+                                       spacerRatio: evenSpacingSpacerRatio,
+                                       relativeBlackKeyWidth: evenSpacingRelativeBlackKeyWidth)
+            ).frame(width: 100)
         }
         .background(colorScheme == .dark ?
                     Color.clear : Color(red: 0.9, green: 0.9, blue: 0.9))
