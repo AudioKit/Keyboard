@@ -2,36 +2,27 @@ import Keyboard
 import SwiftUI
 import Tonic
 
-// This is a spacer which piano space between black key and black key width are the same.
-struct EvenPianoSpacer: PianoSpacerProtocol {
-    var initialSpacer: CGFloat {
-        let note = pitchRangeBoundedByNaturals.lowerBound.note(in: .C)
-        switch note.letter {
-        case .C:
-            return 0.0
-        case .D:
-            return 2.0 / 12.0
-        case .E:
-            return 4.0 / 12.0
-        case .F:
-            return 0.0 / 12.0
-        case .G:
-            return 1.0 / 12.0
-        case .A:
-            return 3.0 / 12.0
-        case .B:
-            return 5.0 / 12.0
-        }
-    }
+let evenSpacingInitialSpacerRatio: [Letter: CGFloat] = [
+    .C: 0.0,
+    .D: 2.0 / 12.0,
+    .E: 4.0 / 12.0,
+    .F: 0.0 / 12.0,
+    .G: 1.0 / 12.0,
+    .A: 3.0 / 12.0,
+    .B: 5.0 / 12.0
+]
 
-    func space(pitch: Tonic.Pitch) -> CGFloat {
-        relativeBlackKeyWidth
-    }
+let evenSpacingSpacerRatio: [Letter: CGFloat] = [
+    .C: 7.0 / 12.0,
+    .D: 7.0 / 12.0,
+    .E: 7.0 / 12.0,
+    .F: 7.0 / 12.0,
+    .G: 7.0 / 12.0,
+    .A: 7.0 / 12.0,
+    .B: 7.0 / 12.0
+]
 
-    var pitchRange: ClosedRange<Tonic.Pitch>
-
-    var relativeBlackKeyWidth: CGFloat { 7.0 / 12.0 }
-}
+let evenSpacingRelativeBlackKeyWidth: CGFloat = 7.0 / 12.0
 
 struct ContentView: View {
 
@@ -173,8 +164,10 @@ struct ContentView: View {
                 .frame(minWidth: 100, minHeight: 100)
             }
             Keyboard(
-                layout: .verticalPiano(pitchRange: Pitch(48) ... Pitch(77)),
-                spacer: EvenPianoSpacer(pitchRange: Pitch(48) ... Pitch(77))
+                layout: .verticalPiano(pitchRange: Pitch(48) ... Pitch(77),
+                                       initialSpacerRatio: evenSpacingInitialSpacerRatio,
+                                       spacerRatio: evenSpacingSpacerRatio,
+                                       relativeBlackKeyWidth: evenSpacingRelativeBlackKeyWidth)
             ).frame(width: 100)
         }
         .background(colorScheme == .dark ?

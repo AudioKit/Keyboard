@@ -1,14 +1,34 @@
 import SwiftUI
 import Tonic
 
-public protocol PianoSpacerProtocol {
-    var pitchRange: ClosedRange<Pitch> { get set }
-    var initialSpacer: CGFloat { get }
-    var relativeBlackKeyWidth: CGFloat { get }
-    func space(pitch: Pitch) -> CGFloat
+public struct PianoSpacer {
+    public static let defaultInitialSpacerRatio: [Letter: CGFloat] = [
+        .C: 0.0,
+        .D: 3.0 / 16.0,
+        .E: 6.0 / 16.0,
+        .F: 0.0 / 16.0,
+        .G: 3.0 / 16.0,
+        .A: 4.5 / 16.0,
+        .B: 6.0 / 16.0
+    ]
+    public static let defaultSpacerRatio: [Letter: CGFloat] = [
+        .C: 10.0 / 16.0,
+        .D: 10.0 / 16.0,
+        .E: 10.0 / 16.0,
+        .F: 10.0 / 16.0,
+        .G: 8.5 / 16.0,
+        .A: 8.5 / 16.0,
+        .B: 10.0 / 16.0
+    ]
+    public static let defaultRelativeBlackKeyWidth: CGFloat = 9.0 / 16.0
+
+    public var pitchRange: ClosedRange<Pitch>
+    public var initialSpacerRatio: [Letter: CGFloat]
+    public var spacerRatio: [Letter: CGFloat]
+    public var relativeBlackKeyWidth: CGFloat
 }
 
-extension PianoSpacerProtocol {
+extension PianoSpacer {
     public var whiteKeys: [Pitch] {
         var returnValue: [Pitch] = []
         for pitch in pitchRangeBoundedByNaturals where pitch.note(in: .C).accidental == .natural {
@@ -25,39 +45,17 @@ extension PianoSpacerProtocol {
     // Probably instead of using HStacks we should just lay things out on a canvas
     public var initialSpacer: CGFloat {
         let note = pitchRangeBoundedByNaturals.lowerBound.note(in: .C)
-        switch note.letter {
-        case .C:
-            return 0.0
-        case .D:
-            return 3.0 / 16.0
-        case .E:
-            return 6.0 / 16.0
-        case .F:
-            return 0.0 / 16.0
-        case .G:
-            return 3.0 / 16.0
-        case .A:
-            return 4.5 / 16.0
-        case .B:
-            return 6.0 / 16.0
-        }
+        return initialSpacerRatio[note.letter] ?? 0
     }
 
     public func space(pitch: Pitch) -> CGFloat {
         let note = pitch.note(in: .C)
-        switch note.letter {
-        case .C, .D, .E, .F, .B:
-            return 10.0 / 16.0
-        case .G, .A:
-            return 8.5 / 16.0
-        }
+        return spacerRatio[note.letter] ?? 0
     }
 
     public func whiteKeyWidth(_ width: CGFloat) -> CGFloat {
         width / CGFloat(whiteKeys.count)
     }
-
-    public var relativeBlackKeyWidth: CGFloat { 9.0 / 16.0 }
 
     public func blackKeyWidth(_ width: CGFloat) -> CGFloat {
         whiteKeyWidth(width) * relativeBlackKeyWidth

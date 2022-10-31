@@ -12,7 +12,10 @@ public enum KeyboardLayout: Equatable, Hashable {
                     scale: Scale = .chromatic)
 
     /// Traditional Piano layout with raised black keys over white keys
-    case piano(pitchRange: ClosedRange<Pitch>)
+    case piano(pitchRange: ClosedRange<Pitch>,
+               initialSpacerRatio: [Letter: CGFloat] = PianoSpacer.defaultInitialSpacerRatio,
+               spacerRatio: [Letter: CGFloat] = PianoSpacer.defaultSpacerRatio,
+               relativeBlackKeyWidth: CGFloat = PianoSpacer.defaultRelativeBlackKeyWidth)
 
     /// For piano roll, jam strip type views
     case verticalIsomorphic(pitchRange: ClosedRange<Pitch>,
@@ -20,5 +23,8 @@ public enum KeyboardLayout: Equatable, Hashable {
                             scale: Scale = .chromatic)
 
     /// Traditional Piano vertical layout with raised black keys over white keys
-    case verticalPiano(pitchRange: ClosedRange<Pitch>)
+    case verticalPiano(pitchRange: ClosedRange<Pitch>,
+                       initialSpacerRatio: [Letter: CGFloat] = PianoSpacer.defaultInitialSpacerRatio,
+                       spacerRatio: [Letter: CGFloat] = PianoSpacer.defaultSpacerRatio,
+                       relativeBlackKeyWidth: CGFloat = PianoSpacer.defaultRelativeBlackKeyWidth)
 }

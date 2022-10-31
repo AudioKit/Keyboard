@@ -1,14 +1,10 @@
 import SwiftUI
 import Tonic
 
-struct PianoSpacer: PianoSpacerProtocol {
-    var pitchRange: ClosedRange<Pitch>
-}
-
 struct Piano<Content>: View where Content: View {
     let content: (Pitch, Bool) -> Content
     let keyboard: KeyboardModel
-    let spacer: PianoSpacerProtocol
+    let spacer: PianoSpacer
 
     var body: some View {
         GeometryReader { geo in
