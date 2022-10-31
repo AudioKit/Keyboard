@@ -16,7 +16,6 @@ public struct Keyboard<Content>: View where Content: View {
     /// - Parameters:
     ///   - layout: The geometry of the keys
     ///   - latching: Latched keys stay on until they are pressed again
-    ///   - spacer: Custom piano key spacer which conforms to `PianoSpacerProtocol`
     ///   - noteOn: Closure to perform when a key is pressed
     ///   - noteOff: Closure to perform when a note ends
     ///   - content: View defining how to render a specific key
@@ -87,7 +86,6 @@ public extension Keyboard where Content == KeyboardKey {
     /// - Parameters:
     ///   - layout: The geometry of the keys
     ///   - latching: Latched keys stay on until they are pressed again
-    ///   - spacer: Custom piano key spacer which conforms to `PianoSpacerProtocol`
     ///   - noteOn: Closure to perform when a key is pressed
     ///   - noteOff: Closure to perform when a note ends
     init(layout: KeyboardLayout = .piano(pitchRange: Pitch(60) ... Pitch(72)),
