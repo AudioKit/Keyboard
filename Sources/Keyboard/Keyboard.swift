@@ -36,13 +36,14 @@ public struct Keyboard<Content>: View where Content: View {
     public var body: some View {
         ZStack {
             switch layout {
-            case let .piano(pitchRange, initialSpacerRatio, spacerRatio, relativeBlackKeyWidth):
+            case let .piano(pitchRange, initialSpacerRatio, spacerRatio, relativeBlackKeyWidth, relativeBlackKeyHeight):
                 Piano(content: content,
                       keyboard: model,
                       spacer: PianoSpacer(pitchRange: pitchRange,
                                           initialSpacerRatio: initialSpacerRatio,
                                           spacerRatio: spacerRatio,
-                                          relativeBlackKeyWidth: relativeBlackKeyWidth))
+                                          relativeBlackKeyWidth: relativeBlackKeyWidth,
+                                          relativeBlackKeyHeight: relativeBlackKeyHeight))
             case let .isomorphic(pitchRange, root, scale):
                 Isomorphic(content: content,
                            model: model,

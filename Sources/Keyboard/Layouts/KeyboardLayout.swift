@@ -15,7 +15,8 @@ public enum KeyboardLayout: Equatable, Hashable {
     case piano(pitchRange: ClosedRange<Pitch>,
                initialSpacerRatio: [Letter: CGFloat] = PianoSpacer.defaultInitialSpacerRatio,
                spacerRatio: [Letter: CGFloat] = PianoSpacer.defaultSpacerRatio,
-               relativeBlackKeyWidth: CGFloat = PianoSpacer.defaultRelativeBlackKeyWidth)
+               relativeBlackKeyWidth: CGFloat = PianoSpacer.defaultRelativeBlackKeyWidth,
+               relativeBlackKeyHeight: CGFloat = PianoSpacer.defaultRelativeBlackKeyHeight)
 
     /// For piano roll, jam strip type views
     case verticalIsomorphic(pitchRange: ClosedRange<Pitch>,
