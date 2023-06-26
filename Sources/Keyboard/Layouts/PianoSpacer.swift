@@ -21,11 +21,16 @@ public struct PianoSpacer {
         .B: 10.0 / 16.0
     ]
     public static let defaultRelativeBlackKeyWidth: CGFloat = 9.0 / 16.0
+    
+    /// Default value for Black Key Height
+    public static let defaultRelativeBlackKeyHeight: CGFloat = 0.53
 
     public var pitchRange: ClosedRange<Pitch>
     public var initialSpacerRatio: [Letter: CGFloat]
     public var spacerRatio: [Letter: CGFloat]
-    public var relativeBlackKeyWidth: CGFloat
+    public var relativeBlackKeyWidth: CGFloat = PianoSpacer.defaultRelativeBlackKeyWidth
+    /// The smaller the number, the shorter the black keys appear. A value of 1 approximates an isomorphic keyboard
+    public var relativeBlackKeyHeight: CGFloat = PianoSpacer.defaultRelativeBlackKeyHeight
 }
 
 extension PianoSpacer {
