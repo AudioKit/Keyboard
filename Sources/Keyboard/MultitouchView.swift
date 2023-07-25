@@ -1,3 +1,5 @@
+// Copyright AudioKit. All Rights Reserved. Revision History at http://github.com/AudioKit/Keyboard/
+
 import SwiftUI
 
 public typealias TouchCallback = ([CGPoint]) -> Void

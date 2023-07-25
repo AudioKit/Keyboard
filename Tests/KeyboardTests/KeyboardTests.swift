@@ -1,3 +1,5 @@
+// Copyright AudioKit. All Rights Reserved. Revision History at http://github.com/AudioKit/Keyboard/
+
 @testable import Keyboard
 import Tonic
 import XCTest
