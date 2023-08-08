@@ -13,9 +13,7 @@ struct Piano<Content>: View where Content: View {
             ZStack(alignment: .topLeading) {
                 HStack(spacing: 0) {
                     ForEach(spacer.whiteKeys, id: \.self) { pitch in
-                        KeyContainer(model: keyboard,
-                                     pitch: pitch,
-                                     content: content)
+                        KeyContainer(model: keyboard, pitch: pitch, content: content)
                             .frame(width: spacer.whiteKeyWidth(geo.size.width))
                     }
                 }
