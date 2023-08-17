@@ -66,109 +66,38 @@ struct ContentView: View {
 
     var body: some View {
         HStack {
-            Keyboard(layout: .verticalIsomorphic(pitchRange: Pitch(48) ... Pitch(77))).frame(width: 100)
             VStack {
                 HStack {
                     Stepper("Lowest Note: \(Pitch(intValue: lowNote).note(in: .C).description)",
                             onIncrement: {
-                                if lowNote < 126, highNote > lowNote + 12 {
-                                    lowNote += 1
-                                }
-                            },
+                        if lowNote < 126, highNote > lowNote + 12 {
+                            lowNote += 1
+                        }
+                    },
                             onDecrement: {
-                                if lowNote > 0 {
-                                    lowNote -= 1
-                                }
-                            })
+                        if lowNote > 0 {
+                            lowNote -= 1
+                        }
+                    })
                     Stepper("Highest Note: \(Pitch(intValue: highNote).note(in: .C).description)",
                             onIncrement: {
-                                if highNote < 126 {
-                                    highNote += 1
-                                }
-                            },
+                        if highNote < 126 {
+                            highNote += 1
+                        }
+                    },
                             onDecrement: {
-                                if highNote > 1, highNote > lowNote + 12 {
-                                    highNote -= 1
-                                }
-
-                            })
+                        if highNote > 1, highNote > lowNote + 12 {
+                            highNote -= 1
+                        }
+                        
+                    })
                 }
                 Keyboard(layout: .piano(pitchRange: Pitch(intValue: lowNote) ... Pitch(intValue: highNote)),
                          noteOn: noteOnWithVerticalVelocity(pitch:point:), noteOff: noteOff)
-                .frame(minWidth: 100, minHeight: 100)
-
-                HStack {
-                    Stepper("Root: \(root.description)",
-                            onIncrement: {
-                        let allSharpNotes = (0...11).map { Note(pitch: Pitch(intValue: $0)).noteClass }
-                        var index = allSharpNotes.firstIndex(of: root.canonicalNote.noteClass) ?? 0
-                        index += 1
-                        if index > 11 { index = 0}
-                        if index < 0 { index = 1}
-                        rootIndex = index
-                        root = allSharpNotes[index]
-                    },
-                            onDecrement: {
-                        let allSharpNotes = (0...11).map { Note(pitch: Pitch(intValue: $0)).noteClass }
-                        var index = allSharpNotes.firstIndex(of: root.canonicalNote.noteClass) ?? 0
-                        index -= 1
-                        if index > 11 { index = 0}
-                        if index < 0 { index = 1}
-                        rootIndex = index
-                        root = allSharpNotes[index]
-                    })
-
-                    Stepper("Scale: \(scale.description)",
-                            onIncrement: { scaleIndex += 1 },
-                            onDecrement: { scaleIndex -= 1 })
-                }
-                Keyboard(layout: .isomorphic(pitchRange:
-                                                Pitch(intValue: 12 + rootIndex) ... Pitch(intValue: 84 + rootIndex),
-                                             root: root,
-                                             scale: scale),
-                         noteOn: noteOnWithReversedVerticalVelocity(pitch:point:), noteOff: noteOff)
-                .frame(minWidth: 100, minHeight: 100)
-
-                Keyboard(layout: .guitar(),
-                         noteOn: noteOn, noteOff: noteOff) { pitch, isActivated in
-                    KeyboardKey(pitch: pitch,
-                                isActivated: isActivated,
-                                text: pitch.note(in: .F).description,
-                                pressedColor: Color(PitchColor.newtonian[Int(pitch.pitchClass)]),
-                                alignment: .center)
-                }
-                .frame(minWidth: 100, minHeight: 100)
-
-                Keyboard(layout: .isomorphic(pitchRange: Pitch(48) ... Pitch(65))) { pitch, isActivated in
-                    KeyboardKey(pitch: pitch,
-                                isActivated: isActivated,
-                                text: pitch.note(in: .F).description,
-                                pressedColor: Color(PitchColor.newtonian[Int(pitch.pitchClass)]))
-                }
-                .frame(minWidth: 100, minHeight: 100)
-
-                Keyboard(latching: true, noteOn: noteOn, noteOff: noteOff) { pitch, isActivated in
-                    if isActivated {
-                        ZStack {
-                            Rectangle().foregroundColor(.black)
-                            VStack {
-                                Spacer()
-                                Text(pitch.note(in: .C).description).font(.largeTitle)
-                            }.padding()
-                        }
-
-                    } else {
-                        Rectangle().foregroundColor(randomColors[Int(pitch.intValue) % 12])
-                    }
-                }
-                .frame(minWidth: 100, minHeight: 100)
+                .frame(minWidth: 100)
+                .frame(height: 100)
             }
-            Keyboard(
-                layout: .verticalPiano(pitchRange: Pitch(48) ... Pitch(77),
-                                       initialSpacerRatio: evenSpacingInitialSpacerRatio,
-                                       spacerRatio: evenSpacingSpacerRatio,
-                                       relativeBlackKeyWidth: evenSpacingRelativeBlackKeyWidth)
-            ).frame(width: 100)
+
         }
         .background(colorScheme == .dark ?
                     Color.clear : Color(red: 0.9, green: 0.9, blue: 0.9))
