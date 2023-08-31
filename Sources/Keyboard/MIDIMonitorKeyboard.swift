@@ -2,14 +2,15 @@
 import SwiftUI
 import Tonic
 
+@available(iOS 15, macOS 12.0, *)
 extension GraphicsContext {
     func fill(rect: CGRect, with color: Color) {
         fill(Path(roundedRect: rect, cornerRadius: 0), with: GraphicsContext.Shading.color(color))
     }
 }
 
+@available(iOS 15, macOS 12.0, *)
 struct MIDIMonitorKeyboard: View {
-
     var layout: KeyboardLayout
     var activatedPitches: PitchSet
     var colorFunction: (Pitch)->Color
@@ -87,9 +88,11 @@ struct MIDIMonitorKeyboard: View {
 }
 
 var p = PitchSet(pitches: [Pitch(65), Pitch(68), Pitch(71), Pitch(74)])
-#Preview {
-    MIDIMonitorKeyboard(layout: .piano(pitchRange: Pitch(61)...Pitch(88)),
-                        activatedPitches: p,
-                        colorFunction: { x in Color(cgColor: PitchColor.helmholtz[Int(x.pitchClass)])}
-    ).frame(width: 600, height: 100)
-}
+
+//MARK: - we can have preview macro after Xcode 15 is released
+//#Preview {
+//    MIDIMonitorKeyboard(layout: .piano(pitchRange: Pitch(61)...Pitch(88)),
+//                        activatedPitches: p,
+//                        colorFunction: { x in Color(cgColor: PitchColor.helmholtz[Int(x.pitchClass)])}
+//    ).frame(width: 600, height: 100)
+//}
