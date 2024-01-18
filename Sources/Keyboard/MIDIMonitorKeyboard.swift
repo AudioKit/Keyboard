@@ -9,8 +9,9 @@ extension GraphicsContext {
     }
 }
 
+/// MIDIMonitorKeyboard
 @available(iOS 15, macOS 12, *)
-struct MIDIMonitorKeyboard: View {
+public struct MIDIMonitorKeyboard: View {
 
     var layout: KeyboardLayout
     var activatedPitches: PitchSet
@@ -38,7 +39,7 @@ struct MIDIMonitorKeyboard: View {
         }
     }
 
-    var body: some View {
+    public var body: some View {
         switch layout {
             case let .piano(pitchRange, initialSpacerRatio, spacerRatio, relativeBlackKeyWidth, relativeBlackKeyHeight):
                 
