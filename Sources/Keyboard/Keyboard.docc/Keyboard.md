@@ -4,7 +4,7 @@ SwiftUI music keyboard
 
 ## Overview
 
-See the [AudioKit Cookbook](https://github.com/AudioKit/Cookbook/) for examples.
+See the [AudioKit Cookbook](https://github.com/AudioKit/Cookbook/) for examples and see the source code for API of all Keyboard elements. This documentation gives a rudimentary overview but lacks most of the finer details. 
 
 ![Demo Screenshot](demo)
 
