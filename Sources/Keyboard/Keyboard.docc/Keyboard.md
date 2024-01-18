@@ -21,8 +21,3 @@ Keyboard aims to be an easy-to-use musical keyboard with:
 - Good user interface
 - Good performance. We rely on SwiftUI's drag gestures
 
-## Topics
-
-### <!--@START_MENU_TOKEN@-->Group<!--@END_MENU_TOKEN@-->
-
-- <!--@START_MENU_TOKEN@-->``Symbol``<!--@END_MENU_TOKEN@-->
