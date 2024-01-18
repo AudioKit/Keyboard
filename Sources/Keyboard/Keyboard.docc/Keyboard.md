@@ -4,7 +4,7 @@ SwiftUI music keyboard
 
 ## Overview
 
-Code is hosted on Github: [](https://github.com/AudioKit/Keyboard/)
+See the [AudioKit Cookbook](https://github.com/AudioKit/Cookbook/) for examples.
 
 ![Demo Screenshot](demo)
 
