@@ -30,7 +30,7 @@ jobs:
           - KeyboardDemo (iOS)
           - KeyboardDemo (macOS)
         xcode_version:
-          - '15.2'
+          - latest
     steps:
       - name: Build Demo
         uses: AudioKit/ci/.github/actions/build-demo@main
