@@ -8,7 +8,7 @@ extension GraphicsContext {
     }
 }
 
-struct MIDIMonitorKeyboard: View {
+public struct MIDIMonitorKeyboard: View {
 
     var layout: KeyboardLayout
     var activatedPitches: PitchSet
@@ -36,9 +36,9 @@ struct MIDIMonitorKeyboard: View {
         }
     }
 
-    var body: some View {
+    public var body: some View {
         switch layout {
-            case let .piano(pitchRange, initialSpacerRatio, spacerRatio, relativeBlackKeyWidth, relativeBlackKeyHeight):
+            case .piano:
                 
                 Canvas { cx, size in
                     cx.fill(rect: CGRect(origin: .zero, size: size), with: .black)
@@ -66,7 +66,7 @@ struct MIDIMonitorKeyboard: View {
                                        y: 0,
                                        width: spacer.blackKeyWidth(size.width),
                                        height: size.height * spacer.relativeBlackKeyHeight)
-                        
+
                         if activatedPitches.contains(pitch) {
                             color = colorFunction(pitch)
                         }
