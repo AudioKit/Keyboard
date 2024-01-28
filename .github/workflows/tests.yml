@@ -14,7 +14,7 @@ jobs:
     with:
       scheme: Keyboard
       platforms: iOS macOS
-      swift-versions: 5.9
+      swift-versions: 5.8
 
   build_demo:
     name: Build ${{ matrix.scheme }} (Xcode ${{ matrix.xcode_version }})
