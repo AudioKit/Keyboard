@@ -3,7 +3,8 @@
 import SwiftUI
 import Tonic
 
-class KeyboardModel: ObservableObject {
+/// Observable model calling back on noteOn and noteOff and storing the touch locations
+public class KeyboardModel: ObservableObject {
     var keyRectInfos: [KeyRectInfo] = []
     var noteOn: (Pitch, CGPoint) -> Void = { _, _ in }
     var noteOff: (Pitch) -> Void = { _ in }
@@ -35,12 +36,13 @@ class KeyboardModel: ObservableObject {
         }
     }
 
-    @Published var touchedPitches = PitchSet() {
+    /// all touched notes
+    @Published public var touchedPitches = PitchSet() {
         willSet { triggerEvents(from: touchedPitches, to: newValue) }
     }
 
     /// Either latched keys or keys active due to external MIDI events.
-    @Published var externallyActivatedPitches = PitchSet() {
+    @Published public var externallyActivatedPitches = PitchSet() {
         willSet { triggerEvents(from: externallyActivatedPitches, to: newValue) }
     }
 

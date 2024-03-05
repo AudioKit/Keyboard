@@ -5,7 +5,7 @@ import Tonic
 
 /// This handles the interaction for key, so the user can provide their own
 /// visual representation.
-struct KeyContainer<Content: View>: View {
+public struct KeyContainer<Content: View>: View {
     let content: (Pitch, Bool) -> Content
 
     var pitch: Pitch
@@ -13,6 +13,12 @@ struct KeyContainer<Content: View>: View {
 
     var zIndex: Int
 
+    /// Initialize the Container
+    /// - Parameters:
+    ///   - model: KeyboardModel holding all the keys
+    ///   - pitch: Pitch of this key
+    ///   - zIndex: Layering in z-axis
+    ///   - content: View defining how to render a specific key
     init(model: KeyboardModel,
          pitch: Pitch,
          zIndex: Int = 0,

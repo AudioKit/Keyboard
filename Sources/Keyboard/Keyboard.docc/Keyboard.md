@@ -4,7 +4,7 @@ SwiftUI music keyboard
 
 ## Overview
 
-Code is hosted on Github: [](https://github.com/AudioKit/Keyboard/)
+See the [AudioKit Cookbook](https://github.com/AudioKit/Cookbook/) for examples and see the source code for API of all Keyboard elements. This documentation gives a rudimentary overview but lacks most of the finer details. 
 
 ![Demo Screenshot](demo)
 
@@ -21,8 +21,3 @@ Keyboard aims to be an easy-to-use musical keyboard with:
 - Good user interface
 - Good performance. We rely on SwiftUI's drag gestures
 
-## Topics
-
-### <!--@START_MENU_TOKEN@-->Group<!--@END_MENU_TOKEN@-->
-
-- <!--@START_MENU_TOKEN@-->``Symbol``<!--@END_MENU_TOKEN@-->
