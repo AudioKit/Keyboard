@@ -9,6 +9,7 @@ extension GraphicsContext {
     }
 }
 
+/// MIDIMonitorKeyboard
 @available(iOS 15, macOS 12, *)
 public struct MIDIMonitorKeyboard: View {
 
