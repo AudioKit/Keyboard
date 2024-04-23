@@ -10,7 +10,7 @@ extension GraphicsContext {
 }
 
 @available(iOS 15, macOS 12, *)
-struct MIDIMonitorKeyboard: View {
+public struct MIDIMonitorKeyboard: View {
 
     var layout: KeyboardLayout
     var activatedPitches: PitchSet
