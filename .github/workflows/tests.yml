@@ -14,7 +14,6 @@ jobs:
     with:
       scheme: Keyboard
       platforms: iOS macOS
-      swift-versions: 5.7
 
   build_demo:
     name: Build ${{ matrix.scheme }} (Xcode ${{ matrix.xcode_version }})
@@ -29,9 +28,7 @@ jobs:
         scheme:
           - KeyboardDemo (iOS)
           - KeyboardDemo (macOS)
-        xcode_version:
-          - latest
-    steps:
+\    steps:
       - name: Build Demo
         uses: AudioKit/ci/.github/actions/build-demo@main
         with:
