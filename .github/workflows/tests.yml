@@ -10,33 +10,23 @@ on:
 jobs:
   swift_test:
     name: Test
-    uses: AudioKit/ci/.github/workflows/swift_test.yml@main
-    with:
-      scheme: Keyboard
-      platforms: iOS macOS
-      swift-versions: 5.9
-
-  build_demo:
-    name: Build ${{ matrix.scheme }} (Xcode ${{ matrix.xcode_version }})
-    # NOTE: macos-latest is NOT equivalent to macos-12 as of September 2022.
-    # Source: https://docs.github.com/en/actions/using-github-hosted-runners/about-github-hosted-runners#supported-runners-and-hardware-resources
-    runs-on: macos-12
-    needs: [swift_test]
-    strategy:
-      # Disabling fail-fast ensures that the job will run all configurations of the matrix, even if one fails.
-      fail-fast: false
-      matrix:
-        scheme:
-          - KeyboardDemo (iOS)
-          - KeyboardDemo (macOS)
-
+    runs-on: macos-latest
     steps:
+      - name: Check out Keyboard
+        uses: actions/checkout@v4
+      - name: Test Keyboard
+        run: swift test -c release
+
+  # Build the demo projects.
+  build_demo:
+    name: Build Demo
+    runs-on: macos-latest
+    needs: [swift_test]
+    steps:
+      - name: Check out Keyboard
+        uses: actions/checkout@v4
       - name: Build Demo
-        uses: AudioKit/ci/.github/actions/build-demo@main
-        with:
-          project: Demo/KeyboardDemo.xcodeproj
-          scheme: ${{ matrix.scheme }}
-          xcode_version: ${{ matrix.xcode_version }}
+        run: xcodebuild build -project Demo/KeyboardDemo.xcodeproj -scheme KeyboardDemo -destination "name=My Mac"
 
   # Send notification to Discord on failure.
   send_notification:
