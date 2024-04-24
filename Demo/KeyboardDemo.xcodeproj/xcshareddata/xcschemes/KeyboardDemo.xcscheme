@@ -17,7 +17,7 @@
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "F1B759842848C56C0042846A"
                BuildableName = "KeyboardDemo.app"
-               BlueprintName = "KeyboardDemo (iOS)"
+               BlueprintName = "KeyboardDemo"
                ReferencedContainer = "container:KeyboardDemo.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -46,7 +46,7 @@
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "F1B759842848C56C0042846A"
             BuildableName = "KeyboardDemo.app"
-            BlueprintName = "KeyboardDemo (iOS)"
+            BlueprintName = "KeyboardDemo"
             ReferencedContainer = "container:KeyboardDemo.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
@@ -63,7 +63,7 @@
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "F1B759842848C56C0042846A"
             BuildableName = "KeyboardDemo.app"
-            BlueprintName = "KeyboardDemo (iOS)"
+            BlueprintName = "KeyboardDemo"
             ReferencedContainer = "container:KeyboardDemo.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
