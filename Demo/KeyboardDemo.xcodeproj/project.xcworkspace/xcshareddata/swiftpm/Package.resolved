@@ -5,8 +5,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/AudioKit/Tonic.git",
       "state" : {
-        "revision" : "ed84c6add1c34895c8548632d50a19e9125b28d8",
-        "version" : "1.4.0"
+        "revision" : "8f103c6765af93bc1d2c3e18eb35f02718b0613d",
+        "version" : "2.0.0"
       }
     }
   ],
