@@ -32,7 +32,16 @@ public struct KeyContainer<Content: View>: View {
 
     func rect(rect: CGRect) -> some View {
         content(pitch, model.touchedPitches.contains(pitch) || model.externallyActivatedPitches.contains(pitch))
-            .contentShape(Rectangle())
+            .contentShape(Rectangle()) // Added to improve tap/click reliability
+            .gesture(
+                TapGesture().onEnded { _ in
+                    if model.externallyActivatedPitches.contains(pitch) {
+                        model.externallyActivatedPitches.remove(pitch)
+                    } else {
+                        model.externallyActivatedPitches.add(pitch)
+                    }
+                }
+            )
             .preference(key: KeyRectsKey.self,
                         value: [KeyRectInfo(rect: rect,
                                             pitch: pitch,
