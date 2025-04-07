@@ -32,13 +32,15 @@ public struct KeyContainer<Content: View>: View {
 
     func rect(rect: CGRect) -> some View {
         content(pitch, model.touchedPitches.contains(pitch) || model.externallyActivatedPitches.contains(pitch))
-            .contentShape(Rectangle()) // Added to improve tap/click reliability
+            .contentShape(Rectangle())
             .gesture(
                 TapGesture().onEnded { _ in
-                    if model.externallyActivatedPitches.contains(pitch) {
-                        model.externallyActivatedPitches.remove(pitch)
-                    } else {
-                        model.externallyActivatedPitches.add(pitch)
+                    if model.latching {
+                        if model.externallyActivatedPitches.contains(pitch) {
+                            model.externallyActivatedPitches.remove(pitch)
+                        } else {
+                            model.externallyActivatedPitches.add(pitch)
+                        }
                     }
                 }
             )
