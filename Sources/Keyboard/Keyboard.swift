@@ -81,6 +81,7 @@ public struct Keyboard<Content>: View where Content: View {
         }.onAppear {
             model.noteOn = noteOn
             model.noteOff = noteOff
+            model.latching = latching
         }
     }
 }
