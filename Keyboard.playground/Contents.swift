@@ -5,9 +5,12 @@ import Tonic
 
 struct ContentView: View {
     var body: some View {
-        Keyboard()
-        Keyboard(layout: .isomorphic)
-        Keyboard(pitchRange: Pitch(0) ... Pitch(60 + 37))
+        Keyboard().frame(minWidth: 400, minHeight: 200)
+        Spacer()
+        Keyboard(layout: .isomorphic(pitchRange: Pitch(36) ... Pitch(60), root: .C, scale: .major))
+            .frame(height: 150)
+        Keyboard(layout: .guitar())
+            .frame(height: 150)
     }
 }
 
