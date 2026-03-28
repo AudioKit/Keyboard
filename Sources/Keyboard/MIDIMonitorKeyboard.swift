@@ -35,7 +35,7 @@ public struct MIDIMonitorKeyboard: View {
                                      relativeBlackKeyWidth: relativeBlackKeyWidth,
                                      relativeBlackKeyHeight: relativeBlackKeyHeight)
             default:
-                print("Unimplimented")
+                print("Unimplemented")
         }
     }
 
@@ -89,14 +89,10 @@ public struct MIDIMonitorKeyboard: View {
     }
 }
 
-var p = PitchSet(pitches: [Pitch(65), Pitch(68), Pitch(71), Pitch(74)])
-
-// Removing Preview macro until Xcode 15 is released
-/*
 #Preview {
-    MIDIMonitorKeyboard(layout: .piano(pitchRange: Pitch(61)...Pitch(88)),
-                        activatedPitches: p,
-                        colorFunction: { x in Color(cgColor: PitchColor.helmholtz[Int(x.pitchClass)])}
+    MIDIMonitorKeyboard(
+        layout: .piano(pitchRange: Pitch(61) ... Pitch(88)),
+        activatedPitches: PitchSet(pitches: [Pitch(65), Pitch(68), Pitch(71), Pitch(74)]),
+        colorFunction: { pitch in Color(cgColor: PitchColor.helmholtz[Int(pitch.pitchClass)]) }
     ).frame(width: 600, height: 100)
 }
-*/
