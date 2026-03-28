@@ -109,16 +109,16 @@ public struct KeyboardKey: View {
         GeometryReader { proxy in
             ZStack(alignment: alignment) {
                 Rectangle()
-                    .foregroundColor(keyColor)
+                    .foregroundStyle(keyColor)
                     .padding(.top, topPadding(proxy.size))
                     .padding(.leading, leadingPadding(proxy.size))
-                    .cornerRadius(relativeCornerRadius(in: proxy.size))
+                    .clipShape(RoundedRectangle(cornerRadius: relativeCornerRadius(in: proxy.size)))
                     .padding(.top, negativeTopPadding(proxy.size))
                     .padding(.leading, negativeLeadingPadding(proxy.size))
                     .padding(.trailing, 0.5)
                 Text(text)
-                    .font(Font(.init(.system, size: relativeFontSize(in: proxy.size))))
-                    .foregroundColor(textColor)
+                    .font(.system(size: relativeFontSize(in: proxy.size)))
+                    .foregroundStyle(textColor)
                     .padding(relativeFontSize(in: proxy.size) / 3.0)
             }
         }
