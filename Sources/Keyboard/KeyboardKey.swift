@@ -53,6 +53,21 @@ public struct KeyboardKey: View {
     var text: String
     var isActivatedExternally: Bool
 
+    /// Accessibility label that expands symbols to spoken words (e.g. "C 4", "F sharp 3")
+    var accessibilityNoteLabel: String {
+        let note = pitch.note(in: .C)
+        let letter = note.noteClass.letter.description
+        let octave = note.octave
+        switch note.accidental {
+        case .sharp:
+            return "\(letter) sharp \(octave)"
+        case .flat:
+            return "\(letter) flat \(octave)"
+        default:
+            return "\(letter) \(octave)"
+        }
+    }
+
     var keyColor: Color {
         if isActivatedExternally || isActivated {
             return pressedColor
@@ -121,6 +136,10 @@ public struct KeyboardKey: View {
                     .foregroundColor(textColor)
                     .padding(relativeFontSize(in: proxy.size) / 3.0)
             }
+            .accessibilityElement(children: .ignore)
+            .accessibilityLabel(accessibilityNoteLabel)
+            .accessibilityAddTraits(.isButton)
+            .accessibilityValue(isActivated || isActivatedExternally ? "pressed" : "not pressed")
         }
     }
 }
