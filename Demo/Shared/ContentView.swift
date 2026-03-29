@@ -150,7 +150,7 @@ struct ContentView: View {
                 Keyboard(latching: true, noteOn: noteOn, noteOff: noteOff) { pitch, isActivated in
                     if isActivated {
                         ZStack {
-                            Rectangle().foregroundColor(.black)
+                            Rectangle().foregroundStyle(.black)
                             VStack {
                                 Spacer()
                                 Text(pitch.note(in: .C).description).font(.largeTitle)
@@ -158,7 +158,7 @@ struct ContentView: View {
                         }
 
                     } else {
-                        Rectangle().foregroundColor(randomColors[Int(pitch.intValue) % 12])
+                        Rectangle().foregroundStyle(randomColors[Int(pitch.intValue) % 12])
                     }
                 }
                 .frame(minWidth: 100, minHeight: 100)
